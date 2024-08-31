@@ -46,7 +46,7 @@ class Mbg extends CI_Model {
 	}
 	function checkUserExist($nik, $handphone)
 	{
-		return $this->db->query("SELECT * FROM USER WHERE (nik='$nik' OR handphone = '$handphone')")->num_rows();
+		return $this->db->query("SELECT * FROM user WHERE (nik='$nik' OR handphone = '$handphone')")->num_rows();
 	}
 
 	function getParameter($namaParameter)
@@ -246,7 +246,7 @@ class Mbg extends CI_Model {
 					    approve_cetificate
 					  WHERE id_user = '$id_user'
 					    AND id_order_booking = '$id_order_booking') AS ac,
-					   (SELECT * FROM USER) us,
+					   (SELECT * FROM user) us,
   					 (SELECT * FROM master_kelas) mk,
   					 (SELECT
 							    *
