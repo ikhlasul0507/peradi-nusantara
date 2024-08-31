@@ -320,7 +320,7 @@ class Mbg extends CI_Model {
 					  (SELECT
 					    *
 					  FROM
-					    USER) us,
+					    user) us,
 					  (SELECT
 					    *
 					  FROM
@@ -347,7 +347,7 @@ class Mbg extends CI_Model {
 		if($time_history != ""){
 			$query = $query . " AND temp.time_history >= '$time_history'";
 		}
-		
+
 		if($id_master_kelas != ""){
 			$query = $query . " AND FIND_IN_SET(
         $id_master_kelas,
