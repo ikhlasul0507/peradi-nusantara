@@ -412,7 +412,7 @@ class Mbg extends CI_Model {
 				  (SELECT
 				    *
 				  FROM
-				    USER) us
+				    user) us
 				WHERE ob.id_user = us.id_user
 				  AND ob.id_order_booking = '$idOrder'
 				  AND ob.id_user = '$idUser'";
