@@ -46,7 +46,7 @@
                             <form class="user" action="<?= base_url('P/Auth/process_forget_password')?>" method="post">
                                 
                                 <div class="form-group">
-                                    <input type="number" class="form-control form-control-user"
+                                    <input type="number" class="form-control"
                                             required name="handphone" placeholder="Handpone Aktif">
                                 </div>
                        
