@@ -1,0 +1,572 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Migrate extends CI_Controller
+{
+
+	/**
+	 * Index Page for this controller.
+	 *
+	 * Maps to the following URL
+	 * 		http://example.com/index.php/welcome
+	 *	- or -
+	 * 		http://example.com/index.php/welcome/index
+	 *	- or -
+	 * Since this controller is set as the default controller in
+	 * config/routes.php, it's displayed at http://example.com/
+	 *
+	 * So any other public methods not prefixed with an underscore will
+	 * map to /index.php/welcome/<method_name>
+	 * @see https://codeigniter.com/userguide3/general/urls.html
+	 */
+	public function index()
+	{
+		$this->writeLine();
+		echo "<b>..............Time Migrate " . date("d-m-Y h:m:s") . "</b></br>";
+		$this->writeLine();
+		$this->addnewtable();
+		$this->writeLine();
+		$this->insertDataTable();
+		$this->writeLine();
+		$this->alterTable();
+		$this->writeLine();
+		echo "<h4>Congratulations your migrate successfully 100%</h4>";
+		$this->writeLine();
+		// redirect("L_a");
+	}
+
+	public function writeLine()
+	{
+		echo ".....................................................................................................................................</br>";
+	}
+
+	public function addnewtable()
+	{
+		//=================================================================================================
+		$title = "Table structure for table `user`";
+		$query = "CREATE TABLE IF NOT EXISTS `user` (
+				  `id_user` int(5) NOT NULL AUTO_INCREMENT,
+				  `nik` int(21) NOT NULL,
+				  `email` varchar(50) NOT NULL,
+				  `nama_lengkap` varchar(50) NOT NULL,
+				  `handphone` varchar(20) NOT NULL,
+				  `usia` int(5) NOT NULL,
+				  `asal_kampus` varchar(150) NOT NULL,
+				  `semester` int(5) NOT NULL,
+				  `password` varchar(50) NOT NULL,
+				  `password_hash` varchar(250) NOT NULL,
+				  `is_active` char(1) NOT NULL,
+				  `user_level` int(5) NOT NULL,
+				  `dateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  PRIMARY KEY (id_user)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+
+		//=================================================================================================
+		$title = "Table structure for table `parameter`";
+		$query = "CREATE TABLE IF NOT EXISTS `parameter` (
+					  `id_parameter` int(11) NOT NULL AUTO_INCREMENT,
+					  `nama_parameter` varchar(128) NOT NULL,
+					  `value_parameter` varchar(128) NOT NULL,
+					  `type_parameter` char(1) DEFAULT NULL,
+					   PRIMARY KEY (id_parameter)
+					) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+
+		//=================================================================================================
+		$title = "Table structure for table `log_history`";
+		$query = "CREATE TABLE IF NOT EXISTS `log_history` (
+				  `id_log_history` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `nik` varchar(50) NOT NULL,
+				  `ipaddress` varchar(20) NOT NULL,
+				  `macaddress` varchar(20) NOT NULL,
+				  `browser` varchar(100) NOT NULL,
+				  `action` text NOT NULL,
+				   PRIMARY KEY (id_log_history)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+
+		//=================================================================================================
+		$title = "Table structure for table `forget_password`";
+		$query = "CREATE TABLE IF NOT EXISTS `forget_password` (
+				  `id_forget_password` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `uuid` varchar(50) NOT NULL,
+				  `handphone` varchar(20) NOT NULL,
+				  `nik` varchar(20) NOT NULL,
+				   PRIMARY KEY (id_forget_password)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+
+		//=================================================================================================
+		$title = "Table structure for table `master_kelas`";
+		$query = "CREATE TABLE IF NOT EXISTS `master_kelas` (
+				  `id_master_kelas` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `nama_kelas` varchar(50) NOT NULL,
+				  `deskripsi_kelas` text NOT NULL,
+				  `foto_kelas` varchar(50) NOT NULL,
+				  `metode_bayar` varchar(50) NOT NULL,
+				  `is_active` char(1) NOT NULL,
+				   PRIMARY KEY (id_master_kelas)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$title = "Table structure for table `order_booking`";
+		$query = "CREATE TABLE IF NOT EXISTS `order_booking` (
+				  `id_order_booking` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `id_user` int(11) NOT NULL,
+				  `id_master_kelas` int(11) NOT NULL,
+				  `metode_bayar` varchar(50) NOT NULL,
+				  `status_order` char(1) NOT NULL,
+				   PRIMARY KEY (id_order_booking)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$title = "Table structure for table `order_payment`";
+		$query = "CREATE TABLE IF NOT EXISTS `order_payment` (
+				  `id_order_payment` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `id_order_booking` int(11) NOT NULL,
+				  `id_virtual_account` varchar(50) NOT NULL,
+				  `sequence_payment` int(11) NOT NULL,
+				  `nominal_payment` varchar(50) NOT NULL,
+				  `date_payment` date NOT NULL,
+				  `status_payment` char(1) NOT NULL,
+				   PRIMARY KEY (id_order_payment)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$title = "Table structure for table `request_payment`";
+		$query = "CREATE TABLE IF NOT EXISTS `request_payment` (
+				  `id_request_payment` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `gross_amount` int(30) NOT NULL,
+				  `order_id` varchar(100) NOT NULL,
+				  `payment_type` varchar(100) NOT NULL,
+				  `status_code` varchar(100) NOT NULL,
+				  `status_message` varchar(100) NOT NULL,
+				  `transaction_id` varchar(100) NOT NULL,
+				  `transaction_status` varchar(50) NOT NULL,
+				  `transaction_time` varchar(50) NOT NULL,
+				  `va_nunmbers` text NOT NULL,
+				   PRIMARY KEY (id_request_payment)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$title = "Table structure for table `approve_cetificate`";
+		$query = "CREATE TABLE IF NOT EXISTS `approve_cetificate` (
+				  `id_approve_cetificate` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `id_user` int(30) NOT NULL,
+				  `id_order_booking` int(30) NOT NULL,
+				  `number_certificate` varchar(100) NOT NULL,
+				  `count_print` int(30) NOT NULL,
+				  `type_certificate` char(1) NOT NULL,
+				   PRIMARY KEY (id_approve_cetificate)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$title = "Table structure for table `cart`";
+		$query = "CREATE TABLE IF NOT EXISTS `cart` (
+				  `id_cart` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `id_user` int(30) NOT NULL,
+				  `id_master_kelas` int(30) NOT NULL,
+				   PRIMARY KEY (id_cart)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$title = "Table structure for table `document_sumpah`";
+		$query = "CREATE TABLE IF NOT EXISTS `document_sumpah` (
+				  `id_document_sumpah` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `id_user` int(30) NOT NULL,
+				  `id_order_booking` int(30) NOT NULL,
+				  `jenis_dokument` varchar(50) NOT NULL,
+				  `document_name` varchar(100) NOT NULL,
+				   PRIMARY KEY (id_document_sumpah)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public function insertDataTable()
+	{
+		//=================================================================================================
+		$title = "Dumping data for table `parameter`";
+		$query = "INSERT IGNORE INTO `parameter` (`id_parameter`, `nama_parameter`, `value_parameter`, `type_parameter`) VALUES
+					(1, '@sendNotifWaRegister', 'Y', 'O'),
+					(2, '@linkWhatsapp', 'http://wa', 'T'),
+					(3, '@lockLoginForEveryOne', 'N', 'O'),
+					(4, '@donePaymentEveryMonth', 'N', 'O'),
+					(5, '@setDatePaymentDeadline', '7', 'T'),
+					(6, '@sendNotifWaLogin', 'Y', 'O'),
+					(7, '@sendNotifWaForgetPassword', 'Y', 'O'),
+					(8, '@sendNotifOrderClass', 'Y', 'O'),
+					(9, '@sendNotifValidOrderClass', 'Y', 'O'),
+					(10, '@sendNotifGeneratePayment', 'Y', 'O'),
+					(11, '@chargeAdminPayment', '4500', 'T'),
+					(12, '@serverKeyMitrans', 'SB-Mid-server-lTemQorAAVdcIfNydIqypwhc', 'T'),
+					(13, '@clientKeyMitrans', 'SB-Mid-client-PwxtVC_cSfBUs6kI', 'T'),
+					(14, '@isProductionMitrans', 'N', 'O'),
+					(15, '@timeExpiredMitrans', '1', 'T'),
+					(16, '@urlSandboxMitrans', 'https://app.sandbox.midtrans.com/snap/snap.js', 'T'),
+					(17, '@urlProductionMitrans', 'https://app.midtrans.com/snap/snap.js', 'T'),
+					(18, '@sendNotifDonePayment', 'Y', 'O'),
+					(19, '@sendNotifCompletePayment', 'Y', 'O'),
+					(20, '@companyName', 'Peradi Nusantara', 'T'),
+					(21, '@companyAddress1', 'Angelonia Medang', 'T'),
+					(22, '@companyAddress2', 'Tangerang Banten', 'T'),
+					(23, '@companyPhoneNumber', '0811-1212-12121', 'T'),
+					(24, '@companyEmail', 'peradi@gmail.com', 'T'),
+					(25, '@sendNotifApproveCertificate', 'Y', 'O'),
+					(26, '@startNumberCertificatePKPA', '200', 'T'),
+					(27, '@startNumberCertificateUPA', '200', 'T'),
+					(28, '@startNumberCertificateBREVET', '200', 'T'),
+					(29, '@startNumberCertificateParalegal', '200', 'T'),
+					(30, '@startNumberCertificateCPT', '200', 'T'),
+					(31, '@startNumberCertificateMediator', '200', 'T'),
+					(32, '@startNumberCertificateAgraria', '200', 'T'),
+					(33, '@idMasterPKPAForLogicApprove', '1', 'T'),
+					(34, '@idMasterUPAForLogicApprove', '3', 'T')
+					";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$title = "Dumping data for table `user`";
+		$query = "INSERT IGNORE INTO `user` (`id_user`,`nik`, `email`, `nama_lengkap`, `handphone`,`usia`,`asal_kampus`,`semester`,`password`,`password_hash`,`is_active`,`user_level`) VALUES
+					(1,12345678912345, 'ikhlasul0507@gmail.com', 'Ikhlasul Amal', '082280524264',20,'Asal Kampus',2,'1234512345','QWEQW21312312','Y',1)
+					";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+	}
+
+
+	public function alterTable()
+	{
+		//=================================================================================================
+		$column = "status_certificate";
+		$table_name = "order_booking";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column CHAR(1) DEFAULT 'P';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		//=================================================================================================
+		$column = "foto_sertifikat";
+		$table_name = "master_kelas";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(50) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "id_master_kelas";
+		$table_name = "approve_cetificate";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column int(30) DEFAULT 0;";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "date_periode";
+		$table_name = "approve_cetificate";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "link_group_wa";
+		$table_name = "master_kelas";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "is_sumpah";
+		$table_name = "master_kelas";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column char(1) DEFAULT 'N';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+
+		//=================================================================================================
+		$column = "prefix_certificate";
+		$table_name = "master_kelas";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT 'PKPA';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+
+		//=================================================================================================
+		$column = "list_kelas";
+		$table_name = "order_booking";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "id_master_kelas";
+		$table_name = "approve_cetificate";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column int(10) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "qr_code_name";
+		$table_name = "approve_cetificate";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+
+		//=================================================================================================
+		$column = "jadwal_pelatihan";
+		$table_name = "approve_cetificate";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "reference";
+		$table_name = "user";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "pic";
+		$table_name = "user";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "angkatan";
+		$table_name = "user";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column varchar(100) DEFAULT '';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "latar_belakang";
+		$table_name = "user";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column int(10) DEFAULT '1';";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+	}
+
+}
