@@ -455,6 +455,7 @@ class Payment extends CI_Controller {
 	{
 		$data = $this->M->get_detail_certificate($idUser, $idOrder);
 		$pdf = new FPDF('l', 'mm', 'A4', true, 'UTF-8', false);
+		$ttdCap = "./assets/p/img/ttd.png";
 		if($data){
 			foreach ($data as $key => $value) {
 				
@@ -492,6 +493,7 @@ class Payment extends CI_Controller {
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
 		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    		$pdf->Image($ttdCap,125,158,70,40);
 	    		}else if($value['prefix_certificate'] == "PARALEGAL"){
 	    			error_reporting(0); 
 			        // Load the Pdf library
@@ -525,6 +527,7 @@ class Payment extends CI_Controller {
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
 		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    		$pdf->Image($ttdCap,125,155,50,20);
 	    		}else if($value['prefix_certificate'] == "SUPA"){
 	    			error_reporting(0); 
 			        // Load the Pdf library
@@ -559,6 +562,7 @@ class Payment extends CI_Controller {
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
 		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    		$pdf->Image($ttdCap,125,170,50,25);
 	    		}else if($value['prefix_certificate'] == "BREVET"){
 	    			error_reporting(0); 
 			        // Load the Pdf library
@@ -591,6 +595,7 @@ class Payment extends CI_Controller {
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
 		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    		$pdf->Image($ttdCap,135,170,50,25);
 	    		}else if($value['prefix_certificate'] == "CPT"){
 	    			error_reporting(0); 
 			        // Load the Pdf library
@@ -618,6 +623,7 @@ class Payment extends CI_Controller {
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
 		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    		$pdf->Image($ttdCap,135,150,50,25);
 	    		}
 	    		// else{
 	    		// 	$pdf->AddPage();
