@@ -21,7 +21,7 @@
     <link href="<?= base_url('assets/p/sistem/');?>css/sb-admin-2.min.css" rel="stylesheet">
     <style type="text/css">
         .bg-register-image {
-            background: url("https://kompassindonesianews.com/wp-content/uploads/2024/05/IMG-20240505-WA0232.jpg");
+            background: url("<?= base_url('assets/p/sistem/img/gambarlogin.png');?>");
             background-position: center;
             background-size: cover;
         }
@@ -36,9 +36,9 @@
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
-                <div class="row" style="height: 576px">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-7">
+                <div class="row" style="height: 666px">
+                    <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-6">
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Masuk Sistem</h1>
