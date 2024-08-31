@@ -67,7 +67,7 @@ class Auth extends CI_Controller {
 		];
 		$check = false;
 		$referenceFromDB = $this->M->getParameter('@picRegister');
-		if(strpos($string, $this->input->post('pic')) !== false){
+		if(strpos($referenceFromDB, $this->input->post('pic')) !== false){
 			$check = true;
 		}else{
 			$data = $this->session->set_flashdata('pesan', 'PIC Tidak Terdaftar !');
