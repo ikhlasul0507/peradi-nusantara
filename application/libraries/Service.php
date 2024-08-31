@@ -151,7 +151,7 @@ Terima Kasih
 				$name = $params['namalengkap'];
 				$namaKelas = $params['namaKelas'];
 				$metodeBayar = $params['metodeBayar'];
-				$link_wa = $params['link_wa'];
+				// $link_wa = $params['link_wa'];
 				return '*--Validasi Pembelian Berhasil --*
 
 Halo '.$name.',
