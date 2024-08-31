@@ -303,6 +303,24 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
+
+		//=================================================================================================
+		$title = "Dumping data for table `master_kelas`";
+		$query = "INSERT  IGNORE INTO `master_kelas`(`id_master_kelas`,`time_history`,`nama_kelas`,`deskripsi_kelas`,`foto_kelas`,`metode_bayar`,`is_active`,`foto_sertifikat`,`link_group_wa`,`is_sumpah`,`prefix_certificate`) VALUES 
+				(1,'2024-08-22 18:57:06','PKPA','PKPA','4UBEenGlf2YdZFKy4V2R.jpg','Cicilan,Lunas,Bertahap','Y','iqf5W7sLYlujOzYzX4k6.png','https://chat.whatsapp.com/E2ORTyUx0cKBA3NlZb54Us','N','PKPA'),
+				(2,'2024-08-22 18:58:01','PARALEGAL','PARALEGAL','aa2r7xpEfDjZsq6xovgP.jpg','Cicilan,Lunas,Bertahap','Y','7Z74kwWv5HZkgdQmfNo7.png','https://chat.whatsapp.com/E2ORTyUx0cKBA3NlZb54Us','N','PARALEGAL'),
+				(3,'2024-08-22 18:58:14','UPA','UPA','umKcdXkLrDVWxpnu8rtw.jpg','Cicilan,Lunas,Bertahap','Y','UK7gcHlJdPgK1nVNMTGf.png','https://chat.whatsapp.com/E2ORTyUx0cKBA3NlZb54Us','N','SUPA'),
+				(4,'2024-08-29 16:31:12','BREVET A & B','BREVET A & B Hukum','Nc6W08o9t0DMzbNZh4PU.jpg','Cicilan,Lunas,Bertahap','Y','8q6kD8z7VyyJKmZG1HJh.png','https://chat.whatsapp.com/E2ORTyUx0cKBA3NlZb54Us','N','BREVET'),
+				(5,'2024-08-23 17:05:54','SUMPAH','SUMPAH Hukum','Nu2PhUrdQ2Slm63Iaxvj.jpg','Cicilan,Lunas,Bertahap','Y','6BadPAVV1sIscwNyVImn.jpg','https://chat.whatsapp.com/E2ORTyUx0cKBA3NlZb54Us','Y','SUMPAH'),
+				(6,'2024-08-22 18:59:36','CPT','CPT','YV3RWFKc9qcLK5z6UkyN.jpg','Cicilan,Lunas,Bertahap','Y','Rpujd1HbukcKOCVjfSLu.png','https://chat.whatsapp.com/E2ORTyUx0cKBA3NlZb54Us','N','CPT'),
+				(7,'2024-08-23 17:06:01','MEDIATAOR','MEDIATAOR','musYqHBtkvFjLCiBpht4.jpg','Cicilan,Lunas,Bertahap','Y','o931UmL3PjcQWkmTfnLJ.jpg','https://chat.whatsapp.com/E2ORTyUx0cKBA3NlZb54Us','N','MEDIATAOR'),
+				(8,'2024-08-23 17:06:08','AGRARIA','AGRARIA','SEZaksDdNtc6SvZkU5ea.jpg','Cicilan,Lunas,Bertahap','Y','gG9Ed9eGs6SfVIE6WgLE.jpg','https://chat.whatsapp.com/E2ORTyUx0cKBA3NlZb54Us','N','AGRARIA')
+				";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
 	}
 
 
