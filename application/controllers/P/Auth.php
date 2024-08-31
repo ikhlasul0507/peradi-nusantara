@@ -65,32 +65,41 @@ class Auth extends CI_Controller {
 			'is_active' => 'Y',
 			'user_level' => 4
 		];
-		
-		$checkUserExist =  $this->M->checkUserExist(trim($this->input->post('nik')), trim($this->input->post('handphone')));
-		
-		if($checkUserExist < 1){
-			$add_db = $this->M->add_to_db('user', $data_register);
-			if($add_db){
-				$data_history = [
-					'nik' =>trim($this->input->post('nik')),
-					'action' => "Pendaftaran Akun Baru"
-				];
-				$add_history = $this->M->add_log_history($data_history);
-				if($add_history){
-					if($this->M->getParameter('@sendNotifWaRegister') == 'Y'){
-						$data_send_notif = [
-							'handphone' => trim($this->input->post('handphone')),
-							'namalengkap' => trim($this->input->post('namalengkap'))
-						];
-						$this->service->send_whatsapp($data_send_notif, 'new_register');
-					}
-				}
-				$data = $this->session->set_flashdata('pesan', 'Akun berhasil terdaftar !');
-				redirect('P/Auth/login',$data);
-			}
+		$check = false;
+		$referenceFromDB = $this->M->getParameter('@picRegister');
+		if(strpos($string, $this->input->post('pic')) !== false){
+			$check = true;
 		}else{
-			$data = $this->session->set_flashdata('pesan', 'Akun telah terdaftar !');
+			$data = $this->session->set_flashdata('pesan', 'PIC Tidak Terdaftar !');
 			redirect('P/Auth',$data);
+		}
+		if($check){
+			$checkUserExist =  $this->M->checkUserExist(trim($this->input->post('nik')), trim($this->input->post('handphone')));
+			
+			if($checkUserExist < 1){
+				$add_db = $this->M->add_to_db('user', $data_register);
+				if($add_db){
+					$data_history = [
+						'nik' =>trim($this->input->post('nik')),
+						'action' => "Pendaftaran Akun Baru"
+					];
+					$add_history = $this->M->add_log_history($data_history);
+					if($add_history){
+						if($this->M->getParameter('@sendNotifWaRegister') == 'Y'){
+							$data_send_notif = [
+								'handphone' => trim($this->input->post('handphone')),
+								'namalengkap' => trim($this->input->post('namalengkap'))
+							];
+							$this->service->send_whatsapp($data_send_notif, 'new_register');
+						}
+					}
+					$data = $this->session->set_flashdata('pesan', 'Akun berhasil terdaftar !');
+					redirect('P/Auth/login',$data);
+				}
+			}else{
+				$data = $this->session->set_flashdata('pesan', 'Akun telah terdaftar !');
+				redirect('P/Auth',$data);
+			}
 		}
 	}
 

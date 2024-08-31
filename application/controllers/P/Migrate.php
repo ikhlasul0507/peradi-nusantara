@@ -286,7 +286,8 @@ class Migrate extends CI_Controller
 					(31, '@startNumberCertificateMediator', '200', 'T'),
 					(32, '@startNumberCertificateAgraria', '200', 'T'),
 					(33, '@idMasterPKPAForLogicApprove', '1', 'T'),
-					(34, '@idMasterUPAForLogicApprove', '3', 'T')
+					(34, '@idMasterUPAForLogicApprove', '3', 'T'),
+					(35, '@picRegister', 'handi,gabi', 'T')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";
