@@ -35,7 +35,7 @@ class Service {
 			'schedule' => $timeSechedule,
 		),
 		  CURLOPT_HTTPHEADER => array(
-		    'Authorization: UxptNbkURakM+D++6#sa'
+		    'Authorization: bzVr-4tLk#4CBRGNK4y2'
 		  ),
 		));
 

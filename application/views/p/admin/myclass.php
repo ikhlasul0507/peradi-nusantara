@@ -23,7 +23,7 @@
                 $status = '<a class="btn btn-sm btn-primary" href="'.base_url("P/Admin/open_class/".$idData).'">Buka Kelas</a>';
             }else if($value['status_order'] == 'D'){
                 $colorPercent = "success";
-                $status = '<a class="btn btn-sm btn-primary" href="'.base_url("P/Admin/open_class/".$idData).'">Buka Kelas</a>';
+                $status = '<a class="btn btn-sm btn-primary" href="'.base_url("P/Admin/open_class/".$idData).'">Buka Kelas</a><a class="btn btn-sm btn-danger ml-2" target="blank" href="'.base_url('P/Payment/createInvoice/'.$value['id_order_booking']).'">Cetak Invoice</a>';
                 $countPercent = 100;
             }
             if($value['status_order'] == 'D' && $value['status_certificate'] == 'A'){
