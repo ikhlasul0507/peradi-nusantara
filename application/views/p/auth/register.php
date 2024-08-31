@@ -50,7 +50,7 @@
                                             placeholder="Nama lengkap">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="number" class="form-control" required name="nik"
+                                        <input type="number" class="form-control" min="0" required name="nik"
                                             placeholder="NIK">
                                     </div>
                                 </div>
@@ -83,8 +83,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" required name="angkatan"
-                                        placeholder="Angkatan">
+                                    <select class="form-control" required name="angkatan">
+                                            <option value="" disabled selected>--Pilih Angkatan--</option>
+                                            <?php for ($i= $startAngkatan; $i <= $endAngkatan; $i++) {?>
+                                                <option value="Angkatan Ke - <?=$i;?>">Angkatan Ke - <?=$i;?></option>
+                                            <?php } ?>
+                                    </select>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">

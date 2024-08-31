@@ -26,7 +26,9 @@ class Auth extends CI_Controller {
 	}
 	public function index()
 	{
-		$this->load->view('p/auth/register');
+		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
+		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
+		$this->load->view('p/auth/register',$data);
 	}
 
 	public function login()
