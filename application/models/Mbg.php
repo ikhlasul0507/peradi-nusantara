@@ -331,18 +331,23 @@ class Mbg extends CI_Model {
 		if($nama_peserta != ""){
 			$query = $query . " AND us.nama_lengkap LIKE '%$nama_peserta%'";
 		}
+
 		if($reference != ""){
 			$query = $query . " AND us.reference LIKE '%$reference%'";
 		}
+
 		if($pic != ""){
 			$query = $query . " AND us.pic LIKE '%$pic%'";
 		}
+
 		if($angkatan != ""){
 			$query = $query . " AND us.angkatan LIKE '%$angkatan%'";
 		}
+
 		if($time_history != ""){
 			$query = $query . " AND temp.time_history >= '$time_history'";
 		}
+		
 		if($id_master_kelas != ""){
 			$query = $query . " AND FIND_IN_SET(
         $id_master_kelas,
@@ -358,7 +363,6 @@ class Mbg extends CI_Model {
 		}
 		$query = $query . " ORDER BY temp.id_user ASC, temp.id_order_booking ASC";
 
-		echo $query;die;
 		return $this->db->query($query)->result_array();
 	}
 
