@@ -121,16 +121,24 @@ class Notification extends CI_Controller {
 	    			$orderPayment = $this->M->getWhere('order_payment',['id_virtual_account'=>trim($idOrderVADB)]);
 						$orderBook = $this->M->getWhere('order_booking',['id_order_booking'=>trim($id_order)]);
 						if($orderBook){
-							$master_kelas = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($orderBook['id_master_kelas'])]);
+							$array = explode("~", $orderBook['list_kelas']);
+	                        $array = array_filter($array, function($value) {
+	                            return $value !== '';
+	                        });
+	                        $inClause = implode(",", $array);
+	                        $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
+	                        $getListKelas = $this->db->query($query)->row_array();
+	                        
 							$user = $this->M->getWhere('user',['id_user'=>trim($orderBook['id_user'])]);
 							$data_send_notif = [
 								'handphone' => trim($user['handphone']),
 								'namalengkap' => trim($user['nama_lengkap']),
-								'namaKelas' => trim($master_kelas['nama_kelas']),
+								'namaKelas' => trim($getListKelas['nama_kelas']),
 								'metodeBayar' => trim($orderBook['metode_bayar']),
-								'nominal_payment' => trim($orderPayment['nominal_payment']),
+								'nominal_payment' => number_format(trim($orderPayment['nominal_payment']),2),
 								'date_payment' => trim($orderPayment['date_payment']),
-								'url_login' => trim(base_url('P/Admin'))
+								'url_login' => trim(base_url('P/Admin')),
+								'link_wa'=> trim($getListKelas['link_group_wa']),
 							];
 							$this->service->send_whatsapp($data_send_notif, 'done_payment');
 						}

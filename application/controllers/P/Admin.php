@@ -632,6 +632,10 @@ class Admin extends CI_Controller {
 							$this->service->send_whatsapp($data_send_notif, 'generate_payment');
 						}else{
 							$this->service->send_whatsapp($data_send_notif, 'generate_payment',trim($orderPayment['date_payment']));
+							if(trim($this->input->post('sequence_payment')) > 1){
+								//function generate jatuh tempo
+								$this->generateNotifJatuhTempo($data_send_notif, trim($orderPayment['date_payment']));
+							}
 						}
 					}
 				}
@@ -641,6 +645,38 @@ class Admin extends CI_Controller {
 		}else{
 			$data = $this->session->set_flashdata('pesan', 'Urutan orderan sudah ada !');
 			redirect('P/Admin/valid_order/'.trim($this->input->post('id_user')).'/'.trim($this->input->post('id_order_booking')),$data);
+		}
+	}
+
+	public function generateNotifJatuhTempo($data, $tanggal){
+		// Create a DateTime object for the current date and time
+		$now = new DateTime($tanggal);
+
+		// Clone the DateTime object and modify it to get the next 3 dates
+		$today = clone $now;
+		$tomorrow1 = clone $now;
+		$tomorrow2 = clone $now;
+		$tomorrow3 = clone $now;
+
+		$yesterday1 = clone $now;
+		$yesterday2 = clone $now;
+		$yesterday3 = clone $now;
+
+		$tomorrow1->modify('+1 day');
+		$tomorrow2->modify('+2 days');
+		$tomorrow3->modify('+3 days');
+
+		$yesterday1->modify('-1 day');
+		$yesterday2->modify('-2 day');
+		$yesterday3->modify('-3 day');
+
+		$dateYesterday = [$yesterday1->format('Y-m-d'),$yesterday2->format('Y-m-d'),$yesterday3->format('Y-m-d')];
+		$dateTomorrow = [$tomorrow1->format('Y-m-d'),$tomorrow2->format('Y-m-d'),$tomorrow3->format('Y-m-d')];
+		foreach($dateYesterday as $dy){
+			$this->service->send_whatsapp($data, 'generate_payment_yesterday',trim($dy));
+		}
+		foreach($dateTomorrow as $dt){
+			$this->service->send_whatsapp($data, 'generate_payment_tomorrow',trim($dt));
 		}
 	}
 

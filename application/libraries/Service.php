@@ -191,6 +191,60 @@ Klik Link Berikut :
 *Terima Kasih*
 
 -*Peradi Nusantara*-';
+			case 'generate_payment_yesterday':
+				$name = $params['namalengkap'];
+				$namaKelas = $params['namaKelas'];
+				$metodeBayar = $params['metodeBayar'];
+				$nominal_payment = $params['nominal_payment'];
+				$date_payment = $params['date_payment'];
+				$url_virtual_account = $params['url_virtual_account'];
+
+				return '*--Pembayaran Kelas--*
+
+Halo '.$name.',
+
+Lakukan Pembayaran 
+Pembelian Paket *'.$namaKelas.'*
+
+*Sebelum Tanggal Jatuh Tempo*
+
+- Total Pembayaran : Rp.'.$nominal_payment.'
+- Tanggal Bayar : '.$date_payment.'
+
+Klik Link Berikut :
+'.$url_virtual_account.'
+
+*Terima Kasih*
+
+-*Peradi Nusantara*-';
+			case 'generate_payment_tomorrow':
+				$name = $params['namalengkap'];
+				$namaKelas = $params['namaKelas'];
+				$metodeBayar = $params['metodeBayar'];
+				$nominal_payment = $params['nominal_payment'];
+				$date_payment = $params['date_payment'];
+				$url_virtual_account = $params['url_virtual_account'];
+
+				return '*--Pembayaran Kelas--*
+
+Halo '.$name.',
+
+*Abaikan Pesan ini !! Jika tagihan sudah lunas*
+
+Jika Belum melakukan pembayaran,
+Silahkan
+Lakukan Pembayaran 
+Pembelian Paket *'.$namaKelas.'*
+
+- Total Pembayaran : Rp.'.$nominal_payment.'
+- Tanggal Bayar : '.$date_payment.'
+
+Klik Link Berikut :
+'.$url_virtual_account.'
+
+*Terima Kasih*
+
+-*Peradi Nusantara*-';
 			case 'done_payment':
 				$name = $params['namalengkap'];
 				$namaKelas = $params['namaKelas'];
@@ -214,7 +268,7 @@ Pembayaran Berhasil
 Pembelian Paket *'.$namaKelas.'*
 
 - Total Pembayaran : Rp.'.$nominal_payment.'
-- Tangga Bayar : '.$date_payment.'
+- Tanggal Bayar : '.$date_payment.'
 
 Join Group Wa :
 '.$dataWa.'
