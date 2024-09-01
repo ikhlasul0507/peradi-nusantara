@@ -189,6 +189,7 @@ class Admin extends CI_Controller {
 		$data['list_data'] = $this->M->get_order_booking_not_approve('status_order','D');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$data['allowButtonApprove'] = $this->M->getParameter('@allowButtonApprove');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/sertifikat',$data);
 		$this->load->view('p/temp/footer');

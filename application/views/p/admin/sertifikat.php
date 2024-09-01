@@ -4,7 +4,9 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Terbitkan Sertifikat</h1>
+        <?php if($allowButtonApprove == "Y"){ ?>
         <button class="btn btn-danger" data-toggle="modal" data-target="#modalJadwal" >Approve</button>
+        <?php } ?>
     </div>
 
     <!-- Content Row -->

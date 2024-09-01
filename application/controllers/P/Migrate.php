@@ -290,7 +290,8 @@ class Migrate extends CI_Controller
 					(35, '@picRegister', 'handi,gabi', 'T'),
 					(36, '@startNumberAngkatan', '1', 'T'),
 					(37, '@endNumberAngkatan', '100', 'T'),
-					(38, '@allowImportDataPeserta', 'N', 'O')
+					(38, '@allowImportDataPeserta', 'N', 'O'),
+					(39, '@allowButtonApprove', 'N', 'O')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";
