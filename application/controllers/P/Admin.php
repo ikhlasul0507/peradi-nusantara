@@ -1057,4 +1057,37 @@ class Admin extends CI_Controller {
 	    	}
     	}
     }
+
+    public function importDataPeserta() {
+        // Load the file upload library
+        $config['upload_path'] = './assets/p/file/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = 10000; // 1MB
+
+        $this->upload->initialize($config);
+
+        if (!$this->upload->do_upload('file_excel')) {
+            $data = $this->session->set_flashdata('pesan', 'Import Gagal !');
+			redirect('P/Admin/report_peserta/');
+        } else {
+            $data = $this->upload->data();
+            $file_path = $data['full_path'];
+
+            // Load the CSV file
+            $file = fopen($file_path, 'r');
+            while (($line = fgetcsv($file)) !== FALSE) {
+                // Process each line here, e.g., save to database
+                // $this->csv_model->insert($line);
+                echo json_encode($line);
+                echo "<br>";
+            }
+            fclose($file);
+            die;
+            // Delete the file after processing
+            unlink($file_path);
+
+            // $data = $this->session->set_flashdata('pesan', 'Import Gagal !');
+			// redirect('P/Admin/report_peserta/');
+        }
+    }
 }

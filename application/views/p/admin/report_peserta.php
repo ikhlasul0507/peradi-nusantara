@@ -65,21 +65,38 @@
                 <button type="submit" class="btn btn-primary">Cari Data</button>
             </form>
         </div>
+        <div id="importData" class="collapse mt-4 container-fluid" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <form class="user" method="post" enctype="multipart/form-data" action="<?= base_url('P/Admin/importDataPeserta')?>">
+                <div class="form-group row">
+                    <div class="col-sm-3 mb-3 mb-sm-0">
+                        <input type="file" class="form-control" name="file_excel"
+                            placeholder="Nama Peserta" value="">
+                        <p class="mt-2">Download Template <a href="">Download</a></p>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Proses Import</button>
+            </form>
+        </div>
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <a class="btn btn-danger" href="#" data-toggle="collapse" data-target="#filterData"
                 aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-search"></i>
                 <span>Filter Data</span>
             </a>
+            <a class="btn btn-dark" href="#" data-toggle="collapse" data-target="#importData"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-download fa-sm text-white-50"></i>
+                <span>Import Data</span>
+            </a>
             <div class="dropdown no-arrow">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                     aria-labelledby="dropdownMenuLink">
                     <div class="dropdown-header">Export Data:</div>
-                    <button class="dropdown-item" onclick="exportTableToExcel('tableData', 'report_data')">Excel</button>
+                    <button class="dropdown-item" onclick="exportTableToExcel('tableData', 'Report_detail_perserta')">Excel</button>
                     <button class="dropdown-item" onclick="exportTableToCSV('report_data.csv')">CSV</button>
                 </div>
             </div>
@@ -270,7 +287,7 @@
       var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
 
       // Specify file name
-      filename = filename ? filename + '.xls' : 'excel_data.xls';
+      filename = filename ? filename + '.xlsx' : '_excel_data.xlsx';
 
       // Create download link element
       downloadLink = document.createElement("a");
