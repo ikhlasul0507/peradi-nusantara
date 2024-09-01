@@ -2,7 +2,19 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3 align-items-center justify-content-between d-sm-flex">
-            <h6 class="m-0 font-weight-bold text-primary">Master User</h6>
+            <h6 class="m-0 font-weight-bold text-primary">
+            <?php 
+                if($url_level == 1){    
+                    echo "Master User Developer";
+                }else if($url_level == 2){
+                    echo "Master User Owner";
+                }else if($url_level == 3){
+                    echo "Master User Admin / Marketing";
+                }
+
+            ?>
+            
+            </h6>
             <?php if($url_level < 4){ ?>
                  <a data-toggle="modal" data-target="#modalAddUser" class="btn btn-sm btn-primary" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah User</a>
             <?php } ?>
