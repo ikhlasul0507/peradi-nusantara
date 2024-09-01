@@ -391,5 +391,46 @@ Langkah-langkah :
 
         $pdf->Output();
     }
+
+    public function createNotifDeadlinePayment()
+    {
+		// Create a DateTime object for the current date and time
+		$now = new DateTime("2024-09-01");
+
+		// Clone the DateTime object and modify it to get the next 3 dates
+		$today = clone $now;
+		$tomorrow1 = clone $now;
+		$tomorrow2 = clone $now;
+		$tomorrow3 = clone $now;
+
+		$yesterday1 = clone $now;
+		$yesterday2 = clone $now;
+		$yesterday3 = clone $now;
+
+		$tomorrow1->modify('+1 day');
+		$tomorrow2->modify('+2 days');
+		$tomorrow3->modify('+3 days');
+
+		$yesterday1->modify('-1 day');
+		$yesterday2->modify('-2 day');
+		$yesterday3->modify('-3 day');
+
+		// Format the dates as needed, e.g., 'Y-m-d' for a standard date format
+		echo "today: " . $today->format('Y-m-d') . "\n";
+		echo "<br>";
+		echo "tomorrow1: " . $tomorrow1->format('Y-m-d') . "\n";
+		echo "<br>";
+		echo "tomorrow2: " . $tomorrow2->format('Y-m-d') . "\n";
+		echo "<br>";
+		echo "tomorrow3: " . $tomorrow3->format('Y-m-d') . "\n";
+		echo "<br>";
+		echo "==============================";
+		echo "<br>";
+		echo "yesterday1: " . $yesterday1->format('Y-m-d') . "\n";
+		echo "<br>";
+		echo "yesterday2: " . $yesterday2->format('Y-m-d') . "\n";
+		echo "<br>";
+		echo "yesterday3: " . $yesterday3->format('Y-m-d') . "\n";
+    }
 }
 

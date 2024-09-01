@@ -2,6 +2,7 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3 align-items-center justify-content-between d-sm-flex">
+            <a href="<?= $previous_url;?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali</a>
             <h6 class="m-0 font-weight-bold text-primary">Data Profile User</h6>
         </div>
         <div class="card-body">

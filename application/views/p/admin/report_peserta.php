@@ -71,7 +71,7 @@
                     <div class="col-sm-3 mb-3 mb-sm-0">
                         <input type="file" class="form-control" name="file_excel"
                             placeholder="Nama Peserta" value="">
-                        <p class="mt-2">Download Template <a href="">Download</a></p>
+                        <p class="mt-2">Download Template <a href="<?= base_url('assets/p/format_file/Format_Import_Data_Peserta.xlsx')?>">Download</a></p>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Proses Import</button>
@@ -83,11 +83,13 @@
                 <i class="fas fa-fw fa-search"></i>
                 <span>Filter Data</span>
             </a>
+            <?php if ($allowImportDataPeserta == "Y"): ?>
             <a class="btn btn-dark" href="#" data-toggle="collapse" data-target="#importData"
                 aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-download fa-sm text-white-50"></i>
                 <span>Import Data</span>
             </a>
+            <?php endif ?>
             <div class="dropdown no-arrow">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

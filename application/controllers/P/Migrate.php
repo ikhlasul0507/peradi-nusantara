@@ -257,7 +257,7 @@ class Migrate extends CI_Controller
 					(2, '@linkWhatsapp', 'http://wa', 'T'),
 					(3, '@lockLoginForEveryOne', 'N', 'O'),
 					(4, '@donePaymentEveryMonth', 'N', 'O'),
-					(5, '@setDatePaymentDeadline', '7', 'T'),
+					(5, '@setDatePaymentDeadline', '29', 'T'),
 					(6, '@sendNotifWaLogin', 'Y', 'O'),
 					(7, '@sendNotifWaForgetPassword', 'Y', 'O'),
 					(8, '@sendNotifOrderClass', 'Y', 'O'),
@@ -267,7 +267,7 @@ class Migrate extends CI_Controller
 					(12, '@serverKeyMitrans', 'SB-Mid-server-lTemQorAAVdcIfNydIqypwhc', 'T'),
 					(13, '@clientKeyMitrans', 'SB-Mid-client-PwxtVC_cSfBUs6kI', 'T'),
 					(14, '@isProductionMitrans', 'N', 'O'),
-					(15, '@timeExpiredMitrans', '1', 'T'),
+					(15, '@timeExpiredMitrans', '60', 'T'),
 					(16, '@urlSandboxMitrans', 'https://app.sandbox.midtrans.com/snap/snap.js', 'T'),
 					(17, '@urlProductionMitrans', 'https://app.midtrans.com/snap/snap.js', 'T'),
 					(18, '@sendNotifDonePayment', 'Y', 'O'),
@@ -289,7 +289,8 @@ class Migrate extends CI_Controller
 					(34, '@idMasterUPAForLogicApprove', '3', 'T'),
 					(35, '@picRegister', 'handi,gabi', 'T'),
 					(36, '@startNumberAngkatan', '1', 'T'),
-					(37, '@endNumberAngkatan', '100', 'T')
+					(37, '@endNumberAngkatan', '100', 'T'),
+					(38, '@allowImportDataPeserta', 'N', 'O')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";

@@ -89,7 +89,7 @@ class Admin extends CI_Controller {
 		$data['status_sertifikat'] = $status_sertifikat;
 		$data['status_lunas'] = $status_lunas;
 		$data['time_history'] = $time_history;
-
+		$data['allowImportDataPeserta'] = $this->M->getParameter('@allowImportDataPeserta');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/report_peserta', $data);
 		$this->load->view('p/temp/footer');
@@ -925,12 +925,14 @@ class Admin extends CI_Controller {
 					'document_name' => $fileNameDoc
 				];
 				$add_db = $this->M->add_to_db('document_sumpah', $send_db);
-                $data = $this->upload->data();
+                $dataUpload = $this->upload->data();
                 echo "File " . $file . " uploaded successfully!";
                 $checkUpload = true;
     //            
             } else {
                 echo "Error uploading file " . $file . ": " . $this->upload->display_errors();
+                $data = $this->session->set_flashdata('pesan', 'Error Upload File !');
+				$this->redirectUpload($data, $id_order_booking, $dataOB['id_user']);
             }
 
         }
@@ -1078,7 +1080,7 @@ class Admin extends CI_Controller {
             while (($line = fgetcsv($file)) !== FALSE) {
                 // Process each line here, e.g., save to database
                 // $this->csv_model->insert($line);
-                echo json_encode($line);
+                echo json_encode($line,JSON_PRETTY_PRINT);
                 echo "<br>";
             }
             fclose($file);
