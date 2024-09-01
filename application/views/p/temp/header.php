@@ -150,7 +150,7 @@
                             <?php if($this->session->userdata('user_level') <= 1){ ?>
                             <a class="collapse-item" href="<?= base_url('P/Admin/master_user_developer/1');?>">Data Developer</a>
                             <a class="collapse-item" href="<?= base_url('P/Admin/parameter');?>">Parameter</a>
-                            <a class="collapse-item" href="<?= base_url('P/Migrate');?>">Restructure Database</a>
+                            <a class="collapse-item" target="blank"> href="<?= base_url('P/Migrate');?>">Restructure Database</a>
                         <?php }}} ?>
                     </div>
                 </div>
