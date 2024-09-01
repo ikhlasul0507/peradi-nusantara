@@ -427,14 +427,14 @@ class Admin extends CI_Controller {
 					$this->M->delete_to_db($ga['table_name'],'id_user',$data['id_user']);
 				}
 				$data = $this->session->set_flashdata('pesan', 'Berhasil di hapus !');
-				redirect('P/Admin/master_user_peserta/4',$data);
+				redirect($this->input->server('HTTP_REFERER'),$data);
 			}else{
 				$data = $this->session->set_flashdata('pesan', 'Gagal di hapus !');
-				redirect('P/Admin/master_user_peserta/4',$data);
+				redirect($this->input->server('HTTP_REFERER'),$data);
 			}
 		}else{
 			$data = $this->session->set_flashdata('pesan', 'Gagal di hapus !');
-			redirect('P/Admin/master_user_peserta/4',$data);
+			redirect($this->input->server('HTTP_REFERER'),$data);
 		}
 	}
 
@@ -818,7 +818,7 @@ class Admin extends CI_Controller {
 	{
 		$data_register = [
 			'nama_lengkap' => trim($this->input->post('nama_lengkap')),
-			'nik' => trim($this->input->post('nik')),
+			'nik' => trim((int)$this->input->post('nik')),
 			'email' => trim($this->input->post('email')),
 			'handphone' => trim($this->input->post('handphone')),
 			'usia' => trim($this->input->post('usia')),
@@ -830,11 +830,11 @@ class Admin extends CI_Controller {
 			'user_level' => $level
 		];
 
-		echo json_encode($data_register);
-		
 		$checkUserExist =  $this->M->checkUserExist(trim($this->input->post('nik')), trim($this->input->post('handphone')));
 		// die;
 		if($checkUserExist < 1){
+
+			// echo json_encode($data_register);die;
 			$add_db = $this->M->add_to_db('user', $data_register);
 			if($add_db){
 				$data_history = [

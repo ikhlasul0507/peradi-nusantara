@@ -589,6 +589,23 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate successfully " . $title . "]</br>";
 		}
+		//=================================================================================================
+		$column = "nik";
+		$table_name = "user";
+		$title = "Change Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			MODIFY $column VARCHAR(50)";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
 	}
 
 }

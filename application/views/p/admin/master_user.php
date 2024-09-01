@@ -25,9 +25,9 @@
                         <?php foreach ($list_data as $value) { ?>
                         <tr>
                             <td>
-                                <a href="<?= base_url('P/Admin/edit_parameter/'.$value['id_user']);?>" class="btn btn-success btn-circle">
+                               <!--  <a href="<?= base_url('P/Admin/edit_parameter/'.$value['id_user']);?>" class="btn btn-success btn-circle">
                                     <i class="fas fa-edit"></i>
-                                </a>
+                                </a> -->
                                 <a class="btn btn-danger btn-circle" onclick="confirmDeleteData('<?= base_url('P/Admin/delete_user/').$value['id_user'];?>')">
                                     <i class="fas fa-trash"></i>
                                 </a>
