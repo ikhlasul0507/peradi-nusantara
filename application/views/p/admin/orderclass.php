@@ -37,12 +37,12 @@
                             ?>
                         <tr>
                             <td>
-                                <a href="<?= base_url('P/Admin/valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>" class="btn btn-success btn-circle">
-                                    <i class="fas fa-check"></i>
-                                </a>
                                 <a class="btn btn-danger btn-circle" onclick="confirmDeleteData('<?= base_url('P/Admin/delete_order_class/').$value['id_order_booking'];?>')">
                                     <i class="fas fa-trash"></i>
                                 </a>
+                                 <a href="<?= base_url('P/Admin/valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>" class="btn btn-success btn-circle">
+                                    <i class="fas fa-check"></i>
+                                </a> Validasi Order
                             </td>
                             <td>
                                 Waktu Order :  <?= $value['time_history'];?><br>

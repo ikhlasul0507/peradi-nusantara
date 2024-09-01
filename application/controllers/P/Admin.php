@@ -33,9 +33,12 @@ class Admin extends CI_Controller {
 	}
 
 	public function index()
-	{
+	{	
+
 		$data['list_data'] = $this->M->getAllMasterWhereOneCondition('master_kelas','is_active','Y');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/product',$data);
 		$this->load->view('p/temp/footer');
@@ -45,6 +48,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->getAllData('master_kelas');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/master_product', $data);
 		$this->load->view('p/temp/footer');
@@ -63,14 +67,19 @@ class Admin extends CI_Controller {
 		if($nama_lengkap != "" || 
 			$id_master_kelas != "" || 
 			$status_sertifikat != "" || 
-			$time_history != "" || 	
+			$time_history != "" ||
+			$reference != "" ||
+			$pic != "" ||
+			$angkatan != "" || 	
 			$status_lunas != ""){
+
 			$data['list_report'] = $this->M->get_report($nama_lengkap,$time_history,$id_master_kelas,$status_sertifikat,$status_lunas, $reference, $pic, $angkatan);
 		}else{
 			$data['list_report'] = [];
 		}
 		$data['list_master_kelas'] = $this->M->getAllData('master_kelas');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 
 		$data['nama_lengkap'] = $nama_lengkap;
 		$data['reference'] = $reference;
@@ -90,6 +99,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->getAllData('parameter');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/parameter', $data);
 		$this->load->view('p/temp/footer');
@@ -99,6 +109,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->getAllMasterWhereOneCondition('order_booking','id_user',$this->session->userdata('id_user'));
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/myclass',$data);
 		$this->load->view('p/temp/footer');
@@ -109,6 +120,7 @@ class Admin extends CI_Controller {
 		$data['list_data'] = $this->M->getAllMasterWhereOneCondition('user', 'user_level', 4);
 		$data['url_level'] = $this->uri->segment(4);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/master_user',$data);
 		$this->load->view('p/temp/footer');
@@ -119,6 +131,7 @@ class Admin extends CI_Controller {
 		$data['list_data'] = $this->M->getAllMasterWhereOneCondition('user', 'user_level', 3);
 		$data['url_level'] = $this->uri->segment(4);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/master_user',$data);
 		$this->load->view('p/temp/footer');
@@ -129,6 +142,7 @@ class Admin extends CI_Controller {
 		$data['list_data'] = $this->M->getAllMasterWhereOneCondition('user', 'user_level', 2);
 		$data['url_level'] = $this->uri->segment(4);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/master_user',$data);
 		$this->load->view('p/temp/footer');
@@ -140,6 +154,7 @@ class Admin extends CI_Controller {
 			$data['list_data'] = $this->M->getAllMasterWhereOneCondition('user', 'user_level', 1);
 			$data['url_level'] = $this->uri->segment(4);
 			$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+			$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 			$this->load->view('p/admin/master_user',$data);
 			$this->load->view('p/temp/footer');
@@ -153,6 +168,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->get_order_booking_list_kelas('status_order','N');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/orderclass',$data);
 		$this->load->view('p/temp/footer');
@@ -162,6 +178,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->get_order_booking_list_kelas('status_order','D');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/doneclass',$data);
 		$this->load->view('p/temp/footer');
@@ -171,6 +188,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->get_order_booking_not_approve('status_order','D');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/sertifikat',$data);
 		$this->load->view('p/temp/footer');
@@ -180,6 +198,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->get_order_booking_list_kelas('status_order','L');
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/daftarorderan',$data);
 		$this->load->view('p/temp/footer');
@@ -188,6 +207,7 @@ class Admin extends CI_Controller {
 	public function add_master_product()
 	{
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/add_master_product');
 		$this->load->view('p/temp/footer');
@@ -197,6 +217,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($id)]);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/detail_master_product', $data);
 		$this->load->view('p/temp/footer');
@@ -206,6 +227,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->getWhere('user',['id_user'=>trim($this->session->userdata('id_user'))]);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/show_profile', $data);
 		$this->load->view('p/temp/footer');
@@ -215,6 +237,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($id)]);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/edit_master_product', $data);
 		$this->load->view('p/temp/footer');
@@ -224,6 +247,7 @@ class Admin extends CI_Controller {
 	{
 		$data['list_data'] = $this->M->getWhere('parameter',['id_parameter'=>trim($id)]);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/edit_parameter', $data);
 		$this->load->view('p/temp/footer');
@@ -242,6 +266,7 @@ class Admin extends CI_Controller {
 		}
 		$data['list_kelas_data'] = $this->M->get_name_kelas_list($getOB['list_kelas']);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/valid_order',$data);
 		$this->load->view('p/temp/footer');
@@ -260,6 +285,7 @@ class Admin extends CI_Controller {
 		}
 		$data['list_kelas_data'] = $this->M->get_name_kelas_list($getOB['list_kelas']);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$data['list_berkas_sumpah'] = $this->M->getWhereList('document_sumpah',['id_user'=>trim($idUser),'id_order_booking' => $idOrder]);
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/uploadBerkasSumpah',$data);
@@ -272,6 +298,7 @@ class Admin extends CI_Controller {
 		$data['value'] = $getOB;
 		$data['orderPayment'] = $this->M->getAllMasterWhereOneCondition('order_payment','id_order_booking',$idOrder);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$data['list_kelas_data'] = $this->M->get_name_kelas_list($getOB['list_kelas']);
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/open_class',$data);
@@ -389,6 +416,29 @@ class Admin extends CI_Controller {
 			redirect('P/Admin',$data);
 		}
 	}
+
+	public function delete_user($id_user)
+	{
+		if($id_user){
+			$data = $this->M->getWhere('user',['id_user'=>trim($id_user)]);
+			$getAllColumn = $this->M->getColumnTableAll('id_user');
+			if($data){
+				foreach ($getAllColumn as $ga) {
+					$this->M->delete_to_db($ga['table_name'],'id_user',$data['id_user']);
+				}
+				$data = $this->session->set_flashdata('pesan', 'Berhasil di hapus !');
+				redirect('P/Admin/master_user_peserta/4',$data);
+			}else{
+				$data = $this->session->set_flashdata('pesan', 'Gagal di hapus !');
+				redirect('P/Admin/master_user_peserta/4',$data);
+			}
+		}else{
+			$data = $this->session->set_flashdata('pesan', 'Gagal di hapus !');
+			redirect('P/Admin/master_user_peserta/4',$data);
+		}
+	}
+
+	
 	public function delete_master_product($id)
 	{
 		if($id){

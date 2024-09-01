@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Detail Order Kelas Belajar</h1>
+        <a href="<?= $previous_url;?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali</a>
         <?php if (strpos($list_kelas_data['is_sumpah'], "Y") !== false) {?>
             <a href="<?= base_url('P/Admin/uploadBerkasSumpah/'.$value['id_user'].'/'.$value['id_order_booking']);?>" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Upload Berkas Sumpah</a>
         <?php } ?>

@@ -38,7 +38,7 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">Peradi<sup>N</sup></div>
             </a>
-
+            
             <?php 
 
                 $kelasBelajar = "";
@@ -202,12 +202,18 @@
                         
                         </li>
 
-                       
+                         <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <span class="button button-danger text-gray-600">Keluar Sistem</span>
+                            </a>
+                  
+                        </li>
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-shopping-cart fa-fw"></i>
+                                <i class="fas fa-shopping-cart fa-fw text-gray-600"></i>
                                 <!-- Counter - Messages -->
                                 <span class="badge badge-danger badge-counter"><?= count($list_cart);?></span>
                             </a>
@@ -277,7 +283,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('nama_lengkap');?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="<?= base_url('assets/p/sistem/');?>img/undraw_profile.svg">
+                                    src="<?= base_url('assets/p/sistem/img/logo.png');?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

@@ -422,4 +422,21 @@ class Mbg extends CI_Model {
 				  AND ob.id_user = '$idUser'";
 			return $this->db->query($query)->row_array();
 	}
+
+	function getColumnTableAll($column_name)
+	{
+			$database = $this->db->database;
+			$query= "SELECT 
+				    TABLE_NAME AS table_name, 
+				    COLUMN_NAME AS column_name 
+				FROM 
+				    information_schema.columns 
+				WHERE 
+				    TABLE_SCHEMA = '$database' AND COLUMN_NAME = '$column_name'
+				ORDER BY 
+				    TABLE_NAME, 
+				    ORDINAL_POSITION;
+				";
+			return $this->db->query($query)->result_array();
+	}
 }
