@@ -824,21 +824,28 @@ class Admin extends CI_Controller {
 			// $add_db = $this->M->add_to_db('approve_cetificate', $send_db);
 			// if($add_db){
 			// 	$check = true;
-			// 	if($this->M->getParameter('@sendNotifApproveCertificate') == 'Y'){
+			if($this->M->getParameter('@sendNotifApproveCertificate') == 'Y'){
+				$array = explode("~", $orderB['list_kelas']);
+                $array = array_filter($array, function($value) {
+                    return $value !== '';
+                });
+                $inClause = implode(",", $array);
+                $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
+                $getListKelas = $this->db->query($query)->row_array();
 			// 		$master_kelas = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($orderB['id_master_kelas'])]);
-			// 		$user = $this->M->getWhere('user',['id_user'=>trim($orderB['id_user'])]);
-			// 		$data_send_notif = [
-			// 			'handphone' => trim($user['handphone']),
-			// 			'namalengkap' => trim($user['nama_lengkap']),
-			// 			'namaKelas' => trim($master_kelas['nama_kelas']),
-			// 			'url_certificate' => trim(base_url('P/Admin/generateCertificate/'.$orderB['id_user'].'/'.trim($val)))
-			// 		];
-			// 		$sendWa = $this->service->send_whatsapp($data_send_notif, 'approve_certificate');
-			// 		if($sendWa){
-						$check = true;
-			// 		}
+				$user = $this->M->getWhere('user',['id_user'=>trim($orderB['id_user'])]);
+				$data_send_notif = [
+					'handphone' => trim($user['handphone']),
+					'namalengkap' => trim($user['nama_lengkap']),
+					'namaKelas' => trim($getListKelas['nama_kelas']),
+					'url_certificate' => trim(base_url('P/Payment/generateCertificate/'.$orderB['id_user'].'/'.trim($val)))
+				];
+				$sendWa = $this->service->send_whatsapp($data_send_notif, 'approve_certificate');
+				if($sendWa){
+					$check = true;
+				}
 
-			// 	}
+			}
 			// }
 
 		}

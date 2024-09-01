@@ -114,7 +114,8 @@ class Notification extends CI_Controller {
 	    	];
 
 	    	$update = $this->M->update_to_db('request_payment',$data_update,'order_id',$idOrderVADB);
-			$updateOB = $this->M->update_to_db('order_payment',['status_payment' => 'D'],'id_virtual_account',$idOrderVADB);    	
+			$updateOB = $this->M->update_to_db('order_payment',['status_payment' => 'D'],'id_virtual_account',$idOrderVADB);  
+			$namaKelas = "";  	
 	    	if($update && $updateOB){
 	    		if($this->M->getParameter('@sendNotifDonePayment') == 'Y'){
 	    			//send notif done payment to wa
@@ -128,7 +129,7 @@ class Notification extends CI_Controller {
 	                        $inClause = implode(",", $array);
 	                        $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
 	                        $getListKelas = $this->db->query($query)->row_array();
-	                        
+	                        $namaKelas = trim($getListKelas['nama_kelas']);
 							$user = $this->M->getWhere('user',['id_user'=>trim($orderBook['id_user'])]);
 							$data_send_notif = [
 								'handphone' => trim($user['handphone']),
@@ -149,7 +150,7 @@ class Notification extends CI_Controller {
 		    			$data_send_notif = [
 							'handphone' => trim($user['handphone']),
 							'namalengkap' => trim($user['nama_lengkap']),
-							'namaKelas' => trim($master_kelas['nama_kelas']),
+							'namaKelas' => trim($namaKelas),
 							'url_invoice' => trim(base_url('P/Payment/createInvoice/'.$id_order))
 						];
 						$this->service->send_whatsapp($data_send_notif, 'complete_payment');
