@@ -81,11 +81,7 @@ class Auth extends CI_Controller {
 			if($checkUserExist < 1){
 				$add_db = $this->M->add_to_db('user', $data_register);
 				if($add_db){
-					$data_history = [
-						'nik' =>trim($this->input->post('nik')),
-						'action' => "Pendaftaran Akun Baru"
-					];
-					$add_history = $this->M->add_log_history($data_history);
+					$add_history = $this->M->add_log_history($this->input->post('namalengkap'),"Pendaftaran Akun Baru");
 					if($add_history){
 						if($this->M->getParameter('@sendNotifWaRegister') == 'Y'){
 							$data_send_notif = [
@@ -137,11 +133,7 @@ class Auth extends CI_Controller {
 						];
 						$this->service->send_whatsapp($data_send_notif, 'login');
 					}
-					$data_history = [
-						'nik' =>trim($user['handphone']),
-						'action' => "Login Akun"
-					];
-					$add_history = $this->M->add_log_history($data_history);
+					$add_history = $this->M->add_log_history($user['nama_lengkap'],"Login Akun");
 					$data_session = [
 						'id_user' =>trim($user['id_user']),
 						'nama_lengkap' =>trim($user['nama_lengkap']),

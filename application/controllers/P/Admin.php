@@ -688,14 +688,14 @@ class Admin extends CI_Controller {
 			if($order){
 				$this->M->delete_to_db('order_booking','id_order_booking',$idOrder);
 				$data = $this->session->set_flashdata('pesan', 'Berhasil hapus order !');
-				redirect('P/Admin/OrderanClass',$data);
+				redirect($this->input->server('HTTP_REFERER'),$data);
 			}else{
 				$data = $this->session->set_flashdata('pesan', 'gagal hapus order !');
-				redirect('P/Admin/OrderanClass',$data);
+				redirect($this->input->server('HTTP_REFERER'),$data);
 			}
 		}else{
 			$data = $this->session->set_flashdata('pesan', 'gagal hapus order !');
-			redirect('P/Admin/OrderanClass',$data);
+			redirect($this->input->server('HTTP_REFERER'),$data);
 		}
 	}
 

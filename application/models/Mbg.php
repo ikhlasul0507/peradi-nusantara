@@ -59,7 +59,7 @@ class Mbg extends CI_Model {
     	return $result;
 	}
 
-	function add_log_history($data)
+	function add_log_history($nama, $deskripsi)
 	{
 		$localIP = getHostByName(getHostName());
    		ob_start();  
@@ -71,13 +71,15 @@ class Mbg extends CI_Model {
    		$macaddr=substr($configdata,($pmac+36),17);  
 	    $browserName =  $_SERVER['HTTP_USER_AGENT'];
 	    
+
 		$data = [
-			'nik' => $data['nik'],
+			'nik' => $nama,
 			'ipaddress' => $localIP,
 			'macaddress' => $macaddr,
 			'browser' => $browserName,
-			'action' => $data['action']
+			'action' => $deskripsi
 		];
+
 		return $this->db->insert('log_history',$data);		
 	}
 	
@@ -439,4 +441,6 @@ class Mbg extends CI_Model {
 				";
 			return $this->db->query($query)->result_array();
 	}
+
+
 }
