@@ -823,7 +823,7 @@ class Admin extends CI_Controller {
 			// ];
 			// $add_db = $this->M->add_to_db('approve_cetificate', $send_db);
 			// if($add_db){
-			// 	$check = true;
+			$check = true;
 			if($this->M->getParameter('@sendNotifApproveCertificate') == 'Y'){
 				$array = explode("~", $orderB['list_kelas']);
                 $array = array_filter($array, function($value) {
