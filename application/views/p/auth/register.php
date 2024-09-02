@@ -43,7 +43,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Formulir Pendaftaran</h1>
                             </div>
-                            <form class="user" action="<?= base_url('P/Auth/process_register')?>" method="post">
+                            <form class="user" action="<?= base_url('P/Auth/process_register')?>" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control" required name="namalengkap"
@@ -55,8 +55,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control" required name="email"
+                                        <input type="email" class="form-control" required name="email"
                                         placeholder="Email Aktif">
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label>Unggah Foto KTP</label>
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="file" required name="file_ktp"
+                                        placeholder="Upload KTP">
+                                    </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">

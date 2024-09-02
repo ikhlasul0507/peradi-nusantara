@@ -200,7 +200,8 @@ class Mbg extends CI_Model {
   					us.handphone,
   					us.reference,
 					  us.pic,
-					  us.angkatan
+					  us.angkatan,
+					  us.foto_ktp
 					FROM
 					  (SELECT
 					    *
@@ -213,7 +214,8 @@ class Mbg extends CI_Model {
 					    handphone,
 					    reference,
 						  pic,
-						  angkatan
+						  angkatan,
+						  foto_ktp
 					  FROM
 					    user) us
 					  WHERE ob.id_user = us.id_user

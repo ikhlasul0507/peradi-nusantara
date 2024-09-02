@@ -300,8 +300,8 @@ class Migrate extends CI_Controller
 		}
 		//=================================================================================================
 		$title = "Dumping data for table `user`";
-		$query = "INSERT IGNORE INTO `user` (`id_user`,`nik`, `email`, `nama_lengkap`, `handphone`,`usia`,`asal_kampus`,`semester`,`password`,`password_hash`,`is_active`,`user_level`) VALUES
-					(1,12345678912345, 'ikhlasul0507@gmail.com', 'Ikhlasul Amal', '082280524264',20,'Asal Kampus',2,'1234512345','QWEQW21312312','Y',1)
+		$query = "INSERT IGNORE INTO `user` (`id_user`,`nik`, `email`, `nama_lengkap`, `handphone`,`usia`,`asal_kampus`,`semester`,`password`,`password_hash`,`is_active`,`user_level`,`foto_ktp`) VALUES
+					(1,12345678912345, 'ikhlasul0507@gmail.com', 'Ikhlasul Amal', '082280524264',20,'Asal Kampus',2,'1234512345','QWEQW21312312','Y',1,'logo_peradi.jpg')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";
@@ -599,6 +599,23 @@ class Migrate extends CI_Controller
 		if ($check['count'] == '0') {
 			$queryAlter = "ALTER TABLE $table_name
 			MODIFY $column VARCHAR(50)";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "foto_ktp";
+		$table_name = "user";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column VARCHAR(150)";
 			if ($this->db->query($queryAlter)) {
 				echo "||............[Migrate successfully " . $title . "]</br>";
 			} else {

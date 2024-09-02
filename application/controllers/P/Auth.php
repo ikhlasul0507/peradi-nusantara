@@ -50,23 +50,7 @@ class Auth extends CI_Controller {
 
 	public function process_register()
 	{
-		$data_register = [
-			'nama_lengkap' => trim($this->input->post('namalengkap')),
-			'nik' => trim($this->input->post('nik')),
-			'email' => trim($this->input->post('email')),
-			'handphone' => trim($this->input->post('handphone')),
-			'usia' => trim($this->input->post('usia')),
-			'asal_kampus' => trim($this->input->post('asalkampus')),
-			'semester' => trim($this->input->post('semester')),
-			'reference' => trim($this->input->post('reference')),
-			'pic' => trim($this->input->post('pic')),
-			'angkatan' => trim($this->input->post('angkatan')),
-			'latar_belakang' => trim($this->input->post('latar_belakang')),
-			'password' => trim($this->input->post('password')),
-			'password_hash' => password_hash(trim($this->input->post('password')), PASSWORD_DEFAULT),
-			'is_active' => 'Y',
-			'user_level' => 4
-		];
+		
 		$check = false;
 		$referenceFromDB = $this->M->getParameter('@picRegister');
 		if(strpos($referenceFromDB, $this->input->post('pic')) !== false){
@@ -79,20 +63,41 @@ class Auth extends CI_Controller {
 			$checkUserExist =  $this->M->checkUserExist(trim($this->input->post('nik')), trim($this->input->post('handphone')));
 			
 			if($checkUserExist < 1){
-				$add_db = $this->M->add_to_db('user', $data_register);
-				if($add_db){
-					$add_history = $this->M->add_log_history($this->input->post('namalengkap'),"Pendaftaran Akun Baru");
-					if($add_history){
-						if($this->M->getParameter('@sendNotifWaRegister') == 'Y'){
-							$data_send_notif = [
-								'handphone' => trim($this->input->post('handphone')),
-								'namalengkap' => trim($this->input->post('namalengkap'))
-							];
-							$this->service->send_whatsapp($data_send_notif, 'new_register');
+				$uploadKTP = $this->service->do_upload('img','file_ktp');
+					if($uploadKTP['code'] == 200){
+						$data_register = [
+							'nama_lengkap' => trim($this->input->post('namalengkap')),
+							'nik' => trim($this->input->post('nik')),
+							'email' => trim($this->input->post('email')),
+							'handphone' => trim($this->input->post('handphone')),
+							'usia' => trim($this->input->post('usia')),
+							'asal_kampus' => trim($this->input->post('asalkampus')),
+							'semester' => trim($this->input->post('semester')),
+							'reference' => trim($this->input->post('reference')),
+							'pic' => trim($this->input->post('pic')),
+							'angkatan' => trim($this->input->post('angkatan')),
+							'latar_belakang' => trim($this->input->post('latar_belakang')),
+							'password' => trim($this->input->post('password')),
+							'password_hash' => password_hash(trim($this->input->post('password')), PASSWORD_DEFAULT),
+							'is_active' => 'Y',
+							'user_level' => 4,
+							'foto_ktp' => $uploadKTP['upload_data']['file_name']
+						];
+						$add_db = $this->M->add_to_db('user', $data_register);
+						if($add_db){
+							$add_history = $this->M->add_log_history($this->input->post('namalengkap'),"Pendaftaran Akun Baru");
+							if($add_history){
+								if($this->M->getParameter('@sendNotifWaRegister') == 'Y'){
+									$data_send_notif = [
+										'handphone' => trim($this->input->post('handphone')),
+										'namalengkap' => trim($this->input->post('namalengkap'))
+									];
+									$this->service->send_whatsapp($data_send_notif, 'new_register');
+								}
+							}
+							$data = $this->session->set_flashdata('pesan', 'Akun berhasil terdaftar !');
+							redirect('P/Auth/login',$data);
 						}
-					}
-					$data = $this->session->set_flashdata('pesan', 'Akun berhasil terdaftar !');
-					redirect('P/Auth/login',$data);
 				}
 			}else{
 				$data = $this->session->set_flashdata('pesan', 'Akun telah terdaftar !');

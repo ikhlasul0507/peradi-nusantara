@@ -871,7 +871,8 @@ class Admin extends CI_Controller {
 			'password' => trim($this->input->post('password')),
 			'password_hash' => password_hash(trim($this->input->post('password')), PASSWORD_DEFAULT),
 			'is_active' => 'Y',
-			'user_level' => $level
+			'user_level' => $level,
+			'foto_ktp' => 'logo_peradi.jpg'
 		];
 
 		$checkUserExist =  $this->M->checkUserExist(trim($this->input->post('nik')), trim($this->input->post('handphone')));

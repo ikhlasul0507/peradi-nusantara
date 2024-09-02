@@ -18,8 +18,10 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem; height: 10rem"
-                            src="<?= base_url('assets/p/img/'.$list_kelas_data['foto_kelas']);?>" alt="...">
+                        <a href="<?= base_url('assets/p/img/'.$value['foto_ktp']);?>" target="blank">
+                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem; height: 10rem"
+                            src="<?= base_url('assets/p/img/'.$value['foto_ktp']);?>" alt="...">
+                        </a>
                     </div>
                     <p>
                         Waktu Order :  <?= $value['time_history'];?><br>
