@@ -26,9 +26,9 @@ class Migrate extends CI_Controller
 		$this->writeLine();
 		$this->addnewtable();
 		$this->writeLine();
-		$this->insertDataTable();
-		$this->writeLine();
 		$this->alterTable();
+		$this->writeLine();
+		$this->insertDataTable();
 		$this->writeLine();
 		echo "<h4>Congratulations your migrate successfully 100%</h4>";
 		$this->writeLine();
