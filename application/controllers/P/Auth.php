@@ -20,6 +20,7 @@ class Auth extends CI_Controller {
 	 */
 	public function __construct()
 	{
+		header("Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none';");
 		parent::__construct();
 		$this->load->library('service');
 		$this->load->model('Mbg','M');
@@ -50,7 +51,7 @@ class Auth extends CI_Controller {
 
 	public function process_register()
 	{
-		
+		// if(filter_var(trim($this->input->post('namalengkap')), FIL))
 		$check = false;
 		$referenceFromDB = $this->M->getParameter('@picRegister');
 		if(strpos($referenceFromDB, strtoupper($this->input->post('pic'))) !== false){
@@ -97,7 +98,13 @@ class Auth extends CI_Controller {
 							}
 							$data = $this->session->set_flashdata('pesan', 'Akun berhasil terdaftar !');
 							redirect('P/Auth/login',$data);
+						}else{
+							$data = $this->session->set_flashdata('pesan', 'Gagal Register Data !');
+							redirect('P/Auth',$data);
 						}
+				}else{
+					$data = $this->session->set_flashdata('pesan', 'Harap Upload Foto KTP !');
+					redirect('P/Auth',$data);
 				}
 			}else{
 				$data = $this->session->set_flashdata('pesan', 'Akun telah terdaftar !');

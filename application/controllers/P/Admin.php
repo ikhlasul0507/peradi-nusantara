@@ -324,6 +324,7 @@ class Admin extends CI_Controller {
 			];
 			$add_db = $this->M->add_to_db('master_kelas', $data_db);
 			if($add_db){
+				$this->M->add_log_history($this->session->userdata('nama_lengkap'),"process_add_master_product");
 				$data = $this->session->set_flashdata('pesan', 'Berhasil tambah data !');
 				redirect('P/Admin/add_master_product',$data);
 			}
@@ -366,6 +367,7 @@ class Admin extends CI_Controller {
 		];
 		$add_db = $this->M->update_to_db('master_kelas', $data_db, 'id_master_kelas', trim($this->input->post('id_master_kelas')));
 		if($add_db){
+			$this->M->add_log_history($this->session->userdata('nama_lengkap'),"process_edit_master_product");
 			$data = $this->session->set_flashdata('pesan', 'Berhasil edit data !');
 			redirect('P/Admin/master_product',$data);
 		}
@@ -379,6 +381,7 @@ class Admin extends CI_Controller {
 		];
 		$add_db = $this->M->update_to_db('parameter', $data_send_db, 'id_parameter', trim($this->input->post('id_parameter')));
 		if($add_db){
+			$this->M->add_log_history($this->session->userdata('nama_lengkap'),"process_edit_parameter");
 			$data = $this->session->set_flashdata('pesan', 'Berhasil edit data !');
 			redirect('P/Admin/parameter',$data);
 		}
@@ -395,6 +398,7 @@ class Admin extends CI_Controller {
 		];
 		$add_db = $this->M->update_to_db('user', $data_send_db, 'id_user', trim($this->session->userdata('id_user')));
 		if($add_db){
+			$this->M->add_log_history($this->session->userdata('nama_lengkap'),"process_edit_user_profile = ".$this->input->post('nama_lengkap'));
 			$data = $this->session->set_flashdata('pesan', 'Berhasil perbaharui data !');
 			redirect('P/Admin/show_profile',$data);
 		}
@@ -405,6 +409,7 @@ class Admin extends CI_Controller {
 		if($id_master_kelas){
 			$data = $this->M->getWhere('cart',['id_master_kelas'=>trim($id_master_kelas), 'id_user'=>trim($this->session->userdata('id_user'))]);
 			if($data){
+				$this->M->add_log_history($this->session->userdata('nama_lengkap'),"delete_cart_product ".$data['id_master_kelas']);
 				$this->M->delete_to_db('cart','id_cart',$data['id_cart']);
 				$data = $this->session->set_flashdata('pesan', 'Berhasil di hapus !');
 				redirect('P/Admin',$data);
@@ -427,6 +432,7 @@ class Admin extends CI_Controller {
 				foreach ($getAllColumn as $ga) {
 					$this->M->delete_to_db($ga['table_name'],'id_user',$data['id_user']);
 				}
+				$this->M->add_log_history($this->session->userdata('nama_lengkap'),"delete_user ".$data['nama_lengkap']);
 				$data = $this->session->set_flashdata('pesan', 'Berhasil di hapus !');
 				redirect($this->input->server('HTTP_REFERER'),$data);
 			}else{
@@ -447,6 +453,7 @@ class Admin extends CI_Controller {
 			if($data){
 				$delete_foto = $this->service->delete_photo('img',$data['foto_kelas']);
 				if($delete_foto['code'] == 200){
+					$this->M->add_log_history($this->session->userdata('nama_lengkap'),"delete_master_product " .$data['nama_kelas']);
 					$this->M->delete_to_db('master_kelas','id_master_kelas',$id);
 					$data = $this->session->set_flashdata('pesan', 'Berhasil di hapus !');
 					redirect('P/Admin/master_product',$data);
