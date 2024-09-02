@@ -25,7 +25,7 @@ class Payment extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Mbg', 'M');
 		$server_key = htmlspecialchars(addslashes($this->M->getParameter('@serverKeyMitrans')));
-		$isProduction = $this->M->getParameter('@isProductionMitrans') === 'Y' ? true : false;
+		$isProduction = $this->M->getParameter('@isProductionMitrans') == 'Y' ? true : false;
 		$params = array('server_key' => $server_key, 'production' => $isProduction);
 		$this->load->library('midtrans');
 		$this->load->library('service');
@@ -48,7 +48,7 @@ class Payment extends CI_Controller {
 			$data['get_booking'] = $get_booking;
 			$data['charge_admin'] = (int)$this->M->getParameter('@chargeAdminPayment');
 			$data['clientKeyMitrans'] = $this->M->getParameter('@clientKeyMitrans');
-			$data['url_mitrans'] = $this->M->getParameter('@urlProductionMitrans') === 'Y' ? $this->M->getParameter('@isProductionMitrans') : $this->M->getParameter('@urlSandboxMitrans');
+			$data['url_mitrans'] = $this->M->getParameter('@isProductionMitrans') === 'Y' ? $this->M->getParameter('@urlProductionMitrans') : $this->M->getParameter('@urlSandboxMitrans');
 			$this->load->view('p/admin/virtual_payment',$data);
 		}else{
 			echo "Order Telah dibayar !";
