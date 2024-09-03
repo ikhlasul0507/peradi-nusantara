@@ -265,7 +265,20 @@ class Mbg extends CI_Model {
 							  ) > 0";
 		return $this->db->query($query)->result_array();
 	}
-
+	function get_log_history($nik,$action, $time_history)
+	{
+		$query = "SELECT * FROM log_history";
+		if($nik != "" || $action != "" || $time_history != "" ){
+				$query = $query . " WHERE time_history >= '$time_history'";
+		}
+		if($nik != ""){
+			  $query = $query . " AND nik LIKE '%$nik%'";
+		}
+		if($action != ""){
+			  $query = $query . " AND action LIKE '%$action%'";
+		}
+		return $this->db->query($query)->result_array();
+	}
 	function get_report($nama_peserta, $time_history, $id_master_kelas, $status_sertifikat, $status_lunas, $reference, $pic, $angkatan)
 	{
 		$query = "SELECT

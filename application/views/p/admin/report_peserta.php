@@ -13,6 +13,7 @@
     <div class="card shadow mb-4">
         <div id="filterData" class="collapse mt-4 container-fluid" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <form class="user" method="post" action="<?= base_url('P/Admin/report_peserta')?>">
+                <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                 <div class="form-group row">
                     <div class="col-sm-3 mb-3 mb-sm-0">
                         <input type="text" class="form-control" name="nama_lengkap"
@@ -67,6 +68,7 @@
         </div>
         <div id="importData" class="collapse mt-4 container-fluid" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <form class="user" method="post" enctype="multipart/form-data" action="<?= base_url('P/Admin/importDataPeserta')?>">
+                <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                 <div class="form-group row">
                     <div class="col-sm-3 mb-3 mb-sm-0">
                         <input type="file" class="form-control" name="file_excel"
@@ -90,6 +92,7 @@
                 <span>Import Data</span>
             </a>
             <?php endif ?>
+            
             <div class="dropdown no-arrow">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

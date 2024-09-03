@@ -22,9 +22,11 @@ class Admin extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Mbg','M');
+		$this->load->model('Crud_model');
 		$this->load->library('service');
 		$this->load->library('Pdf');
-		$this->load->library('ciqrcode'); 
+		$this->load->library('ciqrcode');
+		$this->load->library('pagination'); 
 		if(!$this->session->userdata('id_user')){
 			//jika ada user masuk sembarangan
         	$data = $this->session->set_flashdata('pesan', 'Anda Belum Login !');
@@ -94,6 +96,124 @@ class Admin extends CI_Controller {
 		$this->load->view('p/admin/report_peserta', $data);
 		$this->load->view('p/temp/footer');
 	}
+	
+	public function log_activity()
+	{
+		$nik = trim($this->input->post('nik'));
+		$action = trim($this->input->post('action'));
+		$time_history = trim($this->input->post('time_history'));
+		if($nik != "" || 
+			$time_history != "" ||
+			$action != ""){
+			$data['list_report'] = $this->M->get_log_history($nik,$action, $time_history);
+		}else{
+			$data['list_report'] = [];
+		}
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+
+		$data['nik'] = $nik;
+		$data['action'] = $action;
+		$data['time_history'] = $time_history;
+		$this->load->view('p/temp/header',$data);
+		$this->load->view('p/admin/log_activity', $data);
+		$this->load->view('p/temp/footer');
+	}
+
+	public function management_database()
+	{	
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['tables'] = $this->db->list_tables();
+		$this->load->view('p/temp/header',$data);
+		$this->load->view('p/management_database/index', $data);
+		$this->load->view('p/temp/footer');
+	}
+	public function view($table) {
+		 // Pagination Configuration
+	    $config = array();
+	    $config['base_url'] = site_url('P/Admin/view/' . $table);
+	    $config['total_rows'] = $this->Crud_model->record_count($table); // Total rows in the table
+	    $config['per_page'] = (int)$this->M->getParameter('@totalRowPerPagePaging'); // Number of records per page
+	    $config['uri_segment'] = 5; // The segment in the URL that contains the page number
+
+	    // Customizing the pagination
+	    $config['full_tag_open'] = '<ul class="pagination">';
+	    $config['full_tag_close'] = '</ul>';
+	    
+	    $config['first_link'] = 'First';
+	    $config['first_tag_open'] = '<li class="page-item">';
+	    $config['first_tag_close'] = '</li>';
+	    
+	    $config['last_link'] = 'Last';
+	    $config['last_tag_open'] = '<li class="page-item">';
+	    $config['last_tag_close'] = '</li>';
+	    
+	    $config['next_link'] = '&raquo;';
+	    $config['next_tag_open'] = '<li class="page-item">';
+	    $config['next_tag_close'] = '</li>';
+	    
+	    $config['prev_link'] = '&laquo;';
+	    $config['prev_tag_open'] = '<li class="page-item">';
+	    $config['prev_tag_close'] = '</li>';
+	    
+	    $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+	    $config['cur_tag_close'] = '</a></li>';
+	    
+	    $config['num_tag_open'] = '<li class="page-item">';
+	    $config['num_tag_close'] = '</li>';
+	    
+	    $config['attributes'] = array('class' => 'page-link');
+
+	    // Initialize pagination
+	    $this->pagination->initialize($config);
+
+	    // Get the current page number
+	    $page = ($this->uri->segment(5)) ? $this->uri->segment(5) : 0;
+	    $data['records'] = $this->Crud_model->fetch_records($table, $config['per_page'], $page);
+    	$data['links'] = $this->pagination->create_links();
+
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+        $data['table'] = $table;
+        $this->load->view('p/temp/header',$data);
+        $this->load->view('p/management_database/view', $data);
+        $this->load->view('p/temp/footer');
+    }
+
+    public function create($table) {
+    	$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+        if ($this->input->post()) {
+            $data = $this->input->post();
+            $this->Crud_model->insert($table, $data);
+            redirect("P/Admin/view/$table");
+        } else {
+            $data['table'] = $table;
+            $data['fields'] = $this->db->list_fields($table);
+            $this->load->view('p/temp/header',$data);
+            $this->load->view('p/management_database/create', $data);
+            $this->load->view('p/temp/footer');
+        }
+    }
+
+    public function edit($table, $id) {
+    	$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+        if ($this->input->post()) {
+            $data = $this->input->post();
+            $this->Crud_model->update($table, $id, $data, 'id_'.$table);
+            redirect("P/Admin/view/$table");
+        } else {
+            $data['table'] = $table;
+            $data['record'] = $this->Crud_model->get_by_id($table, $id, 'id_'.$table);
+            $data['fields'] = $this->db->list_fields($table);
+            $this->load->view('p/temp/header',$data);
+            $this->load->view('p/management_database/edit', $data);
+            $this->load->view('p/temp/footer');
+        }
+    }
+
+    public function delete($table, $id) {
+        $this->Crud_model->delete($table, $id, 'id_'.$table);
+        redirect($this->input->server('HTTP_REFERER'));
+    }
 
 	public function parameter()
 	{

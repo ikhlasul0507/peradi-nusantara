@@ -51,7 +51,7 @@
                 $parameter = "";
                 $report_peserta = "";
                 $master = "";
-
+                $process = "";
 
                 $segment2 = $this->uri->segment(3);
                 if($segment2 == ""){
@@ -149,12 +149,29 @@
                             <a class="collapse-item" href="<?= base_url('P/Admin/master_user_owner/2');?>">Data Owner</a>
                             <?php if($this->session->userdata('user_level') <= 1){ ?>
                             <a class="collapse-item" href="<?= base_url('P/Admin/master_user_developer/1');?>">Data Developer</a>
-                            <a class="collapse-item" href="<?= base_url('P/Admin/parameter');?>">Parameter</a>
-                            <a class="collapse-item" target="blank" href="<?= base_url('P/Migrate');?>">Restructure Database</a>
                         <?php }}} ?>
                     </div>
                 </div>
             </li>
+             <!-- Nav Item - Pages Collapse Menu -->
+
+            <?php if($this->session->userdata('user_level') <= 1){ ?>
+            <li class="nav-item <?=$process;?>">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Process Apps</span>
+                </a>
+                <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="<?= base_url('P/Admin/log_activity');?>">Log Activity</a>
+                            <a class="collapse-item" href="<?= base_url('P/Admin/parameter');?>">Parameter</a>
+                             <a class="collapse-item" href="<?= base_url('P/Admin/management_database');?>">Manajemen Database</a>
+                            <a class="collapse-item" target="_blank" href="<?= base_url('P/Migrate');?>">Restructure Database</a>
+                    </div>
+                </div>
+            </li>
+            <?php }?>
             <li class="nav-item <?=$report_peserta;?>">
                 <a class="nav-link" href="<?= base_url('P/Admin/report_peserta');?>">
                     <i class="fas fa-fw fa-book"></i>
