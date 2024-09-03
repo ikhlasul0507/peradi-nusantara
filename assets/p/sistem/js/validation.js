@@ -49,7 +49,7 @@ function isAlphaKey(evt,id) {
     // Allow: A-Z, a-z
     if ((charCode >= 65 && charCode <= 90) || // Uppercase A-Z
         (charCode >= 97 && charCode <= 122) ||
-        charCode == 32) { // Lowercase a-z
+        charCode == 32 || charCode == 46 || charCode == 44) { // Lowercase a-z
         if (inputField.value.length >= maxLength) {
             return false;
         }else{
