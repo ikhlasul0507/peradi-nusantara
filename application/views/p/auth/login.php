@@ -73,7 +73,7 @@
 
 
     <!-- validation -->
-    <script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script>
+    <!-- <script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script> -->
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/p/sistem/');?>vendor/jquery/jquery.min.js"></script>
     <script src="<?= base_url('assets/p/sistem/');?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
