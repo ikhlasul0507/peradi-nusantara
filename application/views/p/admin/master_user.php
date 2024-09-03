@@ -67,6 +67,7 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form class="user" action="<?= base_url('P/Admin/process_add_master_user/'.$url_level)?>" method="post">
+                 <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>

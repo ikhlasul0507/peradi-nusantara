@@ -44,7 +44,7 @@
                                 <h1 class="h4 text-gray-900 mb-4">Lupa Password</h1>
                             </div>
                             <form class="user" action="<?= base_url('P/Auth/process_forget_password')?>" method="post">
-                                
+                                 <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                                 <div class="form-group">
                                     <input type="number" class="form-control"
                                             required name="handphone" placeholder="Handpone Aktif">

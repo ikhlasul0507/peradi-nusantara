@@ -44,6 +44,7 @@
                                 <h1 class="h4 text-gray-900 mb-4">Masukan Password Baru</h1>
                             </div>
                             <form class="user" action="<?= base_url('P/Auth/process_new_password')?>" method="post">
+                                 <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                                 <input type="hidden" name="uuid" value="<?= $uuid;?>">
                                 <div class="form-group">
                                    <input type="password" class="form-control form-control-user"

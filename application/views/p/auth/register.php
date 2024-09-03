@@ -44,6 +44,7 @@
                                 <h1 class="h4 text-gray-900 mb-4">Formulir Pendaftaran || <a href="<?= base_url('P/Auth/login');?>">Masuk Sistem</a></h1>
                             </div>
                             <form class="user" action="<?= base_url('P/Auth/process_register')?>" method="post" enctype="multipart/form-data">
+                                 <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control" required name="namalengkap"

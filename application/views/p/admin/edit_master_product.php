@@ -7,6 +7,7 @@
         </div>
         <div class="card-body">
             <form class="user" action="<?= base_url('P/Admin/process_edit_master_product')?>" method="post" enctype="multipart/form-data">
+                 <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                 <input type="hidden" name="id_master_kelas" value="<?= $list_data['id_master_kelas'];?>">
                 <input type="hidden" name="foto_kelas_lama" value="<?= $list_data['foto_kelas'];?>">
                 <input type="hidden" name="foto_sertifikat_lama" value="<?= $list_data['foto_sertifikat'];?>">

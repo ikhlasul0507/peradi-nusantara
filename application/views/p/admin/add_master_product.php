@@ -7,6 +7,7 @@
         </div>
         <div class="card-body">
             <form class="user" action="<?= base_url('P/Admin/process_add_master_product')?>" method="post" enctype="multipart/form-data">
+                 <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                 <div class="form-group row">
                     <div class="col-sm-3 mb-3 mb-sm-0">
                         <input type="text" class="form-control" required name="nama_kelas"

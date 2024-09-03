@@ -7,6 +7,7 @@
         </div>
         <div class="card-body">
             <form class="user" action="<?= base_url('P/Admin/process_edit_parameter')?>" method="post">
+                 <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                 <input type="hidden" name="id_parameter" value="<?= $list_data['id_parameter'];?>">
                 <div class="form-group row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
