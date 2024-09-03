@@ -99,7 +99,7 @@ function validateImageFile(event) {
             // File is valid
             return true;
         } else {
-            alert("Please unggah file gambar !");
+            alert("Please unggah file gambar maksimal 5MB !");
             // Clear the file input
             fileInput.value = "";
         }

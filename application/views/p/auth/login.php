@@ -47,7 +47,7 @@
                                 
                                 <div class="form-group">
                                     <input type="number" class="form-control"
-                                            required name="handphone" placeholder="Handpone Aktif" pattern="0[0-9]{9,}" onkeypress="return isNumberKey(event,'hp')">
+                                            required name="handphone" placeholder="Handpone Aktif" pattern="0[0-9]{9,}" min="0" onkeypress="return isNumberKey(event,'hp')">
                                 </div>
                                 <div class="form-group">
                                    <input type="password" class="form-control"
