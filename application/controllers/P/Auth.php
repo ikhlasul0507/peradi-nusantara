@@ -20,7 +20,7 @@ class Auth extends CI_Controller {
 	 */
 	public function __construct()
 	{
-		header("Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none';");
+		// header("Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none';");
 		parent::__construct();
 		$this->load->library('service');
 		$this->load->model('Mbg','M');
