@@ -41,13 +41,13 @@
                     <div class="col-lg-6">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Masuk Sistem</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Masuk Sistem || <a href="<?= base_url('P/Auth');?>">Formulir Pendaftaran</a></h1>
                             </div>
                             <form class="user" action="<?= base_url('P/Auth/process_login')?>" method="post">
                                 
                                 <div class="form-group">
                                     <input type="number" class="form-control"
-                                            required name="handphone" placeholder="Handpone Aktif">
+                                            required name="handphone" placeholder="Handpone Aktif" pattern="0[0-9]{9,}" onkeypress="return isNumberKey(event,'hp')">
                                 </div>
                                 <div class="form-group">
                                    <input type="password" class="form-control"
@@ -71,6 +71,9 @@
 
     </div>
 
+
+    <!-- validation -->
+    <script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script>
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/p/sistem/');?>vendor/jquery/jquery.min.js"></script>
     <script src="<?= base_url('assets/p/sistem/');?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

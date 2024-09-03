@@ -41,22 +41,22 @@
                     <div class="col-lg-6">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Formulir Pendaftaran</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Formulir Pendaftaran || <a href="<?= base_url('P/Auth/login');?>">Masuk Sistem</a></h1>
                             </div>
                             <form class="user" action="<?= base_url('P/Auth/process_register')?>" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control" required name="namalengkap"
-                                            placeholder="Nama lengkap">
+                                            placeholder="Nama lengkap" onkeypress="return isAlphaKey(event,'nama')">
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="number" class="form-control" min="0" required name="nik"
-                                            placeholder="NIK">
+                                            placeholder="NIK" maxlength="16" pattern="\d{16}" onkeypress="return isNumberKey(event,'nik')">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                         <input type="email" class="form-control" required name="email"
-                                        placeholder="Email Aktif">
+                                        placeholder="Email Aktif" onkeypress="return validateEmailKeypress(event)">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -64,31 +64,31 @@
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="file" required name="file_ktp"
-                                        placeholder="Upload KTP">
+                                        placeholder="Upload KTP" accept="image/*" onchange="validateImageFile(event)">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="tel" class="form-control"
-                                            required name="handphone" pattern="0[0-9]{9,}" placeholder="Handpone Aktif">
+                                            required name="handphone" pattern="0[0-9]{9,}" placeholder="Handpone Aktif" onkeypress="return isNumberKey(event,'hp')">
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="number" class="form-control"
-                                            required name="usia" placeholder="Usia">
+                                            required name="usia" placeholder="Usia" onkeypress="return isNumberKey(event,'usia')">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" class="form-control" required name="asalkampus"
-                                        placeholder="Asal Kampus">
+                                        placeholder="Asal Kampus" onkeypress="return isAlphaKey(event,'kampus')">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control" required name="reference"
-                                        placeholder="Referensi (Iklan, IG, FB)">
+                                        placeholder="Referensi (Iklan, IG, FB)" onkeypress="return isAlphaKey(event,'ref')">
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control" required name="pic"
-                                        placeholder="PIC">
+                                        placeholder="PIC" onkeypress="return isAlphaKey(event,'pic')">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control"
-                                            required name="password" placeholder="Password">
+                                            required name="password" placeholder="Password" onkeyup="validatePassword(event)">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Daftar</button>
                             </form>
@@ -133,6 +133,8 @@
 
     </div>
 
+    <!-- validation -->
+    <script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script>
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/p/sistem/');?>vendor/jquery/jquery.min.js"></script>
     <script src="<?= base_url('assets/p/sistem/');?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
