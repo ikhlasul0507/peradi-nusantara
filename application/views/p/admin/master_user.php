@@ -26,6 +26,7 @@
                         <tr>
                             <th>Aksi</th>
                             <th>NIK</th>
+                            <th>Angkatan</th>
                             <th>Email</th>
                             <th>Nama Lengkap/Usia</th>
                             <th>Handphone</th>
@@ -46,6 +47,7 @@
                                 </a>
                             </td>
                             <td><?= $value['nik'];?></td>
+                            <td><?= $value['angkatan'];?></td>
                             <td><?= $value['email'];?></td>
                             <td><?= $value['nama_lengkap'];?>-<?= $value['usia'];?></td>
                             <td><?= $value['handphone'];?></td>
@@ -55,7 +57,8 @@
                                
                             </td>
                             <td>
-                                 <input type="text" id="password" disabled name="password" value="<?= $value['password'];?>">
+                                 <input type="password" id="password" class="password" disabled name="password" value="<?= $value['password'];?>">
+                                 <input type="checkbox" id="togglePassword" class="togglePassword">
                             </td>
                         </tr>
                         <?php } ?>
@@ -121,3 +124,15 @@
             </form>
         </div>
     </div>
+
+    <script type="text/javascript">
+        const togglePasswordCheckboxes = document.querySelectorAll('.togglePassword');
+
+        togglePasswordCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const passwordInput = this.closest('tr').querySelector('.password');
+                passwordInput.setAttribute('type', this.checked ? 'text' : 'password');
+            });
+        });
+
+    </script>
