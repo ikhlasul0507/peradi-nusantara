@@ -22,7 +22,7 @@ class Notification extends CI_Controller {
 	public function __construct()
     {
     	header('Access-Control-Allow-Origin: *');
-		header("Access-Control-Allow-Methods:GET,OPTIONS");
+		header("Access-Control-Allow-Methods:GET,OPTIONS,POST");
 		parent::__construct();
 		$this->load->model('Mbg', 'M');
 		$server_key = htmlspecialchars(addslashes($this->M->getParameter('@serverKeyMitrans')));
