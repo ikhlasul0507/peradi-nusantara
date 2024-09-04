@@ -1,4 +1,4 @@
-<div class="container">
+<div class="ml-3">
     <a class="badge badge-danger"href="<?= $this->input->server('HTTP_REFERER');?>">Back to Table</a>
     <h4>Create Record in <?= $table; ?></h4>
 

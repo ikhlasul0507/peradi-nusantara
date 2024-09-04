@@ -318,6 +318,15 @@ Untuk melihat detail :
 *Terima Kasih*
 
 -*Peradi Nusantara*-';
+			case 'start_scheduler':
+				$start = $params['start'];
+
+				return '*--Start Scheduler--*
+
+Start : '.$start.'
+
+*Terima Kasih*
+-*Peradi Nusantara*-';
 			default:
 				# code...
 				break;

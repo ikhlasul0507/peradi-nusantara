@@ -1,4 +1,4 @@
-<div class="container">
+<div class="ml-3">
     <h1>Database Tables Management</h1>
     <ul>
         <?php foreach ($tables as $table): ?>

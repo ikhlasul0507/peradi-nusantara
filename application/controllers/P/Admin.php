@@ -204,6 +204,9 @@ class Admin extends CI_Controller {
             $data['table'] = $table;
             $data['record'] = $this->Crud_model->get_by_id($table, $id, 'id_'.$table);
             $data['fields'] = $this->db->list_fields($table);
+            // Get detailed field information
+   			$field_data = $this->db->field_data($table);
+   			$data['field_data'] = $field_data;
             $this->load->view('p/temp/header',$data);
             $this->load->view('p/management_database/edit', $data);
             $this->load->view('p/temp/footer');
