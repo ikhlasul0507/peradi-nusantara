@@ -100,7 +100,12 @@ class Notification extends CI_Controller {
 		$oP = $this->M->getWhere('order_payment',['id_virtual_account'=>trim($idOrderVADB)]);
 		if($oP){
 			$id_order = $oP['id_order_booking'];
-			
+			$bankName = "";
+			$vaName = "";
+			if($result->va_numbers){
+				$bankName = $result->va_numbers[0]->bank;
+				$vaName =$result->va_numbers[0]->va_number;
+			}
 	    	$data_update = [
 	    		'payment_type' => $result->payment_type,
 	    		'status_code' => $result->status_code,
@@ -109,8 +114,8 @@ class Notification extends CI_Controller {
 	    		'transaction_status' => $result->transaction_status,
 	    		'transaction_time' => $result->transaction_time,
 	    		'va_nunmbers' => json_encode([
-				        "bank" => $result->va_numbers[0]->bank,
-				        "va_number" => $result->va_numbers[0]->va_number,
+				        "bank" => $bankName,
+				        "va_number" => $vaName,
 				]),
 	    	];
 
