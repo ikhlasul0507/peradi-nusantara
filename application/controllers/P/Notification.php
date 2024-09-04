@@ -25,6 +25,7 @@ class Notification extends CI_Controller {
 		header("Access-Control-Allow-Methods:GET,OPTIONS,POST");
 		parent::__construct();
 		$this->load->model('Mbg', 'M');
+		$this->config->set_item('csrf_protection', false);
 		$server_key = htmlspecialchars(addslashes($this->M->getParameter('@serverKeyMitrans')));
 		$isProduction = $this->M->getParameter('@isProductionMitrans') === 'Y' ? true : false;
 		$params = array('server_key' => $server_key, 'production' => $isProduction);
