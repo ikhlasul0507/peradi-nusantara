@@ -33,8 +33,25 @@ class Scheduler extends CI_Controller
 
 	public function startScheduler()
 	{
-		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264')];
+		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler'];
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 		echo "startScheduler :" .date('Y-m-d H:i:s');
+	}
+
+	public function setUnpaidPayment()
+	{
+		$datePayment = (int)$this->M->getParameter('@setDatePaymentDeadline') + 1;
+		$dayOfMonth = date('j');
+		if ($dayOfMonth == $datePayment){
+			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'N'],'nama_parameter','@donePaymentEveryMonth');
+		}
+	}
+	public function checkDatePaymentEveryMonth()
+	{
+		$datePayment = (int)$this->M->getParameter('@setDatePaymentDeadline');
+		$dayOfMonth = date('j');
+		if ($dayOfMonth == $datePayment && $this->M->getParameter('@donePaymentEveryMonth') == 'N') {
+			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'Y'],'nama_parameter','@lockLoginForEveryOne');
+		}
 	}
 }

@@ -320,10 +320,12 @@ Untuk melihat detail :
 -*Peradi Nusantara*-';
 			case 'start_scheduler':
 				$start = $params['start'];
-
+				$msg = $params['msg'];
 				return '*--Start Scheduler--*
 
 Start : '.$start.'
+
+'.$msg.'
 
 *Terima Kasih*
 -*Peradi Nusantara*-';
