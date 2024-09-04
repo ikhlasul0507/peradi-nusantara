@@ -26,7 +26,12 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		redirect('P/Auth');
+		if (stripos($_SERVER["REQUEST_URI"],'Welcome') === FALSE) {
+			echo "/P/Notification";
+		}else{
+			echo "Masuk";
+		}
+		// redirect('P/Auth');
 		// $this->load->view('welcome_message');
 	}
 
