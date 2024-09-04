@@ -31,6 +31,7 @@
                             <th>Handphone</th>
                             <th>Kampus/Semester</th>
                             <th>Status</th>
+                            <th>Password</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +52,10 @@
                             <td><?= $value['asal_kampus'];?>-<?= $value['semester'];?></td>
                             <td>
                                 <?= $value['is_active'] == "Y" ? "Aktif" : "Tidak Aktif";?></br>
-                                <input type="text" id="password" name="password" value="<?= $value['password'];?>">
+                               
+                            </td>
+                            <td>
+                                 <input type="text" id="password" disabled name="password" value="<?= $value['password'];?>">
                             </td>
                         </tr>
                         <?php } ?>
