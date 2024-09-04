@@ -707,6 +707,7 @@ class Admin extends CI_Controller {
 						$this->service->send_whatsapp($data_send_notif, 'valid_order_class');
 					}
 				}
+				$add_history = $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Validasi Order ".$getListKelas['nama_kelas']." Berhasil Untuk = ".$user['nama_lengkap']);
 				$data = $this->session->set_flashdata('pesan', 'Validasi order berhasil !');
 				redirect('P/Admin/valid_order/'.$id_user.'/'.$idOrder,$data);
 			}else{
@@ -816,6 +817,7 @@ class Admin extends CI_Controller {
 		if($idOrder){
 			$order = $this->M->getWhere('order_booking',['id_order_booking'=>trim($idOrder)]);
 			if($order){
+				$add_history = $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Delete Order ".$idOrder." Berhasil");
 				$this->M->delete_to_db('order_booking','id_order_booking',$idOrder);
 				$data = $this->session->set_flashdata('pesan', 'Berhasil hapus order !');
 				redirect($this->input->server('HTTP_REFERER'),$data);
@@ -1012,11 +1014,7 @@ class Admin extends CI_Controller {
 			// echo json_encode($data_register);die;
 			$add_db = $this->M->add_to_db('user', $data_register);
 			if($add_db){
-				$data_history = [
-					'nik' =>trim($this->input->post('nik')),
-					'action' => "Pendaftaran Akun Baru"
-				];
-				$add_history = $this->M->add_log_history($data_history);
+				$add_history = $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Pendaftaran Akun Baru Melalui Admin");
 				if($add_history){
 					if($this->M->getParameter('@sendNotifWaRegister') == 'Y'){
 						$data_send_notif = [
