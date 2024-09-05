@@ -196,7 +196,7 @@
         },
         error: function(xhr, status, error) {
             console.log('Error:', error);
-            alert('Pembayaran telah lunas, silahkan refresh halaman');
+            alert('Virtual Account Telah DiGenerate Silahkan Tunggu 15 Menit');
         }
     });
 });

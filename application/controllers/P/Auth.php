@@ -92,7 +92,8 @@ class Auth extends CI_Controller {
 								if($this->M->getParameter('@sendNotifWaRegister') == 'Y'){
 									$data_send_notif = [
 										'handphone' => trim($this->input->post('handphone')),
-										'namalengkap' => trim($this->input->post('namalengkap'))
+										'namalengkap' => trim($this->input->post('namalengkap')),
+										'url_login' => trim(base_url('P/Auth/login'))
 									];
 									$this->service->send_whatsapp($data_send_notif, 'new_register');
 								}
