@@ -640,6 +640,7 @@ class Admin extends CI_Controller {
 			];
 			$add_db = $this->M->add_to_db('order_booking', $data_db);
 			if($add_db){
+				$this->M->add_log_history($this->session->userdata('nama_lengkap'),"Melakukan Order Kelas = ". trim($dataKelas['nama_kelas']));
 				$this->M->delete_to_db('cart','id_user',trim($this->session->userdata('id_user')));
 				if($this->M->getParameter('@sendNotifOrderClass') == 'Y'){
 					$data_send_notif = [
@@ -648,7 +649,9 @@ class Admin extends CI_Controller {
 						'namaKelas' => trim($dataKelas['nama_kelas']),
 						'metodeBayar' => trim($this->input->post('metode_bayar')),
 					];
-					$this->service->send_whatsapp($data_send_notif, 'order_class');
+					$sendUser = $this->service->send_whatsapp($data_send_notif, 'order_class');
+					$data_send_notif['handphone'] = $this->M->getParameter('@waAdminNotif');
+					$this->service->send_whatsapp($data_send_notif, 'order_notif_admin');
 				}
 				$data = $this->session->set_flashdata('pesan', 'Kelas berhasil di pesan !');
 				redirect('P/Admin/myclass',$data);

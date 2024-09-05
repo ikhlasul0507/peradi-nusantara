@@ -147,6 +147,26 @@ mohon di tunggu ya
 Terima Kasih
 
 -Peradi Nusantara-';
+			case 'order_notif_admin':
+				$name = $params['namalengkap'];
+				$namaKelas = $params['namaKelas'];
+				$metodeBayar = $params['metodeBayar'];
+				return '*--Notifikasi Pembelian Berhasil --*
+
+---Orderan Masuk---
+
+Atas Nama : '.$name.',
+
+Detail Pembelian:
+
+-Paket : *'.$namaKelas.'*
+-Metode Pembayaran : *'.$metodeBayar.'*
+
+Admin Mohon verifikasi data
+
+Terima Kasih
+
+-Peradi Nusantara-';
 			case 'valid_order_class':
 				$name = $params['namalengkap'];
 				$namaKelas = $params['namaKelas'];
