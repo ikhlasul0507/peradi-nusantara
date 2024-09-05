@@ -5,11 +5,10 @@
       border: 1px solid #ddd;
       text-align: left;
       white-space: nowrap; /* Prevents text from wrapping */
-      overflow: hidden; /* Ensures text that overflows is hidden */
       text-overflow: ellipsis; /* Adds ellipsis (...) to truncated text */
     }
 </style>
-<div class="">
+<div class="container-fluid">
     <div class="card shadow mb-4">
         <div id="filterData" class="collapse mt-4 container-fluid" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <form class="user" method="post" action="<?= base_url('P/Admin/log_activity')?>">
@@ -53,7 +52,7 @@
             </div>
         </div>
         <div class="">
-            <div class="" style="overflow-y: scroll; height: 400px; font-size: 10px;color: black">
+            <div class="" style="font-size: 10px;color: black">
                 <table class="" border="1px" id="tableData" cellpadding="0px" cellspacing="0">
                     <thead>
                         <tr style="background-color: silver">

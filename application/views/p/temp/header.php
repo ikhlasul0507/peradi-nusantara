@@ -19,11 +19,55 @@
 
     <!-- Custom styles for this template-->
     <link href="<?= base_url('assets/p/sistem/');?>css/sb-admin-2.min.css" rel="stylesheet">
-     <link href="<?= base_url('assets/p/sistem/');?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
+    <link href="<?= base_url('assets/p/sistem/');?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
+    <style type="text/css">
+        
+        .container-fluid {
+            max-height: calc(100vh - 150px);/* Maximum height is the full height of the viewport */
+            overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
+        }
+
+        #accordionSidebar {
+            max-height: calc(100vh - 150px);/* Maximum height is the full height of the viewport */
+            overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
+        }
+        .collapse .show{
+            z-index: 10000;
+            width: 100vh;
+        }
+        .sidebar {
+            width: 8.5rem;
+            min-height: 100vh;
+        }
+
+        .sidebar .nav-item .collapse {
+            position: relative;
+            left: 0;
+            z-index: 1000 !important;
+            top: 2px;
+            width: 3.5rem;
+        }
+        /*#collapsePages{
+            z-index: 100000 !important;
+        }
+        .collapse .show{
+            position: relative;
+            z-index: 1000 !important;
+        }*/
+        @media (min-width: 768px) {
+            .sidebar {
+                width: 17rem!important;
+            }
+            .sidebar.toggled {
+                overflow: visible;
+                width: 8.5rem !important;
+            }
+        }
+    </style>
 </head>
 
-<body id="page-top">
+<body id="page-top" style="overflow-y: hidden;">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
