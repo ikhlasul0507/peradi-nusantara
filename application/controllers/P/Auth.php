@@ -29,6 +29,7 @@ class Auth extends CI_Controller {
 	{
 		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
 		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
+		$data['list_pic'] = explode(",",$this->M->getParameter('@picRegister'));
 		$this->load->view('p/auth/register',$data);
 	}
 
@@ -52,14 +53,14 @@ class Auth extends CI_Controller {
 	public function process_register()
 	{
 		// if(filter_var(trim($this->input->post('namalengkap')), FIL))
-		$check = false;
-		$referenceFromDB = $this->M->getParameter('@picRegister');
-		if(strpos($referenceFromDB, strtoupper($this->input->post('pic'))) !== false){
-			$check = true;
-		}else{
-			$data = $this->session->set_flashdata('pesan', 'PIC Tidak Terdaftar !');
-			redirect('P/Auth',$data);
-		}
+		$check = true;
+		// $referenceFromDB = $this->M->getParameter('@picRegister');
+		// if(strpos($referenceFromDB, strtoupper($this->input->post('pic'))) !== false){
+		// 	$check = true;
+		// }else{
+		// 	$data = $this->session->set_flashdata('pesan', 'PIC Tidak Terdaftar !');
+		// 	redirect('P/Auth',$data);
+		// }
 		if($check){
 			$checkUserExist =  $this->M->checkUserExist(trim($this->input->post('nik')), trim($this->input->post('handphone')));
 			

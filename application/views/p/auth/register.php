@@ -88,8 +88,12 @@
                                         placeholder="Referensi (Iklan, IG, FB)" onkeypress="return isAlphaKey(event,'ref')">
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control" required name="pic"
-                                        placeholder="PIC" onkeypress="return isAlphaKey(event,'pic')">
+                                        <select class="form-control" required name="pic">
+                                            <option value="" disabled selected>--Pilih PIC--</option>
+                                            <?php foreach ($list_pic as $pic) { ?>
+                                                <option value="<?=$pic;?>"><?=$pic;?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
