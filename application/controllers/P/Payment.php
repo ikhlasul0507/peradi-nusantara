@@ -129,8 +129,8 @@ class Payment extends CI_Controller {
 		$transaction = array(
 		  'transaction_details' => $transaction_details,
 		  'customer_details' => $customer_details,
-		  'item_details' => $item_details,
-		  'expiry' => $custom_expiry
+		  'item_details' => $item_details
+		  // 'expiry' => $custom_expiry
 		);
 		//error_log(json_encode($transaction));
 		$snapToken = $this->midtrans->getSnapToken($transaction);
