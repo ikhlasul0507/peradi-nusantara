@@ -232,7 +232,47 @@ class Payment extends CI_Controller {
 
     public function getDetailTransaction($order_id)
     {
-		print_r ($this->midtrans->status($order_id));
+		$result = $this->midtrans->status($order_id);
+		if($result){
+			$statusCode = $result->status_code;
+			$transaction = $result->transaction_status;
+			$type = $result->payment_type;
+			$order_id_va = $result->order_id;
+			$fraud = $result->fraud_status;
+
+			$transaction = new stdClass();
+			$transaction->status_code = $result->status_code;
+			$transaction->transaction_id = $result->order_id;
+			$transaction->gross_amount = $result->gross_amount;
+			$transaction->currency = $result->currency;
+			$transaction->order_id = $result->order_id;
+			$transaction->payment_type = $result->payment_type;
+			$transaction->signature_key = $result->signature_key;
+			$transaction->transaction_status = $result->transaction_status;
+			$transaction->fraud_status = $result->fraud_status;
+			$transaction->status_message = $result->status_message;
+			$transaction->merchant_id = $result->merchant_id;
+			$transaction->va_numbers = array(
+			    (object) array(
+			        'bank' => $result->va_numbers[0]->bank,
+			        'va_number' => $result->va_numbers[0]->va_number
+			    )
+			);
+			$transaction->payment_amounts = array(
+			    (object) array(
+			        'amount' => $result->payment_amounts[0]->amount,
+			        'paid_at' => $result->payment_amounts[0]->paid_at
+			    )
+			);
+			$transaction->transaction_time = $result->transaction_time;
+			$transaction->expiry_time = $result->expiry_time;
+
+			// Convert the object to JSON
+			$json_data = json_encode($transaction, JSON_PRETTY_PRINT);
+
+			// Display the JSON
+			echo $json_data;
+		}
     }
 
     public function createInvoice($id_order_booking)
