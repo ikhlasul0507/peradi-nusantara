@@ -232,7 +232,7 @@ class Payment extends CI_Controller {
 
     public function getDetailTransaction($order_id)
     {
-		json_encode($this->midtrans->status($order_id));
+		print_r ($this->midtrans->status($order_id));
     }
 
     public function createInvoice($id_order_booking)
