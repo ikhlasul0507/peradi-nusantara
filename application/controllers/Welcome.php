@@ -22,6 +22,9 @@ class Welcome extends CI_Controller {
 	function __construct(){
         parent::__construct();
         $this->load->library('Pdf'); // MEMANGGIL LIBRARY YANG KITA BUAT TADI
+        $this->load->dbutil();
+        $this->load->helper('file');
+        $this->load->helper('download');
     }
 
 	public function index()
@@ -434,39 +437,24 @@ Langkah-langkah :
     }
 
     public function backup_database() {
-        // Database credentials from the CodeIgniter database config
-        $db_host = $this->db->hostname;
-        $db_user = $this->db->username;
-        $db_pass = $this->db->password;
-        $db_name = $this->db->database;
+        // Create the backup
+        $prefs = array(
+            'format' => 'zip', // gzip or zip, can also be sql
+            'filename' => 'db_backup.sql', // File name in the zip archive
+        );
 
-        // Directory where the backup file will be saved
-        $backup_directory = './backups/';
-        if (!file_exists($backup_directory)) {
-            mkdir($backup_directory, 0777, true); // Create directory if it doesn't exist
-        }
+        // Backup the entire database and assign it to a variable
+        $backup = $this->dbutil->backup($prefs);
 
-        // File name with current date and time
-        $backup_file = $backup_directory . $db_name . '_backup_' . date('Y-m-d_H-i-s') . '.sql';
+        // Set the backup file name with date
+        $db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
+        $save = './backups/' . $db_name;
 
-        // MySQL dump command to export the database
-        $command = "mysqldump --host=$db_host --user=$db_user --password=$db_pass $db_name > $backup_file";
+        // Write the file to your server's backup directory
+        write_file($save, $backup);
 
-        // Execute the command
-        $output = null;
-        $return_var = null;
-        exec($command, $output, $return_var);
-
-        // Check if backup was successful
-        if ($return_var === 0) {
-            // Optional: Force download of the backup file
-            $this->load->helper('download');
-            force_download($backup_file, NULL);
-            
-            echo "Backup successful! File saved to: " . base_url($backup_file);
-        } else {
-            echo "Backup failed!";
-        }
+        // Force download the file
+        force_download($db_name, $backup);
     }
 }
 
