@@ -234,12 +234,7 @@ class Payment extends CI_Controller {
     {
 		$result = $this->midtrans->status($order_id);
 		if($result){
-			$statusCode = $result->status_code;
-			$transaction = $result->transaction_status;
-			$type = $result->payment_type;
-			$order_id_va = $result->order_id;
-			$fraud = $result->fraud_status;
-
+	
 			$transaction = new stdClass();
 			$transaction->status_code = $result->status_code;
 			$transaction->transaction_id = $result->order_id;
@@ -271,7 +266,7 @@ class Payment extends CI_Controller {
 			$json_data = json_encode($transaction, JSON_PRETTY_PRINT);
 
 			// Display the JSON
-			echo $json_data;
+			$this->load->view('p/admin/detail_transaction', array('transaction' => $transaction));
 		}
     }
 
