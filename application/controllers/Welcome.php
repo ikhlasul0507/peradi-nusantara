@@ -432,5 +432,41 @@ Langkah-langkah :
 		echo "<br>";
 		echo "yesterday3: " . $yesterday3->format('Y-m-d') . "\n";
     }
+
+    public function backup_database() {
+        // Database credentials from the CodeIgniter database config
+        $db_host = $this->db->hostname;
+        $db_user = $this->db->username;
+        $db_pass = $this->db->password;
+        $db_name = $this->db->database;
+
+        // Directory where the backup file will be saved
+        $backup_directory = './backups/';
+        if (!file_exists($backup_directory)) {
+            mkdir($backup_directory, 0777, true); // Create directory if it doesn't exist
+        }
+
+        // File name with current date and time
+        $backup_file = $backup_directory . $db_name . '_backup_' . date('Y-m-d_H-i-s') . '.sql';
+
+        // MySQL dump command to export the database
+        $command = "mysqldump --host=$db_host --user=$db_user --password=$db_pass $db_name > $backup_file";
+
+        // Execute the command
+        $output = null;
+        $return_var = null;
+        exec($command, $output, $return_var);
+
+        // Check if backup was successful
+        if ($return_var === 0) {
+            // Optional: Force download of the backup file
+            $this->load->helper('download');
+            force_download($backup_file, NULL);
+            
+            echo "Backup successful! File saved to: " . base_url($backup_file);
+        } else {
+            echo "Backup failed!";
+        }
+    }
 }
 
