@@ -89,7 +89,7 @@
                                     <i class="fas fa-trash"></i>
                                 </a>
 
-                                <a class="btn btn-primary btn-circle" onclick="confirmDeleteData('<?= base_url('P/Admin/delete_order_payment/'.$value['id_user'].'/'.$op['id_order_payment']);?>')">
+                                <a class="btn btn-primary btn-circle" target="blank" href="<?= base_url('P/Payment/getDetailTransaction/'.$op['id_virtual_account']);?>">
                                     <i class="fas fa-paper-plane"></i>
                                 </a>
 
