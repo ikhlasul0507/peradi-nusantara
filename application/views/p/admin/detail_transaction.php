@@ -50,4 +50,54 @@
             <td><?= htmlspecialchars($transaction->order_id) ?></td>
         </tr>
         <tr>
-            <td>Payment
+            <td>Payment Type</td>
+            <td><?= htmlspecialchars($transaction->payment_type) ?></td>
+        </tr>
+        <tr>
+            <td>Signature Key</td>
+            <td><?= htmlspecialchars($transaction->signature_key) ?></td>
+        </tr>
+        <tr>
+            <td>Transaction Status</td>
+            <td><?= htmlspecialchars($transaction->transaction_status) ?></td>
+        </tr>
+        <tr>
+            <td>Fraud Status</td>
+            <td><?= htmlspecialchars($transaction->fraud_status) ?></td>
+        </tr>
+        <tr>
+            <td>Status Message</td>
+            <td><?= htmlspecialchars($transaction->status_message) ?></td>
+        </tr>
+        <tr>
+            <td>Merchant ID</td>
+            <td><?= htmlspecialchars($transaction->merchant_id) ?></td>
+        </tr>
+        <tr>
+            <td>Virtual Account Bank</td>
+            <td><?= htmlspecialchars($transaction->va_numbers[0]->bank) ?></td>
+        </tr>
+        <tr>
+            <td>Virtual Account Number</td>
+            <td><?= htmlspecialchars($transaction->va_numbers[0]->va_number) ?></td>
+        </tr>
+        <tr>
+            <td>Payment Amount</td>
+            <td><?= htmlspecialchars($transaction->payment_amounts[0]->amount) ?></td>
+        </tr>
+        <tr>
+            <td>Payment Date</td>
+            <td><?= htmlspecialchars($transaction->payment_amounts[0]->paid_at) ?></td>
+        </tr>
+        <tr>
+            <td>Transaction Time</td>
+            <td><?= htmlspecialchars($transaction->transaction_time) ?></td>
+        </tr>
+        <tr>
+            <td>Expiry Time</td>
+            <td><?= htmlspecialchars($transaction->expiry_time) ?></td>
+        </tr>
+    </table>
+
+</body>
+</html>
