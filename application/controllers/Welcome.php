@@ -454,7 +454,7 @@ Langkah-langkah :
         write_file($save, $backup);
 
         // Force download the file
-        force_download($db_name, $backup);
+        // force_download($db_name, $backup);
     }
 }
 
