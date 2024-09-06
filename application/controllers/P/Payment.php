@@ -232,8 +232,7 @@ class Payment extends CI_Controller {
 
     public function getDetailTransaction($order_id)
     {
-    	echo 'test get status </br>';
-		print_r ($this->midtrans->status($order_id) );
+		json_encode($this->midtrans->status($order_id));
     }
 
     public function createInvoice($id_order_booking)
