@@ -89,11 +89,13 @@
                                     <i class="fas fa-trash"></i>
                                 </a>
 
+
+                                <?php } ?>
+
                                 <a class="btn btn-primary btn-circle" target="blank" href="<?= base_url('P/Payment/getDetailTransaction/'.$op['id_virtual_account']);?>">
                                     <i class="fas fa-paper-plane"></i>
                                 </a>
-
-                                <?php } ?>
+                                
                             </td>
                         </tr>
                         <?php } ?>
