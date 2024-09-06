@@ -33,7 +33,10 @@ class Scheduler extends CI_Controller
 
 	public function startScheduler()
 	{
-		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler'];
+		
+        $db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
+		$this->backup_database($db_name);
+		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler Backup Database'];
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 		echo "startScheduler :" .date('Y-m-d H:i:s');
 	}
@@ -54,4 +57,24 @@ class Scheduler extends CI_Controller
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'Y'],'nama_parameter','@lockLoginForEveryOne');
 		}
 	}
+
+	public function backup_database($db_name) {
+        // Create the backup
+        $prefs = array(
+            'format' => 'zip', // gzip or zip, can also be sql
+            'filename' => 'db_backup.sql', // File name in the zip archive
+        );
+
+        // Backup the entire database and assign it to a variable
+        $backup = $this->dbutil->backup($prefs);
+
+        // Set the backup file name with date
+        $save = './backups/' . $db_name;
+
+        // Write the file to your server's backup directory
+        write_file($save, $backup);
+
+        // Force download the file
+        // force_download($db_name, $backup);
+    }
 }
