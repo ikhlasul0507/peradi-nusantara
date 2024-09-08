@@ -25,6 +25,18 @@ class Welcome extends CI_Controller {
         $this->load->dbutil();
         $this->load->helper('file');
         $this->load->helper('download');
+
+        //duplicate database
+        $this->load->model('Database_model');
+    }
+
+    public function duplicate() {
+        
+        $original_db = 'db_peradi'; 
+        $new_db = 'db_backup_peradi';
+
+        $result = $this->Database_model->duplicate_database($original_db, $new_db);
+		echo $result;
     }
 
 	public function index()

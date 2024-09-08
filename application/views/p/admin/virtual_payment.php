@@ -166,15 +166,15 @@
                         // Reset or handle `dataItem`
                         var dataItem = []; // Initialize the array if not already done
 
-                        if(result.payment_type === 'bank_transfer') {
-                            updateVirtualAccount(result.order_id, result.va_numbers[0].bank, result.va_numbers[0].va_number, result.transaction_id);
-                        }
-                        if(result.biller_code === '70012') {
-                            updateVirtualAccount(result.order_id, 'mandiri', result.bill_key, result.transaction_id);
-                        }
-                        if(result.payment_type === 'qris') {
-                            updateVirtualAccount(result.order_id, result.payment_type, '000000000', result.transaction_id);
-                        }
+                        // if(result.payment_type === 'bank_transfer') {
+                        //     updateVirtualAccount(result.order_id, result.va_numbers[0].bank, result.va_numbers[0].va_number, result.transaction_id);
+                        // }
+                        // if(result.biller_code === '70012') {
+                        //     updateVirtualAccount(result.order_id, 'mandiri', result.bill_key, result.transaction_id);
+                        // }
+                        // if(result.payment_type === 'qris') {
+                        //     updateVirtualAccount(result.order_id, result.payment_type, '000000000', result.transaction_id);
+                        // }
 
                         // location.reload();
                     },
@@ -196,7 +196,8 @@
         },
         error: function(xhr, status, error) {
             console.log('Error:', error);
-            alert('Virtual Account Telah DiGenerate Silahkan Tunggu 15 Menit');
+            alert('Virtual Account Telah DiGenerate');
+            window.location.href = '<?=site_url('P/Payment/getDetailTransaction/'.$get_payment['id_virtual_account'])?>';
         }
     });
 });

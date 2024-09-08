@@ -232,42 +232,117 @@ class Payment extends CI_Controller {
 
     public function getDetailTransaction($order_id)
     {
-		$result = $this->midtrans->status($order_id);
-		if($result){
-	
-			$transaction = new stdClass();
-			$transaction->status_code = $result->status_code;
-			$transaction->transaction_id = $result->order_id;
-			$transaction->gross_amount = $result->gross_amount;
-			$transaction->currency = $result->currency;
-			$transaction->order_id = $result->order_id;
-			$transaction->payment_type = $result->payment_type;
-			$transaction->signature_key = $result->signature_key;
-			$transaction->transaction_status = $result->transaction_status;
-			$transaction->fraud_status = $result->fraud_status;
-			$transaction->status_message = $result->status_message;
-			$transaction->merchant_id = $result->merchant_id;
-			$transaction->va_numbers = array(
-			    (object) array(
-			        'bank' => $result->va_numbers[0]->bank,
-			        'va_number' => $result->va_numbers[0]->va_number
-			    )
-			);
-			$transaction->payment_amounts = array(
-			    (object) array(
-			        'amount' => $result->payment_amounts[0]->amount,
-			        'paid_at' => $result->payment_amounts[0]->paid_at
-			    )
-			);
-			$transaction->transaction_time = $result->transaction_time;
-			$transaction->expiry_time = $result->expiry_time;
+    	try {
+			$result = $this->midtrans->status($order_id);
+		
+			if($result){
+				$transaction = new stdClass();
+				$transaction->status_code = $result->status_code;
+				$transaction->transaction_id = $result->order_id;
+				$transaction->transaction_id_qrcode = $result->transaction_id;
+				$transaction->gross_amount = $result->gross_amount;
+				$transaction->currency = $result->currency;
+				$transaction->order_id = $result->order_id;
+				$transaction->payment_type = $result->payment_type;
+				$transaction->signature_key = $result->signature_key;
+				$transaction->transaction_status = $result->transaction_status;
+				$transaction->fraud_status = $result->fraud_status;
+				$transaction->status_message = $result->status_message;
+				$transaction->merchant_id = $result->merchant_id;
 
-			// Convert the object to JSON
-			$json_data = json_encode($transaction, JSON_PRETTY_PRINT);
+				$bank = "";
+				$va_number = "";
 
-			// Display the JSON
-			$this->load->view('p/admin/detail_transaction', array('transaction' => $transaction));
-		}
+				$amount = "";
+				$paid_at = "";
+
+				$langkahPembayaran = "";
+				if(isset($result->va_numbers) && is_array($result->va_numbers) && !empty($result->va_numbers)){
+					$bank = $result->va_numbers[0]->bank;
+					$va_number = $result->va_numbers[0]->va_number;
+				}
+
+				if($result->payment_type == 'bank_transfer') {
+
+				}
+
+				if(isset($result->biller_code) && !empty($result->biller_code)){
+					$bank = "Mandiri";
+					$va_number = $result->bill_key;
+					$amount = $result->gross_amount;
+
+					$text = "<h3>---<b>Livin By Mandiri</b>---</h3>
+                             <ul>1. Pilih <b>bayar</b> pada menu utama.</ul>
+                             <ul>2. Pilih <b>Ecommerce</b>.</ul>
+                             <ul>3. Pilih <b>Midtrans</b> di bagian penyedia jasa.</ul>
+                             <ul>4. Masukkan nomor <b>virtual account</b> pada bagian <b>kode bayar</b>.</ul>
+                             <ul>5. Klik <b>lanjutkan</b> untuk konfirmasi.</ul>
+                             <ul>6. Pembayaran selesai.</ul>
+
+                             <h3>---<b>ATM Mandiri</b>---</h3>
+                             <ul>1. Pilih <b>bayar/beli</b> pada menu utama.</ul>
+                             <ul>2. Pilih <b>lainnya</b>.</ul>
+                             <ul>3. Pilih <b>multi payment</b>.</ul>
+                             <ul>4. Masukkan kode perusahaan Midtrans <b>70012</b>.</ul>
+                             <ul>5. Masukkan <b>kode pembayaran</b>, lalu <b>konfirmasi</b>.</ul>
+                             <ul>6. Pembayaran selesai.</ul>
+
+                             <h3>---<b>Mandiri Internet Banking</b>---</h3>
+                             <ul>1. Pilih <b>bayar</b> pada menu utama.</ul>
+                             <ul>2. Pilih <b>multi payment</b>.</ul>
+                             <ul>3. Pilih <b>dari rekening</b>.</ul>
+                             <ul>4. Pilih <b>Midtrans</b> di bagian <b>penyedia jasa</b>.</ul>
+                             <ul>5. Masukkan <b>kode pembayaran</b>, lalu <b>konfirmasi</b>.</ul>
+                             <ul>6. Pembayaran selesai.</ul>
+
+                             ";
+                    $langkahPembayaran = $text;
+				}
+
+				if($result->payment_type == 'qris') {
+					$amount = $result->gross_amount;
+					$bank = "QRIS";
+					$va_number = "Y";
+					$text = "<h3>---<b>Aplikasi Scan QR</b>---</h3>
+                             <ul>1. Buka <b>aplikasi Gojek, GoPay atau e-wallet lain</b> Anda.</ul>
+                             <ul>2. <b>Download</b> atau <b>pindai QRIS</b> pada layar.</ul>
+                             <ul>3. Konfirmasi pembayaran pada aplikasi.</ul>
+                             <ul>4. MPembayaran berhasil.</ul>";
+                    $langkahPembayaran = $text;
+				}	
+
+				$transaction->va_numbers = array(
+				    (object) array(
+				        'bank' => $bank,
+				        'va_number' => $va_number
+				    )
+				);
+
+
+				if(isset($result->payment_amounts) && is_array($result->payment_amounts) && !empty($result->payment_amounts)){
+					$amount = $result->payment_amounts[0]->amount;
+					$paid_at = $result->payment_amounts[0]->paid_at;
+				}
+				$transaction->payment_amounts = array(
+				    (object) array(
+				        'amount' => $amount,
+				        'paid_at' => $paid_at
+				    )
+				);
+				$transaction->transaction_time = $result->transaction_time;
+				$transaction->expiry_time = $result->expiry_time;
+				$transaction->langkahPembayaran = $langkahPembayaran;
+				// Convert the object to JSON
+				$json_data = json_encode($transaction, JSON_PRETTY_PRINT);
+
+				// Display the JSON
+				$this->load->view('p/admin/detail_transaction', array('transaction' => $transaction));
+			}else{
+				echo "generate payment";
+			}
+		} catch (Exception $e) {
+            show_error('An error occurred while fetching the transaction details.', 500); // Return Internal Server Error
+        }
     }
 
     public function createInvoice($id_order_booking)

@@ -24,6 +24,9 @@ class Scheduler extends CI_Controller
 		parent::__construct();
 		$this->load->model('Mbg','M');
 		$this->load->library('service');
+		$this->load->dbutil();
+        $this->load->helper('file');
+        $this->load->helper('download');
 	}
 	public function index()
 	{
@@ -33,7 +36,7 @@ class Scheduler extends CI_Controller
 
 	public function startScheduler()
 	{
-		
+
         $db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
 		$this->backup_database($db_name);
 		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler Backup Database'];
