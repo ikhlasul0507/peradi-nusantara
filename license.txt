@@ -24,3 +24,5 @@ git status
 git add -- . ':!application/config/database.php'
 git commit -m "Update Bug"
 git push origin master
+
+For
