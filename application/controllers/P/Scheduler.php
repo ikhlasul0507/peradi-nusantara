@@ -37,10 +37,12 @@ class Scheduler extends CI_Controller
 	public function startScheduler()
 	{
 
-        $db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
-		$this->backup_database($db_name);
+
 		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler Backup Database'];
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+		
+		$db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
+		$this->backup_database($db_name);
 		echo "startScheduler :" .date('Y-m-d H:i:s');
 	}
 
