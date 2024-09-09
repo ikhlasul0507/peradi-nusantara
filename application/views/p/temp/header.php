@@ -224,11 +224,11 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Detail  Peserta</span></a>
             </li>
-            <li class="nav-item <?=$report_pembayaran;?>">
+            <!-- <li class="nav-item <?=$report_pembayaran;?>">
                 <a class="nav-link" href="<?= base_url('P/Payment/report_pembayaran');?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Detail  Pembayaran</span></a>
-            </li>
+            </li> -->
             <?php } ?>
 
 
