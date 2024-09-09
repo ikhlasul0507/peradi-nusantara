@@ -37,7 +37,7 @@ class Scheduler extends CI_Controller
 	{
 
 
-		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler...'];
+		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler...'];
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 		
 		$db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
@@ -55,7 +55,7 @@ class Scheduler extends CI_Controller
 		$dayOfMonth = date('j');
 		if ($dayOfMonth == $datePayment){
 
-			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler donePaymentEveryMonth To N'];
+			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler donePaymentEveryMonth To N'];
 			$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'N'],'nama_parameter','@donePaymentEveryMonth');
@@ -67,7 +67,7 @@ class Scheduler extends CI_Controller
 		$dayOfMonth = date('j');
 		if ($dayOfMonth == $datePayment && $this->M->getParameter('@donePaymentEveryMonth') == 'N') {
 
-			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler Lock Login For EveryOne'];
+			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler Lock Login For EveryOne'];
 			$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'Y'],'nama_parameter','@lockLoginForEveryOne');
@@ -90,7 +90,7 @@ class Scheduler extends CI_Controller
         // Write the file to your server's backup directory
         write_file($save, $backup);
 
-        $data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('082280524264'),'msg'=> 'Jalankan Scheduler Backup Database'];
+        $data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler Backup Database'];
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
         // Force download the file
         // force_download($db_name, $backup);
