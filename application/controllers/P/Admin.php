@@ -1256,7 +1256,7 @@ class Admin extends CI_Controller {
             while (($line = fgetcsv($file)) !== FALSE) {
                 // Process each line here, e.g., save to database
                 // $this->csv_model->insert($line);
-                echo json_encode($line,JSON_PRETTY_PRINT);
+                echo $line[0];
                 echo "<br>";
             }
             fclose($file);

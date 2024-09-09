@@ -36,13 +36,17 @@
                             $inClause = implode(",", $array);
                             $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
                             $getListKelas = $this->db->query($query)->row_array();
-
+                            $idBook = $value['id_order_booking'];
+                            $query1 = "SELECT COUNT(id_order_payment) countData FROM order_payment WHERE id_order_booking = '$idBook' AND status_payment = 'D'";
+                            $getOP = $this->db->query($query1)->row_array();
                             ?>
                         <tr>
                             <td>
+                                <?php if(((int) $getOP['countData']) == 0){ ?>
                                 <a class="btn btn-danger btn-circle" onclick="confirmDeleteData('<?= base_url('P/Admin/delete_order_class/').$value['id_order_booking'];?>')">
                                     <i class="fas fa-trash"></i>
                                 </a>
+                                <?php } ?>
                                 <a href="<?= base_url('P/Admin/valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>" class="btn btn-success btn-circle">
                                     <i class="fas fa-info"></i>
                                 </a> Lihat Detail
