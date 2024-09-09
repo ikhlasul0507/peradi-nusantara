@@ -797,5 +797,34 @@ class Payment extends CI_Controller {
 	    return isset($romanMonths[$monthNumber]) ? $romanMonths[$monthNumber] : null;
 	}
 
+	public function report_pembayaran()
+	{
+		$data['list_data'] = $this->M->getAllData('master_kelas');
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$order_ids = $this->db->get('request_payment')->result_array();
+		$transactions = [];
+		foreach ($order_ids as $order) {
+            try {
+            		$res = [];
+            		$result = $this->midtrans->status($order['order_id']);
+            		$res['transaction_id'] = $result->transaction_id;
+            		$res['transaction_time'] = $result->transaction_time;
+            		$res['transaction_status'] = $result->transaction_status;
+            		$res['payment_type'] = $result->payment_type;
+            		$res['gross_amount'] = $result->gross_amount;
+            		$transactions[] = $res;
+            	} catch (Exception $e) {
+                // Log error in case of failure
+                log_message('error', 'Failed to fetch transaction for order ID: ' . $order['order_id'] . ' Error: ' . $e->getMessage());
+            }
+        }
+        $data['transactions'] = $transactions;
+
+		$this->load->view('p/temp/header',$data);
+		$this->load->view('p/admin/report_pembayaran', $data);
+		$this->load->view('p/temp/footer');
+	}
+
 }
 

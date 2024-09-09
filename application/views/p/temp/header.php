@@ -94,6 +94,7 @@
                 $master_product = "";
                 $parameter = "";
                 $report_peserta = "";
+                $report_pembayaran = "";
                 $master = "";
                 $process = "";
 
@@ -124,6 +125,8 @@
                      $master = "active";
                 }else if($segment2 == "parameter"){
                      $master = "active";
+                }else if($segment2 == "report_pembayaran"){
+                     $report_pembayaran = "active";
                 }
             ?>
 
@@ -220,6 +223,11 @@
                 <a class="nav-link" href="<?= base_url('P/Admin/report_peserta');?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Detail  Peserta</span></a>
+            </li>
+            <li class="nav-item <?=$report_pembayaran;?>">
+                <a class="nav-link" href="<?= base_url('P/Payment/report_pembayaran');?>">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Detail  Pembayaran</span></a>
             </li>
             <?php } ?>
 
