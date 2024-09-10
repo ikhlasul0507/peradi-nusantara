@@ -260,6 +260,17 @@ class Payment extends CI_Controller {
 				if(isset($result->va_numbers) && is_array($result->va_numbers) && !empty($result->va_numbers)){
 					$bank = $result->va_numbers[0]->bank;
 					$va_number = $result->va_numbers[0]->va_number;
+					if($result->va_numbers[0]->bank == 'bni'){
+						$text = "<h3>---<b>ATM BNI</b>---</h3>
+                             <ul>1. Pada menu utama, pilih Menu Lainnya.</ul>
+                             <ul>2. Pilih Transfer</b>.</ul>
+                             <ul>3. Pilih Rekening Tabungan.</ul>
+                             <ul>4. Pilih Ke Rekening BNI.</ul>
+                             <ul>5. Masukkan Nomor Rekening Pembayaran Anda (.......) lalu tekan Benar.</ul>
+                             <ul>6. Masukkan jumlah tagihan yang akan Anda bayar secara lengkap. Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.</ul>
+                             <ul>7. Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening dan nama Merchant. Jika informasi telah sesuai tekan Ya.</ul>";
+                        $langkahPembayaran = $text;
+					}
 				}
 
 				if($result->payment_type == 'bank_transfer') {
