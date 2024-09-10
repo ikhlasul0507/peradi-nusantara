@@ -42,7 +42,7 @@ class Scheduler extends CI_Controller
 		
 		$db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
 		$this->backup_database($db_name);
-		echo "startScheduler :" .date('Y-m-d H:i:s');
+		echo "startScheduler :" .date('Y-m-d H:i:s')."</br>";
 		//checkDatePaymentEveryMonth
 		$this->checkDatePaymentEveryMonth();
 		//setUnpaidPayment
@@ -59,6 +59,8 @@ class Scheduler extends CI_Controller
 			$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'N'],'nama_parameter','@donePaymentEveryMonth');
+
+			echo "donePaymentEveryMonth = N </br>";
 		}
 	}
 	public function checkDatePaymentEveryMonth()
@@ -71,6 +73,7 @@ class Scheduler extends CI_Controller
 			$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'Y'],'nama_parameter','@lockLoginForEveryOne');
+			echo "lockLoginForEveryOne = Y </br>";
 		}
 	}
 
@@ -94,5 +97,6 @@ class Scheduler extends CI_Controller
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
         // Force download the file
         // force_download($db_name, $backup);
+        echo "Jalankan Scheduler Backup Database </br>";
     }
 }

@@ -213,8 +213,9 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="<?= base_url('P/Admin/log_activity');?>">Log Activity</a>
                             <a class="collapse-item" href="<?= base_url('P/Admin/parameter');?>">Parameter</a>
-                             <a class="collapse-item" href="<?= base_url('P/Admin/management_database');?>">Manajemen Database</a>
+                            <a class="collapse-item" href="<?= base_url('P/Admin/management_database');?>">Manajemen Database</a>
                             <a class="collapse-item" target="_blank" href="<?= base_url('P/Migrate');?>">Restructure Database</a>
+                            <a class="collapse-item" target="_blank" href="<?= base_url('P/Scheduler');?>">Start Scheduler</a>
                     </div>
                 </div>
             </li>
