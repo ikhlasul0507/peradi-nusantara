@@ -58,7 +58,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($orderPayment as $op) { ?>
+                        <?php 
+                        $total = 0;
+                        $lunas = 0;
+                        $blunas = 0;
+                        foreach ($orderPayment as $op) { 
+                        $total += (int) $op['nominal_payment'];
+                        if($op['status_payment'] == 'P'){
+                            $blunas++;
+                        }else{
+                            $lunas++;
+                        }
+                        ?>
                         <tr>
                             <td><?= $op['sequence_payment'];?></td>
                             <td><?= $op['date_payment'];?></td>
@@ -81,6 +92,13 @@
                             </td>
                         </tr>
                         <?php } ?>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Total Pembayaran</th>
+                                <th><?= 'Rp ' . number_format($total, 0, ',', '.');?></th>
+                                <th><?= "L = ".$lunas.", BL = ".$blunas; ?></th>
+                            </tr>
+                        </tfoot>
                     </tbody>
                 </table>
             </div>
