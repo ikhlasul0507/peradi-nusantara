@@ -51,8 +51,8 @@
                 </div>
             </div>
         </div>
-        <div class="">
-            <div class="" style="font-size: 10px;color: black">
+        <div class="card-body">
+            <div class="table-responsive" style="font-size: 10px;color: black">
                 <table class="" border="1px" id="tableData" cellpadding="0px" cellspacing="0">
                     <thead>
                         <tr style="background-color: silver">
