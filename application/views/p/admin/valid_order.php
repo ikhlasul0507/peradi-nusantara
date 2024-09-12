@@ -16,34 +16,51 @@
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary"><button class="btn btn-danger" disabled><?= $list_kelas_data['nama_kelas'];?></button></h6>
                 </div>
-                <div class="card-body">
-                    <div class="text-center">
-                        <a href="<?= base_url('assets/p/img/'.$value['foto_ktp']);?>" target="blank">
-                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem; height: 10rem"
-                            src="<?= base_url('assets/p/img/'.$value['foto_ktp']);?>" alt="...">
-                        </a>
+                <form action="<?= base_url('P/Admin/process_valid_order')?>" method="post">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <a href="<?= base_url('assets/p/img/'.$value['foto_ktp']);?>" target="blank">
+                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem; height: 10rem"
+                                src="<?= base_url('assets/p/img/'.$value['foto_ktp']);?>" alt="...">
+                            </a>
+                        </div>
+                        <p>
+                            Waktu Order :  <?= $value['time_history'];?><br>
+                            Nama :  <?= $value['nama_lengkap'];?><br>
+                            Handphone :  <?= $value['handphone'];?><br>
+                            Metode Pembayaran : <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button>
+                            <?php if($value['status_order'] == 'N'){ ?>
+                                <select name="metode_bayar">
+                                    <?php 
+                                    $tahapBayar = explode(",", "Lunas, Bertahap, Cicilan");
+                                    foreach ($tahapBayar as $t) { ?>
+                                    <option value="<?= $t; ?>"><?= $t; ?></option>
+                                    <?php } ?>
+                                </select>
+                            <?php }?>
+                            <br>
+                            Referensi :  <?= $value['reference'];?><br>
+                            PIC :  <?= $value['pic'];?><br>
+                            Angkatan :  <?= $value['angkatan'];?><br>
+                        </p>
+                        <?php if($value['status_order'] == 'N'){ ?>
+                            <!-- <a  class="btn btn-sm btn-warning" href="<?= base_url('P/Admin/process_valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>">Validasi Order</a> -->
+                            <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
+                            <input type="hidden" name="id_user" value="<?= $value['id_user']; ?>">
+                            <input type="hidden" name="id_order_booking" value="<?= $value['id_order_booking']; ?>">
+                            <button class="btn btn-sm btn-warning" type="submit">Validasi Order</button>
+
+                        <?php }else if($value['status_order'] == 'L'){ ?>
+                            <button class="btn btn-sm btn-primary" href="#" disabled>Sedang Belajar</button>
+                        <?php }elseif($value['status_order'] == 'D'){?>
+                            <button class="btn btn-sm btn-success" href="#" disabled>Selesai Belajar</button>
+                            <a  class="btn btn-sm btn-primary" target="blank" href="<?= base_url('P/Payment/createInvoice/'.$value['id_order_booking']);?>">Cetak Invoice</a>
+                        <?php } ?>
+                        <?php if($value['status_order'] == 'D' && $value['status_certificate'] == 'A'){ ?>
+                            <a  class="btn btn-sm btn-warning" target="blank" href="<?= base_url('P/Payment/generateCertificate/'.$value['id_user'].'/'.$value['id_order_booking']);?>">Ambil Sertifikat</a>
+                        <?php } ?>
                     </div>
-                    <p>
-                        Waktu Order :  <?= $value['time_history'];?><br>
-                        Nama :  <?= $value['nama_lengkap'];?><br>
-                        Handphone :  <?= $value['handphone'];?><br>
-                        Metode Pembayaran : <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button><br>
-                        Referensi :  <?= $value['reference'];?><br>
-                        PIC :  <?= $value['pic'];?><br>
-                        Angkatan :  <?= $value['angkatan'];?><br>
-                    </p>
-                    <?php if($value['status_order'] == 'N'){ ?>
-                        <a  class="btn btn-sm btn-warning" href="<?= base_url('P/Admin/process_valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>">Validasi Order</a>
-                    <?php }else if($value['status_order'] == 'L'){ ?>
-                        <button class="btn btn-sm btn-primary" href="#" disabled>Sedang Belajar</button>
-                    <?php }elseif($value['status_order'] == 'D'){?>
-                        <button class="btn btn-sm btn-success" href="#" disabled>Selesai Belajar</button>
-                        <a  class="btn btn-sm btn-primary" target="blank" href="<?= base_url('P/Payment/createInvoice/'.$value['id_order_booking']);?>">Cetak Invoice</a>
-                    <?php } ?>
-                    <?php if($value['status_order'] == 'D' && $value['status_certificate'] == 'A'){ ?>
-                        <a  class="btn btn-sm btn-warning" target="blank" href="<?= base_url('P/Payment/generateCertificate/'.$value['id_user'].'/'.$value['id_order_booking']);?>">Ambil Sertifikat</a>
-                    <?php } ?>
-                </div>
+                </form>
             </div>
         </div>
 

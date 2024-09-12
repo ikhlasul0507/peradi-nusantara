@@ -33,7 +33,6 @@ class Admin extends CI_Controller {
 			redirect('P/Auth/login',$data);
 		}
 	}
-
 	public function index()
 	{	
 
@@ -682,11 +681,16 @@ class Admin extends CI_Controller {
 		}
 	}
 
-	public function process_valid_order($id_user, $idOrder)
+	public function process_valid_order()
 	{
+		$id_user = trim($this->input->post('id_user'));
+		$idOrder = trim($this->input->post('id_order_booking'));
+		$metode_bayar = trim($this->input->post('metode_bayar'));
+
+
 		$data = $this->M->getWhere('order_booking',['id_user'=>trim($id_user),'id_order_booking' =>trim($idOrder)]);
 		if($data){
-			$update = $this->M->update_to_db('order_booking',['status_order'=>'L'],'id_order_booking',$idOrder);
+			$update = $this->M->update_to_db('order_booking',['status_order'=>'L', 'metode_bayar' => $metode_bayar],'id_order_booking',$idOrder);
 			if($update){
 				$user = $this->M->getWhere('user',['id_user'=>trim($id_user)]);
 				
