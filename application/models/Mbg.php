@@ -159,14 +159,17 @@ class Mbg extends CI_Model {
 		$query = "SELECT
 					  ob.id_order_booking,
 					  ob.id_user,
-  					  ob.id_master_kelas,
+  					ob.id_master_kelas,
 					  ob.time_history,
 					  ob.metode_bayar,
 					  ob.status_order,
 					  ob.status_certificate,
 					  us.nama_lengkap,
-  					  us.handphone,
-  					  ob.list_kelas
+					  us.handphone,
+					  us.reference,
+					  us.pic,
+					  us.angkatan,
+					  ob.list_kelas
 					FROM
 					  (SELECT
 					    *
@@ -176,7 +179,10 @@ class Mbg extends CI_Model {
 					  (SELECT
 					    id_user,
 					    nama_lengkap,
-					    handphone
+					    handphone,
+					    reference,
+						  pic,
+						  angkatan
 					  FROM
 					    user) us
 					  WHERE ob.id_user = us.id_user

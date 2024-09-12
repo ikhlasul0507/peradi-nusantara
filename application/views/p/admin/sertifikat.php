@@ -19,6 +19,7 @@
                         <tr>
                             <th>Aksi</th>
                             <th>Detail Orderan</th>
+                            <th>Data</th>
                             <th>Status Orderan</th>
                             <th><input type="checkbox" id="selectAll" onclick="toggleCheckboxes(this)"> Select All</th>
                         </tr>
@@ -49,14 +50,18 @@
                                 Waktu Order :  <?= $value['time_history'];?><br>
                                 Nama :  <?= $value['nama_lengkap'];?><br>
                                 Handphone :  <?= $value['handphone'];?><br>
-                                Kelas :  <button class="btn btn-danger" disabled><?= $getListKelas['nama_kelas'];?></button><br>
-                                Metode Pembayaran : <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button>
-                                
+                            </td>
+                            <td>
+                                Referensi : <?= $value['reference'];?><br>
+                                PIC : <?= $value['pic'];?><br>
+                                Angkatan : <?= $value['angkatan'];?><br>
                             </td>
                             <td>
                                 <?php if($value['status_order'] == 'D'){?>
-                                    <button class="btn btn-sm btn-success" href="#" disabled>Selesai Belajar</button>
+                                    <button class="badge badge-success" href="#" disabled>Selesai Belajar</button>
                                 <?php } ?>
+                                <button class="badge badge-danger" disabled><?= $getListKelas['nama_kelas'];?></button>
+                                <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button>
                             </td>
                             <td>
                                 <input type="checkbox" class="item" name="item" value="<?= $value['id_order_booking'];?>">
