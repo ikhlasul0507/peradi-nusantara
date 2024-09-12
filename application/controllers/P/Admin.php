@@ -390,6 +390,7 @@ class Admin extends CI_Controller {
 		$data['list_kelas_data'] = $this->M->get_name_kelas_list($getOB['list_kelas']);
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$data['list_pic'] = explode(",",$this->M->getParameter('@picRegister'));
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/valid_order',$data);
 		$this->load->view('p/temp/footer');
@@ -686,11 +687,12 @@ class Admin extends CI_Controller {
 		$id_user = trim($this->input->post('id_user'));
 		$idOrder = trim($this->input->post('id_order_booking'));
 		$metode_bayar = trim($this->input->post('metode_bayar'));
-
+		$pic = trim($this->input->post('pic'));
 
 		$data = $this->M->getWhere('order_booking',['id_user'=>trim($id_user),'id_order_booking' =>trim($idOrder)]);
 		if($data){
 			$update = $this->M->update_to_db('order_booking',['status_order'=>'L', 'metode_bayar' => $metode_bayar],'id_order_booking',$idOrder);
+			$this->M->update_to_db('user',['pic'=>$pic],'id_user',$id_user);
 			if($update){
 				$user = $this->M->getWhere('user',['id_user'=>trim($id_user)]);
 				

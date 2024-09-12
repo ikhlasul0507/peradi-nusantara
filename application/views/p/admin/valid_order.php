@@ -30,7 +30,8 @@
                             Handphone :  <?= $value['handphone'];?><br>
                             Metode Pembayaran : <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button>
                             <?php if($value['status_order'] == 'N'){ ?>
-                                <select name="metode_bayar">
+                                <select name="metode_bayar" required>
+                                    <option value="" disabled selected>--Pilih Metode--</option>
                                     <?php 
                                     $tahapBayar = explode(",", "Lunas, Bertahap, Cicilan");
                                     foreach ($tahapBayar as $t) { ?>
@@ -40,7 +41,16 @@
                             <?php }?>
                             <br>
                             Referensi :  <?= $value['reference'];?><br>
-                            PIC :  <?= $value['pic'];?><br>
+                            PIC :  <?= $value['pic'];?>
+                            <?php if($value['status_order'] == 'N'){ ?>
+                                <select name="pic" required>
+                                    <option value="" disabled selected>--Pilih PIC--</option>
+                                    <?php foreach ($list_pic as $pic) { ?>
+                                        <option value="<?=$pic;?>"><?=$pic;?></option>
+                                    <?php } ?>
+                                </select>
+                            <?php }?>
+                            <br>
                             Angkatan :  <?= $value['angkatan'];?><br>
                         </p>
                         <?php if($value['status_order'] == 'N'){ ?>
