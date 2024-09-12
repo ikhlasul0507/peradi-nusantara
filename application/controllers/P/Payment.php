@@ -382,7 +382,7 @@ class Payment extends CI_Controller {
 	    $pdf->Image($image1,0,0,210,300);
 	    // Set Title
 	    $pdf->SetFont('Arial', 'B', 16);
-	    $pdf->Cell(0, 10, 'INVOICE', 0, 1, 'C');
+	    $pdf->Cell(0, 10, 'KWITANSI PEMBAYARAN', 0, 1, 'C');
 
 	    // Add some space
 	    $pdf->Ln(10);
