@@ -744,6 +744,7 @@ class Admin extends CI_Controller {
 				'status_payment' => 'P'
 			];
 			$add_db = $this->M->add_to_db('order_payment', $data_send_db);
+
 			if($add_db){
 				if($this->M->getParameter('@sendNotifGeneratePayment') == 'Y'){
 					$orderPayment = $this->M->getWhere('order_payment',['id_virtual_account'=>trim($id_virtual_account)]);
@@ -758,8 +759,9 @@ class Admin extends CI_Controller {
                         $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
                         $getListKelas = $this->db->query($query)->row_array();
 
-
 						$user = $this->M->getWhere('user',['id_user'=>trim($orderBook['id_user'])]);
+						
+                        $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Add Payment Order ".$getListKelas['nama_kelas']." Berhasil Untuk = ".$user['nama_lengkap']);
 						$data_send_notif = [
 							'handphone' => trim($user['handphone']),
 							'namalengkap' => trim($user['nama_lengkap']),
