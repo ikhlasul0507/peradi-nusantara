@@ -650,8 +650,15 @@ class Admin extends CI_Controller {
 						'metodeBayar' => trim($this->input->post('metode_bayar')),
 					];
 					$sendUser = $this->service->send_whatsapp($data_send_notif, 'order_class');
-					$data_send_notif['handphone'] = $this->M->getParameter('@waAdminNotif');
-					$this->service->send_whatsapp($data_send_notif, 'order_notif_admin');
+					if($sendUser){
+						$data_send_notif_admin = [
+							'handphone' => trim($this->M->getParameter('@waAdminNotif')),
+							'namalengkap' => trim($this->session->userdata('nama_lengkap')),
+							'namaKelas' => trim($dataKelas['nama_kelas']),
+							'metodeBayar' => trim($this->input->post('metode_bayar')),
+						];
+						$this->service->send_whatsapp($data_send_notif_admin, 'order_notif_admin');
+					}
 				}
 				$data = $this->session->set_flashdata('pesan', 'Kelas berhasil di pesan !');
 				redirect('P/Admin/myclass',$data);
@@ -760,7 +767,7 @@ class Admin extends CI_Controller {
                         $getListKelas = $this->db->query($query)->row_array();
 
 						$user = $this->M->getWhere('user',['id_user'=>trim($orderBook['id_user'])]);
-						
+
                         $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Add Payment Order ".$getListKelas['nama_kelas']." Berhasil Untuk = ".$user['nama_lengkap']);
 						$data_send_notif = [
 							'handphone' => trim($user['handphone']),
