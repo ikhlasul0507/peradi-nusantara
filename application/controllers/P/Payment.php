@@ -576,7 +576,9 @@ class Payment extends CI_Controller {
 		$data = $this->M->get_detail_certificate($idUser, $idOrder);
 		$pdf = new FPDF('l', 'mm', 'A4', true, 'UTF-8', false);
 		$ttdCap = "./assets/p/img/ttd.png";
+		$titleName = "";
 		if($data){
+			$titleName = $data[0]['nama_lengkap'];
 			foreach ($data as $key => $value) {
 				
 				if($value['prefix_certificate'] == "PKPA"){
@@ -593,13 +595,13 @@ class Payment extends CI_Controller {
 					$romanMonth = $this->getRomanMonth($currentMonth);
 
 					//jadwal
-					$pdf->SetXY(140,128); 
-			        $pdf->SetFont('Arial', 'B', 13);
+					$pdf->SetXY(139,124.5); 
+			        $pdf->SetFont('Arial', 'B', 12);
 		    		$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
 
 		    		//number
 			        $numberCer = $value['number_certificate'].'/'.$value['prefix_certificate'].'/PERADI-NUSANTARA/'.$romanMonth.'/'.date('Y');
-			        $pdf->SetXY(173,35); 
+			        $pdf->SetXY(173,36.4); 
 			        $pdf->SetFont('Arial', 'B', 12);
 		    		$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
 
@@ -609,11 +611,12 @@ class Payment extends CI_Controller {
 			        $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
 			      
 			        // set tanggal cetak
-			        $pdf->SetXY(149,150); 
-			        $pdf->SetFont('Arial', 'B', 15);
+			        $pdf->SetXY(138,143); 
+			        $pdf->SetFont('Arial', 'B', 14);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
-		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
-		    		$pdf->Image($ttdCap,125,158,70,40);
+		    		$pdf->Image($imgQRCode,65,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    		// $pdf->Image($ttdCap,125,158,70,40);
+		    		$titleName = $titleName."_PKPA";
 	    		}else if($value['prefix_certificate'] == "PARALEGAL"){
 	    			error_reporting(0); 
 			        // Load the Pdf library
@@ -648,6 +651,7 @@ class Payment extends CI_Controller {
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
 		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
 		    		$pdf->Image($ttdCap,125,155,50,20);
+		    		$titleName = $titleName."_PARALEGAL";
 	    		}else if($value['prefix_certificate'] == "SUPA"){
 	    			error_reporting(0); 
 			        // Load the Pdf library
@@ -661,7 +665,7 @@ class Payment extends CI_Controller {
 			        $currentMonth = date('n'); // Get the current month as a number (1-12)
 					$romanMonth = $this->getRomanMonth($currentMonth);
 	    			//jadwal
-					$pdf->SetXY(175,116); 
+					$pdf->SetXY(172,112.5); 
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
 
@@ -678,11 +682,12 @@ class Payment extends CI_Controller {
 
 			      
 			        // set tanggal cetak
-			        $pdf->SetXY(149,156.5); 
+			        $pdf->SetXY(138,153); 
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
-		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
-		    		$pdf->Image($ttdCap,125,170,50,25);
+		    		$pdf->Image($imgQRCode,65,155,30,30); // margin left - margin top - size lebar, size tinggi
+		    		// $pdf->Image($ttdCap,125,170,50,25);
+		    		$titleName = $titleName."_UPA";
 	    		}else if($value['prefix_certificate'] == "BREVET"){
 	    			error_reporting(0); 
 			        // Load the Pdf library
@@ -698,24 +703,25 @@ class Payment extends CI_Controller {
 					//jadwal
 					$pdf->SetXY(152,159.5); 
 			        $pdf->SetFont('Arial', 'B', 15);
-		    		$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
+		    		// $pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
 		    		$prefix = 'BR-';
 			        $numberCer = $prefix.$value['number_certificate'].'/SERTIFIKAT/PERADIPAJAKNUSANTARA/'.$romanMonth.'/'.date('Y');
-			        $pdf->SetXY(81,59.5); 
+			        $pdf->SetXY(96,61); 
 			        $pdf->SetFont('Arial', 'B', 14);
 		    		$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
 			        // Set font
-			        $pdf->SetXY(10,15); 
+			        $pdf->SetXY(10,13); 
 			        $pdf->SetFont('Arial', 'B', 36);
 			        $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
 
 			      
 			        // set tanggal cetak
-			        $pdf->SetXY(149,169); 
+			        $pdf->SetXY(138,161); 
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
 		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
-		    		$pdf->Image($ttdCap,135,170,50,25);
+		    		// $pdf->Image($ttdCap,135,170,50,25);
+		    		$titleName = $titleName."_BREVET";
 	    		}else if($value['prefix_certificate'] == "CPT"){
 	    			error_reporting(0); 
 			        // Load the Pdf library
@@ -729,8 +735,8 @@ class Payment extends CI_Controller {
 			        $currentMonth = date('n'); // Get the current month as a number (1-12)
 					$romanMonth = $this->getRomanMonth($currentMonth);
 			        $numberCer = $prefix.$value['number_certificate'].'/sertifikat-KHP/peradipajaknusantara/'.$romanMonth.'/'.date('Y');
-			        $pdf->SetXY(86,66.5); 
-			        $pdf->SetFont('Arial', 'B', 14);
+			        $pdf->SetXY(87,63.5); 
+			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
 			        // Set font
 			        $pdf->SetXY(10,24); 
@@ -739,11 +745,12 @@ class Payment extends CI_Controller {
 
 			      
 			        // set tanggal cetak
-			        $pdf->SetXY(149,151.5); 
+			        $pdf->SetXY(137,141.5); 
 			        $pdf->SetFont('Arial', 'B', 15);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
-		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
-		    		$pdf->Image($ttdCap,135,150,50,25);
+		    		$pdf->Image($imgQRCode,60,140,30,30); // margin left - margin top - size lebar, size tinggi
+		    		// $pdf->Image($ttdCap,135,150,50,25);
+		    		$titleName = $titleName."_CPT";
 	    		}
 	    		// else{
 	    		// 	$pdf->AddPage();
@@ -760,8 +767,9 @@ class Payment extends CI_Controller {
 		        // $pdf->Output('F', $outputDir.$fileName);
 		    }
 	        //forcedownload
-	        // $pdf->Output('D', $fileName);
-	        $pdf->Output();
+	        $pdf->Output('D', $titleName.".pdf");
+	        $pdf->SetTitle($titleName);
+	        // $pdf->Output();
 	        echo "PDF has been saved to " . $outputDir . $fileName;
     	}
 	}
