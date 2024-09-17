@@ -64,6 +64,100 @@
                 width: 8.5rem !important;
             }
         }
+
+        #loading {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            /*background: center no-repeat #fff;*/
+            background-color: silver;
+            opacity: 0.5;
+            /*background: center no-repeat #fff;*/
+        }
+         
+        /*-- css spin --*/
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+         
+        /*-- css loader --*/
+        .no-js #loader { display: none; }
+        .js #loader { display: block; position: absolute; left: 100px; top: 0; }
+         
+        .loader {
+            border: 10px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 10px solid #3498db;
+            border-bottom: 10px solid #FFC107;
+            width: 150px;
+            height: 150px;
+            left: 43.5%;
+            top: 20%;
+            -webkit-animation: spin 2s linear infinite;
+            position: fixed;
+            animation: spin 2s linear infinite;
+        }
+         
+        .textLoader{
+            position: fixed;
+            top: 56%;
+            left: 40.6%;
+            color: black;
+        }
+           
+        /*-- responsive --*/
+        @media screen and (max-width: 1034px){
+            .textLoader{
+                left: 46.2%;
+            }
+        }
+     
+        @media screen and (max-width: 824px){
+            .textLoader {
+                left: 47.2%;
+            }
+        }
+     
+        @media screen and (max-width: 732px){
+            .textLoader {
+                left: 48.2%;
+            }
+        }
+     
+        @media screen and (max-width: 500px){
+            .loader{
+                left: 36.5%;;
+            }
+            .textLoader {
+                left: 40.5%;
+            }
+        }
+     
+        @media screen and (max-height: 432px){
+            .textLoader {
+                top: 65%;
+            }
+        }
+     
+        @media screen and (max-height: 350px){
+            .textLoader {
+                top: 75%;
+            }
+        }
+     
+        @media screen and (max-height: 312px){
+            .textLoader {
+                display: none;
+            }
+        }
     </style>
 </head>
 

@@ -157,6 +157,8 @@
             console.log(dataJadwal);
             if(selected.length > 0){
                 //approve data
+                $("#loading").show();
+                $(".loader").show();
                 requestToDB(selected.join(', '), dataJadwal);
 
                 console.log(selected.join(', '));

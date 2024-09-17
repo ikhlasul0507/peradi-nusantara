@@ -42,6 +42,16 @@
         </div>
     </div>
 
+    <div id="loading">
+        <span class="loader"></span>
+        <div class="textLoader">
+            <center>
+            <b><h1>Please Wait ... </h1></b>
+            <h5>Do Not Refresh Page</h5>
+            </center>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/p/sistem/');?>vendor/jquery/jquery.min.js"></script>
     <script src="<?= base_url('assets/p/sistem/');?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -62,7 +72,9 @@
 
     <script type="text/javascript">
          // $("#accordionSidebar").addClass("toggled");
-
+         $("#loading").hide();
+         $(".loader").hide();
+         
          $(document).ready(function() {
             $('#fileInput').on('change', function() {
                 var file = this.files[0];
