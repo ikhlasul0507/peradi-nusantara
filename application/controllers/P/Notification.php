@@ -167,8 +167,9 @@ class Notification extends CI_Controller {
     	}
     }
 
-    public function sendNotifWa($initial)
+    public function sendNotifWa()
     {
+    	
     	$this->load->view('p/auth/sendNotifWa');
     }
 
@@ -179,8 +180,11 @@ class Notification extends CI_Controller {
     	$handphone = $this->input->post("handphone");
 
     	echo "handphone = ".$handphone;
-    	$hpCs = "085766742274";
-    	$link = "https://api.whatsapp.com/send/?phone=62".$hpCs."&text=-+Halo%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+&type=phone_number&app_absent=0";
+
+    	$names = ['085766742274', '082280524264', '08151654015'];
+    	$random_key = array_rand($names);
+    	
+    	$link = "https://api.whatsapp.com/send/?phone=62".$names[$random_key]."&text=-+Halo%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+&type=phone_number&app_absent=0";
     	redirect($link);
     }
 }

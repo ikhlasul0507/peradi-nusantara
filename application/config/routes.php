@@ -53,4 +53,4 @@ $route['default_controller'] = 'Auth';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['wa/(:any)'] = 'P/Notification/sendNotifWa/$1';
+$route['cs'] = 'P/Notification/sendNotifWa';
