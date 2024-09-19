@@ -184,8 +184,7 @@ class Notification extends CI_Controller {
     	$random_key = array_rand($names);
 
     	$link = "https://api.whatsapp.com/send/?phone=62".$names[$random_key]."&text=-+Halo%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+&type=phone_number&app_absent=0";
-
-    	echo $link;die;
+    	
     	redirect($link);
     }
 }
