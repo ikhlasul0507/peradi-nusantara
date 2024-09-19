@@ -42,7 +42,6 @@
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900">Mulai Obrolan</h1>
-                                <p class="text-gray-900">- Gabby -</p>
                             </div>
                             <form class="user" action="<?= base_url('P/Notification/process_call_wa')?>" method="post">
                                  <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
