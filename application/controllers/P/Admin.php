@@ -55,6 +55,16 @@ class Admin extends CI_Controller {
 		$this->load->view('p/temp/footer');
 	}
 
+	public function master_notif_wa()
+	{
+		$data['list_data'] = $this->M->getAllData('master_kelas');
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$this->load->view('p/temp/header',$data);
+		$this->load->view('p/admin/master_notif_wa', $data);
+		$this->load->view('p/temp/footer');
+	}
+
 	public function report_peserta()
 	{
 		$nama_lengkap = trim($this->input->post('nama_lengkap'));

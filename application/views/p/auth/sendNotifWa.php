@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="<?= base_url('assets/p/sistem/img/logo.png');?>" type="image/x-icon" />
+
     <title>Peradi Nusantara</title>
 
     <!-- Custom fonts for this template-->
@@ -21,7 +21,7 @@
     <link href="<?= base_url('assets/p/sistem/');?>css/sb-admin-2.min.css" rel="stylesheet">
     <style type="text/css">
         .bg-register-image {
-            background: url("<?= base_url('assets/p/sistem/img/gambarlogin.png');?>");
+            background: url("https://netrinoimages.s3.eu-west-2.amazonaws.com/2020/01/17/674855/284031/whatsapp_3d_icon_logo_emblem_3d_model_c4d_max_obj_fbx_ma_lwo_3ds_3dm_stl_4733133.png");
             background-position: center;
             background-size: cover;
         }
@@ -29,40 +29,38 @@
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-success">
 
     <div class="container">
 
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
-                <div class="row" style="height: 666px">
-                    <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-6">
+                <div class="row" style="height: 576px">
+                    <div class="col-lg-7 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-5">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Masuk Sistem || <a href="<?= base_url('P/Auth');?>">Formulir Pendaftaran</a></h1>
+                                <h1 class="h4 text-gray-900">Mulai Obrolan</h1>
+                                <p class="text-gray-900">- Gabby -</p>
                             </div>
-                            <form class="user" action="<?= base_url('P/Auth/process_login')?>" method="post">
+                            <form class="user" action="<?= base_url('P/Notification/process_call_wa')?>" method="post">
                                  <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
+                                 <input type="hidden" name="initial" value="<?= $this->uri->segment(2); ?>">
                                 <div class="form-group">
-                                    <input type="number" class="form-control"
-                                            required name="handphone" placeholder="Handpone Aktif" pattern="0[0-9]{9,}" min="0" onkeypress="return isNumberKey(event,'hp')">
+                                     <input type="text" class="form-control" required name="namalengkap"
+                                            placeholder="Nama lengkap" onkeypress="return isAlphaKey(event,'nama')">
                                 </div>
                                 <div class="form-group">
-                                   <input type="password" class="form-control"
-                                            required name="password" placeholder="Password">
+                                   <input type="tel" class="form-control"
+                                            required name="handphone" pattern="0[0-9]{9,}" placeholder="No Whatsapp" onkeypress="return isNumberKey(event,'hp')">
                                 </div>
-                                
-                                <button type="submit" class="btn btn-primary">Masuk</button>
+                       
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                                Mulai Whatsapp</button>
                             </form>
                             <hr>
-                            <div class="text-center">
-                                <a class="small" href="<?= base_url('P/Auth/lupa_password');?>">Lupa Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="<?= base_url('P/Auth');?>">Belum punya akun ? Daftar!</a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,8 +70,6 @@
     </div>
 
     <script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script>
-    <!-- validation -->
-    <!-- <script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script> -->
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/p/sistem/');?>vendor/jquery/jquery.min.js"></script>
     <script src="<?= base_url('assets/p/sistem/');?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

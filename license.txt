@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 git status
 git add -- . ':!application/config/database.php'
-git commit -m "Update Bug"
+git commit -m "Update Log Generate Payment"
 git push origin master
 
 For

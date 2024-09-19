@@ -166,4 +166,21 @@ class Notification extends CI_Controller {
     		return ['status_code' => 400, 'msg' => 'ID not found'];
     	}
     }
+
+    public function sendNotifWa($initial)
+    {
+    	$this->load->view('p/auth/sendNotifWa');
+    }
+
+    public function process_call_wa()
+    {
+    	$initial = $this->input->post("initial");
+    	$namalengkap = $this->input->post("namalengkap");
+    	$handphone = $this->input->post("handphone");
+
+    	echo "handphone = ".$handphone;
+    	$hpCs = "085766742274";
+    	$link = "https://api.whatsapp.com/send/?phone=62".$hpCs."&text=-+Halo%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+&type=phone_number&app_absent=0";
+    	redirect($link);
+    }
 }
