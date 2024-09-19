@@ -33,6 +33,7 @@ class Service {
 			'message' =>$this->template_meesage($type, $params),
 			'url' => 'https://md.fonnte.com/images/wa-logo.png',
 			'schedule' => $timeSechedule,
+			'preview ' => true
 		),
 		  CURLOPT_HTTPHEADER => array(
 		    'Authorization: bzVr-4tLk#4CBRGNK4y2'
