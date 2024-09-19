@@ -179,12 +179,13 @@ class Notification extends CI_Controller {
     	$namalengkap = $this->input->post("namalengkap");
     	$handphone = $this->input->post("handphone");
 
-    	echo "handphone = ".$handphone;
 
     	$names = ['085766742274', '082280524264', '08151654015'];
     	$random_key = array_rand($names);
-    	
+
     	$link = "https://api.whatsapp.com/send/?phone=62".$names[$random_key]."&text=-+Halo%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+&type=phone_number&app_absent=0";
+
+    	echo $link;die;
     	redirect($link);
     }
 }
