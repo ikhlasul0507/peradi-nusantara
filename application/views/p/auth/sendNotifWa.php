@@ -174,7 +174,7 @@
                        
                                 <button type="submit" class="btn btn-success">
                                     <i class="fab fa-whatsapp" aria-hidden="true"></i>
-                                Mulai Whatsapp</button>
+                                Mulai Chat</button>
                             </form>
                             <hr>
                         </div>
