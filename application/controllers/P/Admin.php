@@ -1276,21 +1276,173 @@ class Admin extends CI_Controller {
             $data = $this->upload->data();
             $file_path = $data['full_path'];
 
+            $header = [
+				"nik",
+				"email",
+				"nama_lengkap",
+				"handphone",
+				"usia",
+				"asal_kampus",
+				"sudah_lulus",
+				"latar_belakang_hukum",
+				"reference",
+				"pic",
+				"angkatan",
+				"nama_kelas",
+				"metode_bayar",
+				"lunas",
+				"cicilan",
+				"bertahap",
+				"tanggal_bayar",
+				"nominal",
+				"status_bayar",
+				"status_sertifikat",
+				"no_sertifikat",
+				"jadwal_pelatihan"
+			];
             // Load the CSV file
+            $dataArray = [];
             $file = fopen($file_path, 'r');
-            while (($line = fgetcsv($file)) !== FALSE) {
-                // Process each line here, e.g., save to database
-                // $this->csv_model->insert($line);
-                echo $line[0];
-                echo "<br>";
+            $number = 0;
+            while (($row = fgetcsv($file, 1000, ";")) !== FALSE) {
+            	if($number > 0){
+	                $objectArr = [];
+	                for ($i=0; $i < count($header); $i++) { 
+	                	 $objectArr[$header[$i]] = trim($row[$i]);
+	                }
+	                array_push($dataArray,$objectArr);
+            	}
+                $number++;
             }
             fclose($file);
-            die;
             // Delete the file after processing
             unlink($file_path);
+            echo json_encode($dataArray);
+
+            // die;
+            //prepare insert to db
+            $checkData = false;
+            $totalDataImport = 0;
+            foreach ($dataArray as $key => $value) {
+            	// insert to table user
+            	$data_send_user = [
+					'nama_lengkap' => trim($value['nama_lengkap']),
+					'nik' => trim($value['nik']),
+					'email' => trim($value['email']),
+					'handphone' => trim($value['handphone']),
+					'usia' => trim($value['usia']),
+					'asal_kampus' => trim($value['asal_kampus']),
+					'semester' => trim($value['sudah_lulus']),
+					'reference' => trim($value['reference']),
+					'pic' => trim($value['pic']),
+					'angkatan' => trim("Angkatan Ke - ".$value['angkatan']),
+					'latar_belakang' => trim($value['latar_belakang_hukum']),
+					'password' => trim($value['handphone']),
+					'password_hash' => password_hash(trim($value['handphone']), PASSWORD_DEFAULT),
+					'is_active' => 'Y',
+					'user_level' => 4,
+					'foto_ktp' => 'logo_peradi.jpg'           		
+            	];
+            	$call_id_user = $this->M->add_to_db('user', $data_send_user);
+
+            	if($call_id_user){
+            		//prepare insert to order_booking
+            		$status_order = "N";
+            		if(trim($value['lunas']) == "Y"){
+            			$status_order = "D";
+            		}
+            		if(trim($value['cicilan']) == "Y" || trim($value['bertahap']) == "Y"){
+            			$status_order = "L";
+            		}
+
+            		$className = strtoupper(trim($value['nama_kelas']));
+            		$list_kelas = "";
+
+            		if(strpos($className, strtoupper("PKPA")) !== false){
+						$list_kelas = $list_kelas."1~";
+					}
+					if(strpos($className, strtoupper("UPA")) !== false){
+						$list_kelas = $list_kelas."3~";
+					}
+					if(strpos($className, strtoupper("SUMPAH")) !== false){
+						$list_kelas = $list_kelas."5~";
+					}
+					if(strpos($className, strtoupper("BREVET")) !== false){
+						$list_kelas = $list_kelas."4~";
+					}
+					if(strpos($className, strtoupper("PARALEGAL")) !== false){
+						$list_kelas = $list_kelas."2~";
+					}
+					if(strpos($className, strtoupper("CPT")) !== false){
+						$list_kelas = $list_kelas."6~";
+					}
+					if(strpos($className, strtoupper("MEDIAT")) !== false){
+						$list_kelas = $list_kelas."7~";
+					}
+					if(strpos($className, strtoupper("AGRARIA")) !== false){
+						$list_kelas = $list_kelas."8~";
+					}
+
+
+            		$data_send_ob = [
+						'id_user' => trim($call_id_user),
+						'id_master_kelas' => 0,
+						'metode_bayar' => trim($value['metode_bayar']),
+						'status_order' => $status_order,
+						'list_kelas' => trim($list_kelas),
+					];
+					$call_id_ob = $this->M->add_to_db('order_booking', $data_send_ob);
+
+					if($call_id_ob){
+						//prepare insert to order payment
+						$id_virtual_account = $this->service->generateSecureRandomString(40);
+						$status_payment = explode("|",$value['status_bayar'] == "" ? "N" : $value['status_bayar']);
+						
+						if(trim($value['lunas']) == "Y"){
+	            			$value['tanggal_bayar'] = str_replace('|', '', $value['tanggal_bayar']);
+	            			$value['nominal'] = str_replace('|', '', $value['nominal']);
+	            			$status_payment = str_replace('|', '', $status_payment);
+	            		}
+
+	            		$nominal = explode("|",$value['nominal']);
+						$tanggal_bayar = explode("|",$value['tanggal_bayar']);
+
+						for ($ip=0; $ip < count($tanggal_bayar); $ip++) { 
+							$data_send_op = [
+								'id_order_booking' => trim($call_id_ob),
+								'id_virtual_account' => trim($id_virtual_account),
+								'sequence_payment' => trim($ip+1),
+								'nominal_payment' => (int) str_replace('.', '', $nominal[$ip]),
+								'date_payment' => trim(str_replace(' ', '', date('Y-m-d', strtotime($tanggal_bayar[$ip])))),
+								'status_payment' => trim($status_payment[$ip]) == "Y" ? 'D' : "P"
+							];
+
+							$add_db_op = $this->M->add_to_db('order_payment', $data_send_op);
+							if($add_db_op){
+								$checkData = true;
+							}
+						}
+						$totalDataImport++;
+					}
+            	}
+
+            }
+
+            if($checkData){
+				$data = $this->session->set_flashdata('pesan', 'Total Import Berhasil '.$totalDataImport.' !');
+				redirect('P/Admin/report_peserta/');
+            }
+            // $string = $dataArray[0];
+
+			// // Split the string by ';' delimiter
+			// $fields = explode(";", $string);
+
+			// // Output the resulting array
+			// echo json_encode($dataArray);
 
             // $data = $this->session->set_flashdata('pesan', 'Import Gagal !');
 			// redirect('P/Admin/report_peserta/');
         }
     }
+
 }

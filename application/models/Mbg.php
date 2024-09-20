@@ -4,13 +4,15 @@ class Mbg extends CI_Model {
 
 	function add_to_db($table, $data)
 	{
-	    return $this->db->insert($table,$data);		
+	    $this->db->insert($table,$data);		
+	    $insert_id = $this->db->insert_id();
+    	return $insert_id;
 	}
 
 	function update_to_db($table, $data, $where, $valuewhere)
 	{
 	    $this->db->where($where, $valuewhere);
-		return $this->db->update($table, $data);
+			return $this->db->update($table, $data);
 	}
 
 	function delete_to_db($table, $where, $valuewhere)
@@ -80,7 +82,9 @@ class Mbg extends CI_Model {
 			'action' => $deskripsi
 		];
 
-		return $this->db->insert('log_history',$data);		
+		$this->db->insert('log_history',$data);		
+		$insert_id = $this->db->insert_id();
+    return $insert_id;
 	}
 	
 	function get_order_booking($where, $valuewhere)
