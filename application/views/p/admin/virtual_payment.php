@@ -121,7 +121,7 @@
                 name : "<?= $get_master_kelas['nama_kelas'];?>",
                 nama_lengkap : "<?= $get_user['nama_lengkap'];?>",
                 email : "<?= $get_user['email'];?>",
-                handphone : "<?= $get_user['handphone'];?>"
+                handphone : "<?= $get_user['handphone'];?>",
             }  // Ensure this data structure is correct based on your backend needs
         },
         dataType: "JSON",
