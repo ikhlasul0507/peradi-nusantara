@@ -234,6 +234,25 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
+
+		//=================================================================================================
+		$title = "Table structure for table `history_call_center`";
+		$query = "CREATE TABLE IF NOT EXISTS `history_call_center` (
+				  `id_history_call_center` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `id_user` int(11) NOT NULL,
+				  `customer_name` varchar(50) NOT NULL,
+				  `customer_phone` varchar(50) NOT NULL,
+				  `notes_call` varchar(50) NOT NULL,
+				  `last_call` timestamp NOT NULL,
+				  `status_call_center` char(1) NOT NULL,
+				   PRIMARY KEY (id_history_call_center)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
 	}
 
 
