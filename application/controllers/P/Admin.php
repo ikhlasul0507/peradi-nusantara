@@ -1317,7 +1317,6 @@ class Admin extends CI_Controller {
             fclose($file);
             // Delete the file after processing
             unlink($file_path);
-            echo json_encode($dataArray);
 
             // die;
             //prepare insert to db
@@ -1407,6 +1406,8 @@ class Admin extends CI_Controller {
 	            		$nominal = explode("|",$value['nominal']);
 						$tanggal_bayar = explode("|",$value['tanggal_bayar']);
 
+            			echo json_encode($nominal);
+            			
 						for ($ip=0; $ip < count($tanggal_bayar); $ip++) { 
 							$data_send_op = [
 								'id_order_booking' => trim($call_id_ob),

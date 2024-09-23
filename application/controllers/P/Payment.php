@@ -88,21 +88,21 @@ class Payment extends CI_Controller {
 		$billing_address = array(
 		  'first_name'    => "Andri",
 		  'last_name'     => "Litani",
-		  'address'       => "Mangga 20",
-		  'city'          => "Jakarta",
-		  'postal_code'   => "16602",
+		  'address'       => "Kelas : ".$nameDet,
+		  'city'          => "",
+		  'postal_code'   => "",
 		  'phone'         => "",
-		  'country_code'  => 'IDN'
+		  'country_code'  => ''
 		);
 
 		// Optional
 		$shipping_address = array(
-		  'first_name'    => "Obet",
-		  'last_name'     => "Supriadi",
-		  'address'       => "",
-		  'city'          => "",
+		  'first_name'    => "Peradi",
+		  'last_name'     => "Nusantara",
+		  'address'       => "Cluster Angelonia Blok A1 No B6",
+		  'city'          => "Medang Pagedangan Tangerang",
 		  'postal_code'   => "",
-		  'phone'         => "08113366345",
+		  'phone'         => $this->M->getParameter('@companyPhoneNumber'),
 		  'country_code'  => 'IDN'
 		);
 
@@ -110,8 +110,8 @@ class Payment extends CI_Controller {
 		$customer_details = array(
 		  'first_name'    => $data['nama_lengkap'],
 		  'last_name'     => "",
-		  'email'         => "anal@gmail.com",
-		  'phone'         => "",
+		  'email'         => $data['email'],
+		  'phone'         => $data['handphone'],
 		  'billing_address'  => $billing_address,
 		  'shipping_address' => $shipping_address
 		);

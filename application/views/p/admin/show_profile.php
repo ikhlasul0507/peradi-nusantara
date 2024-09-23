@@ -32,6 +32,19 @@
                             placeholder="Handphone" value="<?= $list_data['handphone'];?>">
                     </div>
                 </div>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label>KTP</label>
+                        <input type="file" class="form-control" name="foto_ktp"
+                            placeholder="foto_ktp" value="<?= $list_data['foto_ktp'];?>">
+                    </div>
+                     <div class="col-sm-6 mb-3 mb-sm-0">
+                        <a href="<?= base_url('assets/p/img/'.$list_data['foto_ktp']);?>" target="blank">
+                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem; height: 10rem"
+                            src="<?= base_url('assets/p/img/'.$list_data['foto_ktp']);?>" alt="...">
+                        </a>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary">Perbaharui Data</button>
             </form>
         </div>

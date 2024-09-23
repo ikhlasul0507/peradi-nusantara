@@ -119,7 +119,9 @@
                 order_id : "<?= $get_payment['id_virtual_account']; ?>",
                 gross_amount : "<?= $get_payment['nominal_payment'] + $charge_admin ; ?>",
                 name : "<?= $get_master_kelas['nama_kelas'];?>",
-                nama_lengkap : "<?= $get_user['nama_lengkap'];?>"
+                nama_lengkap : "<?= $get_user['nama_lengkap'];?>",
+                email : "<?= $get_user['email'];?>",
+                handphone : "<?= $get_user['handphone'];?>"
             }  // Ensure this data structure is correct based on your backend needs
         },
         dataType: "JSON",
