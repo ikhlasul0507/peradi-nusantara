@@ -244,7 +244,7 @@ class Migrate extends CI_Controller
 				  `customer_name` varchar(50) NOT NULL,
 				  `customer_phone` varchar(50) NOT NULL,
 				  `notes_call` varchar(50) NOT NULL,
-				  `last_call` timestamp NOT NULL,
+				  `last_call` timestamp,
 				  `status_call_center` char(1) NOT NULL,
 				   PRIMARY KEY (id_history_call_center)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
