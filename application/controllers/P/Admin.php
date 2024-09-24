@@ -45,6 +45,16 @@ class Admin extends CI_Controller {
 		$this->load->view('p/temp/footer');
 	}
 
+	public function main()
+	{	
+		$this->load->view('p/temp/main');
+	}
+
+	public function call_center()
+	{	
+		$this->load->view('p/callcenter/call_center');
+	}
+
 	public function master_product()
 	{
 		$data['list_data'] = $this->M->getAllData('master_kelas');
