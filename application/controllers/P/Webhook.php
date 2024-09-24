@@ -49,7 +49,7 @@ class Webhook extends CI_Controller {
 		
 		if ( $message == "test" ) {
 			$reply = [
-				"message" => "working great! ".$message ."|".$device ."|".$name,
+				"message" => "working great! ".$message ."|".$sender ."|".$name,
 			];
 		} elseif ( $message == "image" ) {
 			$reply = [
@@ -102,8 +102,6 @@ class Webhook extends CI_Controller {
 		  CURLOPT_POSTFIELDS => array(
 		    	'target' => $target,
 		    	'message' => $data['message'],
-		    	'url' => $data['url'],
-		    	'filename' => $data['filename'],
 		    ),
 		  CURLOPT_HTTPHEADER => array(
 		    "Authorization: UxptNbkURakM+D++6#sa"
