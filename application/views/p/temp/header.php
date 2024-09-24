@@ -374,7 +374,7 @@
                             </a>
                   
                         </li>
-
+                         <?php if($this->session->userdata('user_level') <= 1){ ?>
                           <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
@@ -409,6 +409,8 @@
                                 <a class="dropdown-item text-center text-light bg-primary" href="#">Read More Messages</a>
                             </div>
                         </li>
+                        <?php } ?>
+
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
