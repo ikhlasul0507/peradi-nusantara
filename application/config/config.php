@@ -472,7 +472,7 @@ $config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array(
 	'Notification/index',
 	'Notification', // Disable CSRF protection for this URI
-	'Webhook'
+	'Webhook/index'
 );
 
 /*
