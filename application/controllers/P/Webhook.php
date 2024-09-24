@@ -27,7 +27,6 @@ class Webhook extends CI_Controller {
 		$this->load->model('Mbg', 'M');
 		$this->config->set_item('csrf_protection', false);
 		$this->load->library('service');
-		$this->midtrans->config($params);
 		$this->load->helper('url');
     }
 
