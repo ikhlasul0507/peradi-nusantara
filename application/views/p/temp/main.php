@@ -46,16 +46,16 @@
                             </div>
                             <hr>
                             <div class="form-group text-center">
-                                <button type="submit" class="btn btn-danger btn-lg mt-3 ml-3">
+                                <a href="<?= base_url('P/Admin');?>" class="btn btn-danger btn-lg mt-3 ml-3">
                                     <i class="fa fa-home" aria-hidden="true" style="font-size:48px;"></i>
                                     <br>
                                     <small>System Info</small>
-                                </button>
-                                <button type="submit" class="btn btn-danger btn-lg mt-3 ml-3">
+                                </a>
+                                <a href="<?= base_url('P/Admin/call_center');?>" class="btn btn-danger btn-lg mt-3 ml-3">
                                     <i class="fab fa-whatsapp" aria-hidden="true" style="font-size:48px;"></i>
                                     <br>
                                     <small>Call Center</small>
-                                </button>
+                                </a>
                             </div>
 
                         </div>

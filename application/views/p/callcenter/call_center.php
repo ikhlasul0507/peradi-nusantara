@@ -25,6 +25,14 @@
             background-position: center;
             background-size: cover;
         }
+        .list-contact {
+            max-height: calc(110vh - 170px);/* Maximum height is the full height of the viewport */
+            overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
+        }
+        .rounded-circle{
+            width: 50px;
+            height: 50px;
+        }
         
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
@@ -40,16 +48,28 @@
 
                             <!-- Grayscale Utilities -->
                             <div class="card shadow mb-4">
-                                <div class="card-header">
-                                    <h6 class="m-0 font-weight-bold text-primary">Custom Grayscale Background Utilities
+                                <div class="card-header d-flex align-items-center justify-content-between">
+                                    <a href="<?= base_url('P/Admin/main');?>">
+                                        <i class="fas fa-sign-out-alt text-danger fa-lg fa-fw mr-2"></i>
+                                    </a>
+                                    <h6 class="m-0 font-weight-bold text-primary">Daftar Kontak
                                     </h6>
+                                    <input type="search" placeholder="Cari Kontak" class="form-control col-7" name="" minlength="20">
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body list-contact">
                                     <?php for ($i=0; $i < 20; $i++) { ?>
-                                    <div class="card mb-2 border-left-danger">
-                                        <div class="card-body">
-                                            .border-left-primary
-                                        </div>
+                                    <div class="card border-left-danger">
+                                         <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image mr-3">
+                                                <img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>"
+                                                    alt="...">
+                                                <div class="status-indicator bg-success"></div>
+                                            </div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate text-primary">Agung Rilo</div>
+                                                <div class="small text-truncate">Ikhlasul Amal, Online 58m Ago</div>
+                                            </div>
+                                        </a>
                                     </div>
                                     <?php } ?>
                                 </div>
@@ -60,7 +80,8 @@
                             <!-- Grayscale Utilities -->
                             <div class="card shadow mb-4">
                                 <div class="card-header">
-                                    <h6 class="m-0 font-weight-bold text-primary">Custom Grayscale Background Utilities
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                                        Agung Rilo
                                     </h6>
                                 </div>
                                 <div class="card-body">

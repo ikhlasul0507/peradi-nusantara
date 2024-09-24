@@ -446,7 +446,12 @@
                                 <?php } ?>
                             </div>
                         </li>
-
+                        <li class="nav-item dropdown mx-1">
+                            <a class="nav-link " href="<?= base_url('P/Admin/main');?>">
+                                <i class="fa fa-bars text-gray-600"></i>
+                            </a>
+                  
+                        </li>
                     <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <form class="user" action="<?= base_url('P/Admin/process_order_product_list')?>" method="post">
