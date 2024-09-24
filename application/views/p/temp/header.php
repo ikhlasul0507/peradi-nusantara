@@ -370,7 +370,7 @@
                          <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown mx-1">
                             <a class="nav-link dropdown-toggle" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <span class="button button-danger text-gray-600">Keluar Sistem</span>
+                                <span class="button button-danger text-gray-600">Keluar</span>
                             </a>
                   
                         </li>
