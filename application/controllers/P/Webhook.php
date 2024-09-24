@@ -32,8 +32,6 @@ class Webhook extends CI_Controller {
 
 	public function index()
 	{
-		header('Content-Type: application/json; charset=utf-8');
-
 		$json = file_get_contents('php://input');
 		$data = json_decode($json, true);
 		$device = $data['device'];
@@ -83,7 +81,7 @@ class Webhook extends CI_Controller {
 					Video
 					Image
 					File",
-		];
+				];
 		}
 
 		$this->sendFonnte($sender, $reply);
