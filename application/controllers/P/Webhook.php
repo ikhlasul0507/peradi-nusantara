@@ -75,13 +75,8 @@ class Webhook extends CI_Controller {
 			];
 		} else {
 			$reply = [
-				"message" => "Sorry, i don't understand. Please use one of the following keyword :
-					Hello
-					Audio
-					Video
-					Image
-					File",
-				];
+				"message" => $message,
+			];
 		}
 
 		$this->sendFonnte($sender, $reply);
