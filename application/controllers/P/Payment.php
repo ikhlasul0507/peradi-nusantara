@@ -110,7 +110,7 @@ class Payment extends CI_Controller {
 		$customer_details = array(
 		  'first_name'    => $data['nama_lengkap'],
 		  'last_name'     => "",
-		  'email'         => "",
+		  'email'         => "peradi@gmail.com",
 		  'phone'         => $data['handphone'],
 		  'billing_address'  => $billing_address,
 		  'shipping_address' => $shipping_address
