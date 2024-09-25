@@ -198,7 +198,7 @@ class Notification extends CI_Controller {
     	}else{
     		//get number from user;	
     		$arrayID = [];
-    		$cekData = $this->M->getWhereList('user',['user_level'=> 3]);
+    		$cekData = $this->M->getWhereList('user',['user_level'=> 3, 'is_marketing' => 'Y']);
 	        if($cekData){
 	        	foreach ($cekData as $key => $value) {
 	        		array_push($arrayID, $value['id_user']);

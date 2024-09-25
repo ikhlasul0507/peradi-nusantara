@@ -54,7 +54,9 @@
                 max-height: calc(110vh - 180px); /* Adjust for mobile devices */
             }
         }
-
+        .no-arrow{
+            margin-top: 10px;
+        }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
 </head>
@@ -71,7 +73,8 @@
                                     </a>
                                     <h6 class="m-0 font-weight-bold text-primary">Daftar Kontak
                                     </h6>
-                                    <input type="search" placeholder="Cari Kontak" id="searchInput" class="form-control col-7" name="" minlength="20">
+                                    <input type="search" placeholder="Cari Kontak" id="searchInput" class="form-control col-6" name="" minlength="20">
+                                    <a href="<?= base_url('cs');?>"><i class="fas fa-plus text-primary fa-lg"></i></a>
                                 </div>
                                 <div class="card-body list-contact" id="userData">
                                     <!-- <?php foreach($list_data as $cs) : 
@@ -141,7 +144,7 @@
     <script>
         $(document).ready(function(){
             fetchData();
-            setInterval(fetchData, 5000); 
+            // setInterval(fetchData, 5000); 
             function fetchData() {
                 $.ajax({
                     url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
@@ -155,6 +158,16 @@
                         $.each(data, function(index, cs) {
                             var dataHTML = '<div class="card border-left-danger" id="dataCS">'+
                                          '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                                             '<div class="dropdown no-arrow mr-2">'+
+                                                '<h6 class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                                                    '<i class="fas fa-ellipsis-v fa-sm fa-fw"></i>'+
+                                                '</h6>'+
+                                                '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
+                                                    '<div class="dropdown-header">Export Data:</div>'+
+                                                    '<button class="dropdown-item" >Excel</button>'+
+                                                    '<button class="dropdown-item" >CSV</button>'+
+                                                '</div>'+
+                                            '</div>'+
                                             '<div class="dropdown-list-image mr-3">'+
                                                 '<img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>" alt="...">'+
                                                 '<div class="status-indicator bg-success"></div>'+
