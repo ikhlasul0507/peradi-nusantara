@@ -56,6 +56,11 @@ class Admin extends CI_Controller {
 		$this->load->view('p/callcenter/call_center', $data);
 	}
 
+	public function get_data_call_center() {
+        $data =$this->M->getListHistoryCall();
+        echo json_encode($data);
+    }
+
 	public function master_product()
 	{
 		$data['list_data'] = $this->M->getAllData('master_kelas');

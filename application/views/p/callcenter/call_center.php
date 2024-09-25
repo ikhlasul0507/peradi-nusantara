@@ -71,10 +71,10 @@
                                     </a>
                                     <h6 class="m-0 font-weight-bold text-primary">Daftar Kontak
                                     </h6>
-                                    <input type="search" placeholder="Cari Kontak" class="form-control col-7" name="" minlength="20">
+                                    <input type="search" placeholder="Cari Kontak" id="searchInput" class="form-control col-7" name="" minlength="20">
                                 </div>
-                                <div class="card-body list-contact">
-                                    <?php foreach($list_data as $cs) : 
+                                <div class="card-body list-contact" id="userData">
+                                    <!-- <?php foreach($list_data as $cs) : 
                                         $seconds = $cs['seconds_since_last_call'];
                                         $hours = floor($seconds / 3600);
                                         $minutes = floor(($seconds % 3600) / 60);
@@ -87,7 +87,7 @@
                                             $last = $minutes.'m';
                                         }
                                         if($hours > 0){
-                                            $last = $hours.'h';
+                                            $last = $hours.'h'; 
                                         }
                                     ?>
 
@@ -104,7 +104,7 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <?php endforeach; ?>
+                                    <?php endforeach; ?> -->
                                 </div>
                             </div>
                         </div>
@@ -138,15 +138,76 @@
 
     <!-- Custom scripts for all pages-->
     <script src="<?= base_url('assets/p/sistem/');?>js/sb-admin-2.min.js"></script>
-    <?php  if($this->session->flashdata('pesan')): ?> 
-        <script type="text/javascript">
-            $(document).ready(function(){
-              Swal.fire({
-                title: "<?php echo $this->session->flashdata('pesan'); ?>",
-              });
+    <script>
+        $(document).ready(function(){
+            fetchData();
+            setInterval(fetchData, 5000); 
+            function fetchData() {
+                $.ajax({
+                    url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
+                    type: "GET",
+                    dataType: "json", // Expect JSON data
+                    success: function(data) {
+                        // Empty previous data
+                        $('#userData').empty();
+                        
+                        // Loop through the returned data and append it to the div
+                        $.each(data, function(index, cs) {
+                            var dataHTML = '<div class="card border-left-danger" id="dataCS">'+
+                                         '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                                            '<div class="dropdown-list-image mr-3">'+
+                                                '<img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>" alt="...">'+
+                                                '<div class="status-indicator bg-success"></div>'+
+                                            '</div>'+
+                                            '<div class="font-weight-bold">'+
+                                                '<div class="text-truncate text-primary">'+cs.customer_name+'</div>'+
+                                                '<div class="small text-truncate">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
+                                            '</div>'+
+                                        '</a>'+
+                                    '</div>';
+                            $('#userData').append(dataHTML);
+                        });
+                    },
+                    error: function() {
+                        alert("Error loading data");
+                    }
+                });
+            }
+
+            $('#searchInput').on('keyup', function (e) {
+                var ss = $(this).val().toUpperCase();
+                var el = document.getElementById("dataCS");
+            console.log(el)
+                // if (el.length > 0) {
+                //     for (var i = 0; i < el.length; i++) {
+                //         var str = el[i].id.toUpperCase();
+                //         var n = str.indexOf(ss);
+                //         if (n === -1) {
+                //             el[i].className = "hidden";
+                //         } else {
+                //             el[i].className = "select";
+                //         }
+                //     }
+                // }
             });
-          </script>
-      <?php  endif; ?>
+
+            function convertSeconds(seconds) {
+                const hours = Math.floor(seconds / 3600); // Calculate hours
+                const minutes = Math.floor((seconds % 3600) / 60); // Calculate minutes
+                const remainingSeconds = seconds % 60; // Calculate remaining seconds
+                
+                if(hours > 0){
+                    return `${hours}h`;
+                }
+                if(minutes > 0){
+                    return `${minutes}m`;
+                }
+                if(remainingSeconds > 0){
+                    return `${remainingSeconds}s`;
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
