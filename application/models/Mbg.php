@@ -467,5 +467,29 @@ class Mbg extends CI_Model {
 			return $this->db->query($query)->result_array();
 	}
 
+	function getListHistoryCall($where = null, $valuewhere = null)
+	{
+		 $query = "SELECT
+							  hc.*,
+							  TIMESTAMPDIFF(SECOND, hc.last_call, NOW()) AS seconds_since_last_call,
+						    TIMESTAMPDIFF(MINUTE, hc.last_call, NOW()) AS minutes_since_last_call,
+						    TIMESTAMPDIFF(HOUR, hc.last_call, NOW()) AS hours_since_last_call,
+							  us.nama_lengkap,
+							  us.foto_ktp
+							FROM
+							  (SELECT
+							    *
+							  FROM
+							    history_call_center) AS hc,
+							  (SELECT
+							    id_user,
+							    nama_lengkap,
+							    foto_ktp
+							  FROM
+							    USER) us
+							WHERE hc.id_user = us.id_user";
+		 return $this->db->query($query)->result_array();
+	}
+
 
 }

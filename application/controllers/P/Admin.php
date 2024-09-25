@@ -52,7 +52,8 @@ class Admin extends CI_Controller {
 
 	public function call_center()
 	{	
-		$this->load->view('p/callcenter/call_center');
+		$data['list_data'] = $this->M->getListHistoryCall();
+		$this->load->view('p/callcenter/call_center', $data);
 	}
 
 	public function master_product()

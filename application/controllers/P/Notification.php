@@ -179,12 +179,51 @@ class Notification extends CI_Controller {
     	$namalengkap = $this->input->post("namalengkap");
     	$handphone = $this->input->post("handphone");
 
+		$date = new DateTime("now", new DateTimeZone("Asia/Jakarta"));
+		$formattedDate = $date->format('Y-m-d H:i:s');
 
-    	$names = ['08151654015'];
-    	$random_key = array_rand($names);
+    	$call_center = $this->M->getWhere('history_call_center',['customer_phone'=>trim($handphone)]);
+    	$sender = "";
+    	$id_userWa = 0;
+    	if($call_center){
+    		$user = $this->M->getWhere('user',['id_user'=>trim($call_center['id_user'])]);
+    		$sender = $user['handphone'];
+    		$id_userWa = $user['id_user'];
 
-    	$link = "https://api.whatsapp.com/send/?phone=62".$names[$random_key]."&text=Hai%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+&type=phone_number&app_absent=0";
+    		$data_update = [
+    			'last_call' => $formattedDate
+    		];
 
-    	redirect($link);
+    		$this->M->update_to_db('history_call_center', $data_update, 'id_user', trim($id_userWa));
+    	}else{
+    		//get number from user;	
+    		$arrayID = [];
+    		$cekData = $this->M->getWhereList('user',['user_level'=> 3]);
+	        if($cekData){
+	        	foreach ($cekData as $key => $value) {
+	        		array_push($arrayID, $value['id_user']);
+	        	}
+	        }
+    		$random_key = array_rand($arrayID);
+
+    		$id_userWa = $arrayID[$random_key];
+    		$user = $this->M->getWhere('user',['id_user'=>trim($id_userWa)]);
+    		$sender = $user['handphone'];
+
+    		//status_call_center : N (New Request), P (Process Request), H (Hold Request), F (Follow Up), D (Done Payment) 
+    		$send_db = [
+    			'id_user' => $id_userWa,
+    			'customer_name' => $namalengkap,
+    			'customer_phone' => $handphone,
+    			'notes_call' => "",
+    			'last_call' => $formattedDate,
+    			'status_call_center' => "N"
+    		];
+    		$this->M->add_to_db('history_call_center', $send_db);
+    	}
+    	if($sender != ""){
+	    	$link = "https://api.whatsapp.com/send/?phone=62".$sender."&text=Hai%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+&type=phone_number&app_absent=0";
+    		redirect($link);
+    	}
     }
 }

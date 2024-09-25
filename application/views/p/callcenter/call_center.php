@@ -26,27 +26,44 @@
             background-size: cover;
         }
         .list-contact {
-            max-height: calc(110vh - 170px);/* Maximum height is the full height of the viewport */
+            max-height: calc(110vh - 180px);/* Maximum height is the full height of the viewport */
             overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
         }
         .rounded-circle{
             width: 50px;
             height: 50px;
         }
-        
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden; /* Prevent horizontal overflow on the whole page */
+        }
+        @media (max-width: 1366px) {
+            .list-contact {
+                max-height: calc(110vh - 150px); /* Adjust for mobile devices */
+            }
+        }
+        .tab-area{
+            display: inline;
+        }
+        @media (max-width: 896px) {
+            .tab-area{
+                display: none;
+            }
+            .list-contact {
+                max-height: calc(110vh - 180px); /* Adjust for mobile devices */
+            }
+        }
+
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
 </head>
 
-<body class="bg-success"> 
-
-    <!-- Begin Page Content -->
-                <div class="container-fluid bg-success mt-1">
+<body> 
+                <div class="">
                     <div class="row">
                         <!-- Third Column -->
                         <div class="col-lg-4">
-
-                            <!-- Grayscale Utilities -->
                             <div class="card shadow mb-4">
                                 <div class="card-header d-flex align-items-center justify-content-between">
                                     <a href="<?= base_url('P/Admin/main');?>">
@@ -57,7 +74,23 @@
                                     <input type="search" placeholder="Cari Kontak" class="form-control col-7" name="" minlength="20">
                                 </div>
                                 <div class="card-body list-contact">
-                                    <?php for ($i=0; $i < 20; $i++) { ?>
+                                    <?php foreach($list_data as $cs) : 
+                                        $seconds = $cs['seconds_since_last_call'];
+                                        $hours = floor($seconds / 3600);
+                                        $minutes = floor(($seconds % 3600) / 60);
+                                        $remainingSeconds = $seconds % 60;
+                                        $last = "";
+                                        if($remainingSeconds > 0){
+                                            $last = $remainingSeconds.'s';
+                                        }
+                                        if($minutes > 0){
+                                            $last = $minutes.'m';
+                                        }
+                                        if($hours > 0){
+                                            $last = $hours.'h';
+                                        }
+                                    ?>
+
                                     <div class="card border-left-danger">
                                          <a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="dropdown-list-image mr-3">
@@ -66,16 +99,16 @@
                                                 <div class="status-indicator bg-success"></div>
                                             </div>
                                             <div class="font-weight-bold">
-                                                <div class="text-truncate text-primary">Agung Rilo</div>
-                                                <div class="small text-truncate">Ikhlasul Amal, Online 58m Ago</div>
+                                                <div class="text-truncate text-primary"><?= $cs['customer_name'];?></div>
+                                                <div class="small text-truncate"><?= $cs['nama_lengkap'];?>, Online <?= $last;?> Ago</div>
                                             </div>
                                         </a>
                                     </div>
-                                    <?php } ?>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-8 tab-area">
 
                             <!-- Grayscale Utilities -->
                             <div class="card shadow mb-4">
