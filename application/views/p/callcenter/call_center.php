@@ -74,7 +74,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Daftar Kontak
                                     </h6>
                                     <input type="text" placeholder="Cari Kontak" id="searchInput" class="form-control col-6" name="" minlength="20">
-                                    <a href="<?= base_url('cs');?>"><i class="fas fa-plus text-primary fa-lg"></i></a>
+                                    <a target="_blank" href="<?= base_url('cs');?>"><i class="fas fa-plus text-primary fa-lg"></i></a>
                                 </div>
                                 <div class="card-body list-contact" id="userData">
                                     <!-- <?php foreach($list_data as $cs) : 
