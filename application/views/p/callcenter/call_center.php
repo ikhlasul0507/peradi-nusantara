@@ -144,7 +144,7 @@
     <script>
         $(document).ready(function(){
             fetchData();
-            // setInterval(fetchData, 5000); 
+            setInterval(fetchData, 5000); 
             function fetchData() {
                 $.ajax({
                     url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
