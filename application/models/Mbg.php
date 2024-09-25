@@ -486,7 +486,7 @@ class Mbg extends CI_Model {
 							    nama_lengkap,
 							    foto_ktp
 							  FROM
-							    USER) us
+							    user) us
 							WHERE hc.id_user = us.id_user";
 		 return $this->db->query($query)->result_array();
 	}
