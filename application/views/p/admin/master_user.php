@@ -107,9 +107,19 @@
                             <input type="text" class="form-control" required name="asal_kampus"
                                 placeholder="Asal Kampus">
                         </div>
-                        <div class="col-sm-12  mt-3 mb-3 mb-sm-0">
-                            <input type="number" class="form-control" required name="semester"
-                                placeholder="Semester">
+                        <div class="col-sm-12 mt-3 mb-3 mb-sm-0">
+                            <select class="form-control" required name="semester">
+                                <option value="" disabled selected>--Status Kuliah--</option>
+                                <option value="1">Sudah Lulus</option>
+                                <option value="0">Belum Lulus</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 mt-3 mb-3 mb-sm-0">
+                            <select class="form-control" required name="is_marketing">
+                                <option value="" disabled selected>--Marketing--</option>
+                                <option value="Y">Ya</option>
+                                <option value="N">Tidak</option>
+                            </select>
                         </div>
                         <div class="col-sm-12  mt-3 mb-3 mb-sm-0">
                             <input type="text" class="form-control" required name="password"
