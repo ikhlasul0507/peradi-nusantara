@@ -73,7 +73,7 @@
                                     </a>
                                     <h6 class="m-0 font-weight-bold text-primary">Daftar Kontak
                                     </h6>
-                                    <input type="search" placeholder="Cari Kontak" id="searchInput" class="form-control col-6" name="" minlength="20">
+                                    <input type="text" placeholder="Cari Kontak" id="searchInput" class="form-control col-6" name="" minlength="20">
                                     <a href="<?= base_url('cs');?>"><i class="fas fa-plus text-primary fa-lg"></i></a>
                                 </div>
                                 <div class="card-body list-contact" id="userData">
@@ -143,12 +143,15 @@
     <script src="<?= base_url('assets/p/sistem/');?>js/sb-admin-2.min.js"></script>
     <script>
         $(document).ready(function(){
+            localStorage.setItem('search', '');
             fetchData();
             setInterval(fetchData, 5000); 
-            function fetchData() {
+            function fetchData(value = "") {
+                value = localStorage.getItem('search');
                 $.ajax({
                     url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
                     type: "GET",
+                    data: { query: value },
                     dataType: "json", // Expect JSON data
                     success: function(data) {
                         // Empty previous data
@@ -188,20 +191,9 @@
             }
 
             $('#searchInput').on('keyup', function (e) {
-                var ss = $(this).val().toUpperCase();
-                var el = document.getElementById("dataCS");
-            console.log(el)
-                // if (el.length > 0) {
-                //     for (var i = 0; i < el.length; i++) {
-                //         var str = el[i].id.toUpperCase();
-                //         var n = str.indexOf(ss);
-                //         if (n === -1) {
-                //             el[i].className = "hidden";
-                //         } else {
-                //             el[i].className = "select";
-                //         }
-                //     }
-                // }
+                var ss = $(this).val();
+                localStorage.setItem('search', ss);
+                fetchData();
             });
 
             function convertSeconds(seconds) {

@@ -57,7 +57,12 @@ class Admin extends CI_Controller {
 	}
 
 	public function get_data_call_center() {
-        $data =$this->M->getListHistoryCall();
+		$query = $this->input->get('query');
+		if($query != ""){
+        	$data =$this->M->getListHistoryCall("query", $query);
+    	}else{
+    		$data =$this->M->getListHistoryCall();
+    	}
         echo json_encode($data);
     }
 

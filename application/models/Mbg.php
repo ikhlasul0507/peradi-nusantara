@@ -488,6 +488,11 @@ class Mbg extends CI_Model {
 							  FROM
 							    user) us
 							WHERE hc.id_user = us.id_user";
+	   if($where == "query"){
+	   		$query = $query . " AND (us.nama_lengkap LIKE '%$valuewhere%'
+									  OR hc.customer_name LIKE '%$valuewhere%'
+									  OR hc.customer_phone LIKE '%$valuewhere%')";
+	   }
 		 return $this->db->query($query)->result_array();
 	}
 
