@@ -170,7 +170,7 @@
     
     localStorage.setItem('search', '');
     fetchData();
-    setInterval(fetchData, 60000); 
+    setInterval(fetchData, 10000); 
     function fetchData(value = "") {
         value = localStorage.getItem('search');
         $.ajax({
