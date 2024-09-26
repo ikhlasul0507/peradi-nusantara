@@ -76,6 +76,34 @@ class Admin extends CI_Controller {
         echo json_encode($data);
     }
 
+    public function change_status_wa_call_center()
+    {
+    	$query = explode("-", $this->input->get('query'));
+    	$updateDB = $this->M->update_to_db('history_call_center',['status_call_center'=>$query[1]],'id_history_call_center',$query[0]);
+    	if($updateDB){
+    		echo json_encode(['status_code' => 200, 'msg' => "Berhasil Update"]);
+    	}else{
+    		echo json_encode(['status_code' => 201, 'msg' => "Gagal Update"]);
+    	}
+    }
+
+    public function update_notes_wa_call_center()
+    {
+    	if ($this->input->is_ajax_request()) {
+	    	$query = $this->input->post('query');
+	    	$value = $this->input->post('value');
+	    	$updateDB = $this->M->update_to_db('history_call_center',['notes_call'=>$value],'id_history_call_center',$query);
+	    	if($updateDB){
+	    		echo json_encode(['status_code' => 200, 'msg' => "Berhasil Update"]);
+	    	}else{
+	    		echo json_encode(['status_code' => 201, 'msg' => "Gagal Update"]);
+	    	}
+    	} else {
+            // If not an AJAX request, show a 404 error
+            show_404();
+        }
+    }
+
 	public function master_product()
 	{
 		$data['list_data'] = $this->M->getAllData('master_kelas');

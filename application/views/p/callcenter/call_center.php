@@ -104,7 +104,7 @@
                 <div class="card shadow mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between" id="detailUser">
                         <input type="hidden" id="id_history_call_center">
-                        <select class="form-control col-3 statusWA text-light" onclick="" id="myStatusWa">
+                        <select class="form-control col-3 statusWA text-light" id="myStatusWa">
                             <option class="bg-danger text-light" value="N">New Request</option>
                             <option class="bg-primary text-light" value="P">Process Request</option>
                             <option class="bg-dark text-light" value="H">Hold Request</option>
@@ -114,7 +114,7 @@
                         <h5 class="m-0 font-weight-bold text-primary" id="nameContact">
                             <!-- Agung Rilo -->
                         </h5>
-                        <a href="#" class="btn btn-success btn-circle btn-lg" id="btnSendWA">
+                        <a href="#" target="blank" class="btn btn-success btn-circle btn-lg" id="btnSendWA">
                             <i class="fab fa-whatsapp" aria-hidden="true"></i>
                         </a>
 
@@ -124,7 +124,7 @@
                           <label for="floatingTextarea" id="lastNotes">
                           <!-- Catatan Terakhir : 2024-09-21 12:13:45 -->
                           </label>
-                          <textarea class="form-control" placeholder="..." id="floatingTextarea"></textarea>
+                          <textarea class="form-control text-dark" placeholder="..." id="floatingTextarea"></textarea>
                         </div>
                         <button class="btn btn-primary mt-3" id="btnPerbaharui">Perbaharui Catatan</button>
                     </div>
@@ -170,7 +170,7 @@
     
     localStorage.setItem('search', '');
     fetchData();
-    // setInterval(fetchData, 5000); 
+    setInterval(fetchData, 60000); 
     function fetchData(value = "") {
         value = localStorage.getItem('search');
         $.ajax({
@@ -196,6 +196,7 @@
                     }else if(cs.status_call_center === "D"){
                         var nameClassCard = "card border-left-success";
                     }
+
                     var dataHTML = '<div class="'+nameClassCard+'" onclick="getDetail('+cs.id_history_call_center+')" id="dataCS">'+
                                  '<a class="dropdown-item d-flex align-items-center" href="#">'+
                                      '<div class="dropdown no-arrow mr-2">'+
@@ -233,6 +234,63 @@
         localStorage.setItem('search', ss);
         fetchData();
     });
+    $('#myStatusWa').on('change', function() {
+        var selectedValue = $(this).val(); // Get the selected value
+        changeStatusWA(selectedValue);
+    });
+
+    $('#btnPerbaharui').on('click', function() {
+        var id_history_call_center = $('#id_history_call_center').val();
+        var floatingTextarea = $('#floatingTextarea').val();
+        updateNotesWa(id_history_call_center,floatingTextarea);
+    });
+
+    var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
+    var csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
+
+    function updateNotesWa(id, value){
+        $.ajax({
+            url: "<?php echo base_url('P/Admin/update_notes_wa_call_center'); ?>", 
+            type: "POST",
+            data: { 
+                query: id,
+                value : value,
+                [csrfName]: csrfHash 
+            },
+            dataType: "json", // Expect JSON data
+            success: function(data) {
+                if(data.status_code === 200){
+                    getDetail(id);
+                }else{
+                    alert("Gagal update data");
+                }
+            },
+            error: function() {
+                alert("Error loading data");
+                // window.location.href = '<?= base_url("P/Auth/login");?>';
+            }
+        });
+    }
+    function changeStatusWA(valueStatus){
+        var id_history_call_center = $('#id_history_call_center').val();
+        $.ajax({
+            url: "<?php echo base_url('P/Admin/change_status_wa_call_center'); ?>", 
+            type: "GET",
+            data: { query: id_history_call_center+"-"+valueStatus },
+            dataType: "json", // Expect JSON data
+            success: function(data) {
+                if(data.status_code === 200){
+                    getDetail(id_history_call_center);
+                }else{
+                    alert("Gagal update data");
+                }
+            },
+            error: function() {
+                alert("Error loading data");
+                window.location.href = '<?= base_url("P/Auth/login");?>';
+            }
+        });
+    }
 
     function focusTextarea() {
         var $textarea = $('#floatingTextarea');
@@ -273,6 +331,9 @@
                 $('#nameContact').text(data[0].customer_phone+"-"+data[0].customer_name);
                 $('#lastNotes').text("Online Terakhir : "+data[0].last_call);
 
+                var linkTOWA = "https://api.whatsapp.com/send/?phone=62"+data[0].customer_phone;
+                $('#btnSendWA').attr('href', linkTOWA);
+
                 $('#myStatusWa').removeClass('bg-danger bg-primary bg-dark bg-warning bg-success');
                 if(data[0].status_call_center === "N"){
                     $('#myStatusWa').addClass('bg-danger');
@@ -300,6 +361,7 @@
                     var textN = formattedDate + data[0].notes_call;
                 }
                 $('#floatingTextarea').val(textN);
+                $('#floatingTextarea').attr('spellcheck', false);
                 focusTextarea();
             },
             error: function() {
