@@ -234,6 +234,13 @@
         fetchData();
     });
 
+    function focusTextarea() {
+        var $textarea = $('#floatingTextarea');
+        $textarea.focus(); // Set focus to the textarea
+        // Set the cursor position to the end of the existing text
+        $textarea[0].setSelectionRange($textarea.val().length, $textarea.val().length);
+    }
+
     function convertSeconds(seconds) {
         const hours = Math.floor(seconds / 3600); // Calculate hours
         const minutes = Math.floor((seconds % 3600) / 60); // Calculate minutes
@@ -293,6 +300,7 @@
                     var textN = formattedDate + data[0].notes_call;
                 }
                 $('#floatingTextarea').val(textN);
+                focusTextarea();
             },
             error: function() {
                 alert("Error loading data");

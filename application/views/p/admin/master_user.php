@@ -27,6 +27,7 @@
                             <th>Aksi</th>
                             <th>NIK</th>
                             <th>Angkatan</th>
+                            <th>PIC/Reference</th>
                             <th>Email</th>
                             <th>Nama Lengkap/Usia</th>
                             <th>Handphone</th>
@@ -48,6 +49,7 @@
                             </td>
                             <td><?= $value['nik'];?></td>
                             <td><?= $value['angkatan'];?></td>
+                            <td><?= $value['pic'] ." - ". $value['reference'];?></td>
                             <td><?= $value['email'];?></td>
                             <td><?= $value['nama_lengkap'];?>-<?= $value['usia'];?></td>
                             <td><?= $value['handphone'];?></td>
