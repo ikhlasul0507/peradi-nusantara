@@ -95,7 +95,7 @@
                         <input type="text" placeholder="Cari Kontak" id="searchInput" class="form-control col-6" name="" minlength="20">
                         <a target="_blank" href="<?= base_url('cs');?>"><i class="fas fa-plus text-primary fa-lg"></i></a>
                     </div>
-                    <div class="card-body list-contact" id="userData">
+                    <div class="card-body list-contact" id="userData" style="padding: 0px;">
                         <div class="card border-left-danger">
                              <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
