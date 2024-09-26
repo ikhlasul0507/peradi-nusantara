@@ -66,7 +66,7 @@
                 max-height: calc(110vh - 180px); /* Adjust for mobile devices */
             }
             #floatingTextareaModal {
-                height: calc(80vh - 180px);/* Maximum height is the full height of the viewport */
+                height: calc(83vh - 180px);/* Maximum height is the full height of the viewport */
                 overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
                 font-size: 11px;
             }
