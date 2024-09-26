@@ -87,6 +87,29 @@ class Admin extends CI_Controller {
     	}
     }
 
+    public function update_priority_wa_call_center()
+    {
+    	$query = $this->input->get('query');
+    	$updateDB = $this->M->update_to_db('history_call_center',['priority'=>1],'id_history_call_center',$query);
+    	if($updateDB){
+    		echo json_encode(['status_code' => 200, 'msg' => "Berhasil Update"]);
+    	}else{
+    		echo json_encode(['status_code' => 201, 'msg' => "Gagal Update"]);
+    	}
+    }
+
+    public function delete_wa_call_center()
+    {
+    	$query = $this->input->get('query');
+    	$deleteDB = $this->M->delete_to_db('history_call_center','id_history_call_center',$query);
+    	if(!$deleteDB){
+    		echo json_encode(['status_code' => 200, 'msg' => "Berhasil Delete"]);
+    	}else{
+    		echo json_encode(['status_code' => 201, 'msg' => "Gagal Delete"]);
+    	}
+    }
+    
+
     public function update_notes_wa_call_center()
     {
     	if ($this->input->is_ajax_request()) {

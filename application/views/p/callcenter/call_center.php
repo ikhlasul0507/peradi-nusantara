@@ -96,7 +96,7 @@
                         <input type="text" placeholder="Cari Kontak" id="searchInput" class="form-control col-6" name="" minlength="20">
                         <a target="_blank" href="<?= base_url('cs');?>"><i class="fas fa-plus text-primary fa-lg"></i></a>
                     </div>
-                    <div class="card-body list-contact" id="userData" style="padding: 0px;">
+                    <div class="card-body list-contact" id="userData" style="padding-left: 15px;">
                         <div class="card border-left-danger">
                              <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
@@ -208,7 +208,7 @@
     
     localStorage.setItem('search', '');
     fetchData();
-    setInterval(fetchData, 10000); 
+    // setInterval(fetchData, 10000); 
     function fetchData(value = "") {
         value = localStorage.getItem('search');
         $.ajax({
@@ -239,12 +239,12 @@
                                  '<a class="dropdown-item d-flex align-items-center" href="#">'+
                                      '<div class="dropdown no-arrow mr-2">'+
                                         '<h6 class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-                                            '<i class="fas fa-ellipsis-v fa-sm fa-fw"></i>'+
+                                            '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
                                         '</h6>'+
                                         '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
                                             '<div class="dropdown-header">Options:</div>'+
-                                            '<button class="dropdown-item" >Priority</button>'+
-                                            '<button class="dropdown-item" >Delete</button>'+
+                                            '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
+                                            '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+')">Delete</button>'+
                                         '</div>'+
                                     '</div>'+
                                     '<div class="dropdown-list-image mr-3">'+
@@ -365,6 +365,50 @@
         if(remainingSeconds > 0){
             return `${remainingSeconds}s`;
         }
+    }
+
+    function changePriority(id) {
+        $.ajax({
+            url: "<?php echo base_url('P/Admin/update_priority_wa_call_center'); ?>", 
+            type: "GET",
+            data: { 
+                query: id
+            },
+            dataType: "json", // Expect JSON data
+            success: function(data) {
+                if(data.status_code === 200){
+                    fetchData();
+                }else{
+                    alert("Gagal update data");
+                }
+            },
+            error: function() {
+                alert("Error loading data");
+                // window.location.href = '<?= base_url("P/Auth/login");?>';
+            }
+        });
+        // body...
+    }
+    function deleteCS(id) {
+        $.ajax({
+            url: "<?php echo base_url('P/Admin/delete_wa_call_center'); ?>", 
+            type: "GET",
+            data: { 
+                query: id
+            },
+            dataType: "json", // Expect JSON data
+            success: function(data) {
+                if(data.status_code === 200){
+                    fetchData();
+                }else{
+                    alert("Gagal update data");
+                }
+            },
+            error: function() {
+                alert("Error loading data");
+                // window.location.href = '<?= base_url("P/Auth/login");?>';
+            }
+        });
     }
 
     function getDetail(id){
