@@ -23,6 +23,7 @@ class Migrate extends CI_Controller
 	{
 		$this->writeLine();
 		echo "<b>..............Time Migrate " . date("d-m-Y h:m:s") . "</b></br>";
+		$this->setDBIncludeCharacter();
 		$this->writeLine();
 		$this->addnewtable();
 		$this->writeLine();
@@ -38,6 +39,38 @@ class Migrate extends CI_Controller
 	public function writeLine()
 	{
 		echo ".....................................................................................................................................</br>";
+	}
+
+	public function setDBIncludeCharacter()
+	{
+		//=================================================================================================
+		$query = "ALTER TABLE history_call_center MODIFY COLUMN notes_call TEXT CHARACTER SET utf8mb4 		COLLATE utf8mb4_unicode_ci";
+		if ($this->db->query($query)) {
+			echo "||............[setDBIncludeCharacter successfully]</br>";
+		} else {
+			echo "||............[setDBIncludeCharacter failed]</br>";
+		}
+		//=================================================================================================
+		$query = "ALTER DATABASE db_peradi CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci";
+		if ($this->db->query($query)) {
+			echo "||............[setDBIncludeCharacter successfully]</br>";
+		} else {
+			echo "||............[setDBIncludeCharacter failed]</br>";
+		}
+		//=================================================================================================
+		$query = "ALTER TABLE history_call_center CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+		if ($this->db->query($query)) {
+			echo "||............[setDBIncludeCharacter successfully]</br>";
+		} else {
+			echo "||............[setDBIncludeCharacter failed]</br>";
+		}
+		//=================================================================================================
+		$query = "SET NAMES utf8mb4";
+		if ($this->db->query($query)) {
+			echo "||............[setDBIncludeCharacter successfully]</br>";
+		} else {
+			echo "||............[setDBIncludeCharacter failed]</br>";
+		}
 	}
 
 	public function addnewtable()
@@ -681,6 +714,25 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate successfully " . $title . "]</br>";
 		}
+
+		//=================================================================================================
+		$column = "priority";
+		$table_name = "history_call_center";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column CHAR(1) DEFAULT '0'";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+
 	}
 
 }
