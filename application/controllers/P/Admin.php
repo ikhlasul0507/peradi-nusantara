@@ -1499,7 +1499,7 @@ class Admin extends CI_Controller {
 	            		$nominal = explode("|",$value['nominal']);
 						$tanggal_bayar = explode("|",$value['tanggal_bayar']);
 
-            			echo json_encode($nominal);
+            			// echo json_encode($nominal);
             			
 						for ($ip=0; $ip < count($tanggal_bayar); $ip++) { 
 							$data_send_op = [

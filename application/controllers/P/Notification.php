@@ -222,7 +222,7 @@ class Notification extends CI_Controller {
     		$this->M->add_to_db('history_call_center', $send_db);
     	}
     	if($sender != ""){
-	    	$link = "https://api.whatsapp.com/send/?phone=62".$sender."&text=Hai%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+&type=phone_number&app_absent=0";
+	    	$link = "https://api.whatsapp.com/send/?phone=62".$sender."&text=Hai%2C+Saya+tertarik+dengan+kelas+peradi+nusantara+from+call+center&type=phone_number&app_absent=0";
     		redirect($link);
     	}
     }
