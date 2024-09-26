@@ -51,7 +51,9 @@ class Migrate extends CI_Controller
 			echo "||............[setDBIncludeCharacter failed]</br>";
 		}
 		//=================================================================================================
-		$query = "ALTER DATABASE db_peradi CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci";
+		$databaseName = $this->db->database;
+		
+		$query = "ALTER DATABASE `$databaseName` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci";
 		if ($this->db->query($query)) {
 			echo "||............[setDBIncludeCharacter successfully]</br>";
 		} else {
