@@ -51,12 +51,23 @@
         .tab-area{
             display: inline;
         }
+        #modalDetail{
+            display: none;
+        }
+        #floatingTextareaModal {
+            height: calc(100vh - 180px);/* Maximum height is the full height of the viewport */
+            overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
+        }
         @media (max-width: 896px) {
             .tab-area{
                 display: none;
             }
             .list-contact {
                 max-height: calc(110vh - 180px); /* Adjust for mobile devices */
+            }
+            #floatingTextareaModal {
+                height: calc(100vh - 180px);/* Maximum height is the full height of the viewport */
+                overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
             }
         }
         .no-arrow{
@@ -136,17 +147,40 @@
     <!-- /.container-fluid -->
 
     <!-- Logout Modal-->
-    <div class="modal fade show" id="logoutModal" style="display: none;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade show" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header d-flex align-items-center justify-content-between" id="detailUser">
+                    <input type="hidden" id="id_history_call_center">
+
+                    <a href="#" target="blank" class="btn btn-success btn-circle btn-sm" id="btnSendWAModal">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    </a>
+
+                    <select class="form-control col-4 ml-2 statusWA text-light" style="font-size: 10px;" id="myStatusWaModal">
+                        <option class="bg-danger text-light" value="N">New Request</option>
+                        <option class="bg-primary text-light" value="P">Process Request</option>
+                        <option class="bg-dark text-light" value="H">Hold Request</option>
+                        <option class="bg-warning text-light" value="F">Follow Up</option>
+                        <option class="bg-success text-light" value="D">Done Payment</option>
+                    </select>
+                    <p class="m-0 font-weight-bold ml-2 text-primary" style="font-size: 10px;" id="nameContactModal">
+                        <!-- Agung Rilo -->
+                    </p>
+                    <button class="close" type="button" id="modalClose" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">
+                    <div class="form-floating">
+                          <label for="floatingTextarea" id="lastNotesModal">
+                          <!-- Catatan Terakhir : 2024-09-21 12:13:45 -->
+                          </label>
+                          <textarea class="form-control text-dark" placeholder="..." id="floatingTextareaModal"></textarea>
+                    </div>
+                    <button class="btn btn-primary mt-3" id="btnPerbaharuiModal">Perbaharui Catatan</button>
+                </div>
             </div>
         </div>
     </div>
@@ -238,6 +272,11 @@
         var selectedValue = $(this).val(); // Get the selected value
         changeStatusWA(selectedValue);
     });
+    $('#myStatusWaModal').on('change', function() {
+        var selectedValue = $(this).val(); // Get the selected value
+        changeStatusWA(selectedValue);
+    });
+    
 
     $('#btnPerbaharui').on('click', function() {
         var id_history_call_center = $('#id_history_call_center').val();
@@ -245,6 +284,16 @@
         updateNotesWa(id_history_call_center,floatingTextarea);
     });
 
+    $('#btnPerbaharuiModal').on('click', function() {
+        var id_history_call_center = $('#id_history_call_center').val();
+        var floatingTextarea = $('#floatingTextareaModal').val();
+        updateNotesWa(id_history_call_center,floatingTextarea);
+    });
+
+    $('#modalClose').on('click', function() {
+        document.getElementById('modalDetail').style.display = "none";
+    });
+    
     var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
     var csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
 
@@ -294,8 +343,7 @@
 
     function focusTextarea() {
         var $textarea = $('#floatingTextarea');
-        $textarea.focus(); // Set focus to the textarea
-        // Set the cursor position to the end of the existing text
+        $textarea.focus();
         $textarea[0].setSelectionRange($textarea.val().length, $textarea.val().length);
     }
 
@@ -329,10 +377,13 @@
                 $('#btnSendWA').show();
                 $('#myStatusWa').show();
                 $('#nameContact').text(data[0].customer_phone+"-"+data[0].customer_name);
+                $('#nameContactModal').text(data[0].customer_phone+"-"+data[0].customer_name);
                 $('#lastNotes').text("Online Terakhir : "+data[0].last_call);
+                $('#lastNotesModal').text("Online Terakhir : "+data[0].last_call);
 
                 var linkTOWA = "https://api.whatsapp.com/send/?phone=62"+data[0].customer_phone;
                 $('#btnSendWA').attr('href', linkTOWA);
+                $('#btnSendWAModal').attr('href', linkTOWA);
 
                 $('#myStatusWa').removeClass('bg-danger bg-primary bg-dark bg-warning bg-success');
                 if(data[0].status_call_center === "N"){
@@ -349,6 +400,20 @@
 
                 $('#myStatusWa option[value="'+data[0].status_call_center+'"]').prop('selected', true);
 
+                $('#myStatusWaModal').removeClass('bg-danger bg-primary bg-dark bg-warning bg-success');
+                if(data[0].status_call_center === "N"){
+                    $('#myStatusWaModal').addClass('bg-danger');
+                }else if(data[0].status_call_center === "P"){
+                    $('#myStatusWaModal').addClass('bg-primary');
+                }else if(data[0].status_call_center === "H"){
+                    $('#myStatusWaModal').addClass('bg-dark');
+                }else if(data[0].status_call_center === "F"){
+                    $('#myStatusWaModal').addClass('bg-warning');
+                }else if(data[0].status_call_center === "D"){
+                    $('#myStatusWaModal').addClass('bg-success');
+                }
+
+                $('#myStatusWaModal option[value="'+data[0].status_call_center+'"]').prop('selected', true);
                 const today = new Date();
                 const year = today.getFullYear();
                 const month = String(today.getMonth() + 1).padStart(2, '0'); 
@@ -362,7 +427,19 @@
                 }
                 $('#floatingTextarea').val(textN);
                 $('#floatingTextarea').attr('spellcheck', false);
+
+                $('#floatingTextareaModal').val(textN);
+                $('#floatingTextareaModal').attr('spellcheck', false);
+
                 focusTextarea();
+
+                if (window.innerWidth <= 896) {
+                    // Show the modal
+                    document.getElementById('modalDetail').style.display = "block";
+                    var $textarea = $('#floatingTextareaModal');
+                    $textarea.focus();
+                    $textarea[0].setSelectionRange($textarea.val().length, $textarea.val().length);
+                }
             },
             error: function() {
                 alert("Error loading data");
