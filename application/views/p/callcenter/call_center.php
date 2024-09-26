@@ -235,7 +235,7 @@
                         var nameClassCard = "card border-left-success";
                     }
 
-                    var dataHTML = '<div class="'+nameClassCard+'" onclick="getDetail('+cs.id_history_call_center+')" id="dataCS">'+
+                    var dataHTML = '<div class="'+nameClassCard+'"  id="dataCS">'+
                                  '<a class="dropdown-item d-flex align-items-center" href="#">'+
                                      '<div class="dropdown no-arrow mr-2">'+
                                         '<h6 class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
@@ -251,7 +251,7 @@
                                         '<img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>" alt="...">'+
                                         '<div class="status-indicator bg-success"></div>'+
                                     '</div>'+
-                                    '<div class="font-weight-bold">'+
+                                    '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
                                         '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
                                         '<div class="small text-truncate">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
                                     '</div>'+
