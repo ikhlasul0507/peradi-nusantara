@@ -14,7 +14,7 @@
             <div class="table-responsive">
                 <div id="selectedItems"></div>
                 <input type="hidden" id="list_id" value="">
-                <table class="table table-bordered" id="" width="100%" cellspacing="0" style="color: black">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="color: black">
                     <thead>
                         <tr style="background-color: silver">
                             <th>Aksi</th>

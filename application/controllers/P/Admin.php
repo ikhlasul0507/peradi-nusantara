@@ -1390,10 +1390,19 @@ class Admin extends CI_Controller {
             while (($row = fgetcsv($file, 1000, ";")) !== FALSE) {
             	if($number > 0){
 	                $objectArr = [];
+	                $checkValue = false;
 	                for ($i=0; $i < count($header); $i++) { 
-	                	 $objectArr[$header[$i]] = trim($row[$i]);
+	                	if($row[0] != ""){
+	                		$checkValue = true;
+	                	 	$objectArr[$header[$i]] = trim($row[$i]);
+	                	}else{
+	                		continue;
+	                	}
 	                }
-	                array_push($dataArray,$objectArr);
+	                
+	                if($checkValue){
+	                	array_push($dataArray,$objectArr);
+	            	}
             	}
                 $number++;
             }
@@ -1401,6 +1410,7 @@ class Admin extends CI_Controller {
             // Delete the file after processing
             unlink($file_path);
 
+            // echo json_encode($dataArray);
             // die;
             //prepare insert to db
             $checkData = false;
@@ -1502,6 +1512,9 @@ class Admin extends CI_Controller {
 							];
 
 							$add_db_op = $this->M->add_to_db('order_payment', $data_send_op);
+
+							//if order payment status N send notif wa 
+
 							if($add_db_op){
 								$checkData = true;
 							}
