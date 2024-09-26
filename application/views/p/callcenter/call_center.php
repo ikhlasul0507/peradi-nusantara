@@ -69,6 +69,9 @@
                 height: calc(100vh - 180px);/* Maximum height is the full height of the viewport */
                 overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
             }
+            #nameCustomer{
+                font-size: 11px;
+            }
         }
         .no-arrow{
             margin-top: 10px;
@@ -101,7 +104,7 @@
                                     <div class="status-indicator bg-success"></div>
                                 </div>
                                 <div class="font-weight-bold">
-                                    <div class="text-truncate text-primary">Contoh Name</div>
+                                    <div class="text-truncate text-primary" id="nameCustomer">Contoh Name</div>
                                     <div class="small text-truncate">Contoh, Online 5m Ago</div>
                                 </div>
                             </a>
@@ -248,7 +251,7 @@
                                         '<div class="status-indicator bg-success"></div>'+
                                     '</div>'+
                                     '<div class="font-weight-bold">'+
-                                        '<div class="text-truncate text-primary">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
+                                        '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
                                         '<div class="small text-truncate">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
                                     '</div>'+
                                 '</a>'+
