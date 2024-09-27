@@ -446,7 +446,7 @@
                                 <?php } ?>
                             </div>
                         </li>
-                        <?php if($this->session->userdata('user_level') <= 1){ ?>
+                        <?php if($this->session->userdata('user_level') <= 3){ ?>
                         <li class="nav-item dropdown mx-1">
                             <a class="nav-link " href="<?= base_url('P/Admin/main');?>">
                                 <i class="fa fa-bars text-gray-600"></i>
