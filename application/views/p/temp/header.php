@@ -158,10 +158,15 @@
                 display: none;
             }
         }
+        .bg-default{
+            background: url("<?= base_url('assets/p/img/bg-default.jpg');?>");
+            background-position: center;
+            background-size: cover;
+        }
     </style>
 </head>
 
-<body id="page-top" style="overflow-y: hidden;">
+<body id="page-top"  style="overflow-y: hidden;">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -339,7 +344,7 @@
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column bg-default">
 
             <!-- Main Content -->
             <div id="content">

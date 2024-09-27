@@ -605,11 +605,22 @@ class Admin extends CI_Controller {
 
 	public function process_edit_user_profile()
 	{
+		$fileNameFoto = trim($this->input->post('foto_ktp_lama'));
+
+		if(isset($_FILES['foto_ktp']) && $_FILES['foto_ktp']['error'] === UPLOAD_ERR_OK){
+			if(trim($this->input->post('foto_ktp_lama')) != ''){
+				$delete_foto = $this->service->delete_photo('img',trim($this->input->post('foto_ktp_lama')));
+			}
+			$upload = $this->service->do_upload('img','foto_ktp');
+			$fileNameFoto = $upload['upload_data']['file_name'];
+		}
+
 		$data_send_db = [
 			'nama_lengkap' => trim($this->input->post('nama_lengkap')),
 			'nik' => trim($this->input->post('nik')),
 			'email' => trim($this->input->post('email')),
 			'handphone' => trim($this->input->post('handphone')),
+			'foto_ktp' => trim($fileNameFoto)
 		];
 		$add_db = $this->M->update_to_db('user', $data_send_db, 'id_user', trim($this->session->userdata('id_user')));
 		if($add_db){
@@ -1487,7 +1498,6 @@ class Admin extends CI_Controller {
 
 					if($call_id_ob){
 						//prepare insert to order payment
-						$id_virtual_account = $this->service->generateSecureRandomString(40);
 						$status_payment = explode("|",$value['status_bayar'] == "" ? "N" : $value['status_bayar']);
 						
 						if(trim($value['lunas']) == "Y"){
@@ -1500,8 +1510,11 @@ class Admin extends CI_Controller {
 						$tanggal_bayar = explode("|",$value['tanggal_bayar']);
 
             			// echo json_encode($nominal);
-            			
+            			$checkAllLunas = 0;
+            			//add payment
 						for ($ip=0; $ip < count($tanggal_bayar); $ip++) { 
+
+							$id_virtual_account = $this->service->generateSecureRandomString(40);
 							$data_send_op = [
 								'id_order_booking' => trim($call_id_ob),
 								'id_virtual_account' => trim($id_virtual_account),
@@ -1511,14 +1524,73 @@ class Admin extends CI_Controller {
 								'status_payment' => trim($status_payment[$ip]) == "Y" ? 'D' : "P"
 							];
 
-							$add_db_op = $this->M->add_to_db('order_payment', $data_send_op);
 
+							$call_id_op = $this->M->add_to_db('order_payment', $data_send_op);
+							if(trim($status_payment[$ip]) == "N"){
+								if($this->M->getParameter('@sendNotifGeneratePayment') == 'Y'){
+									$orderPayment = $this->M->getWhere('order_payment',['id_order_payment'=>trim($call_id_op)]);
+									$orderBook = $this->M->getWhere('order_booking',['id_order_booking'=>trim($call_id_ob)]);
+									if($orderBook){
+										
+										$array = explode("~", $orderBook['list_kelas']);
+				                        $array = array_filter($array, function($value) {
+				                            return $value !== '';
+				                        });
+				                        $inClause = implode(",", $array);
+				                        $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
+				                        $getListKelas = $this->db->query($query)->row_array();
+
+										$user = $this->M->getWhere('user',['id_user'=>trim($orderBook['id_user'])]);
+
+				                        $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Add Payment Order ".$getListKelas['nama_kelas']." Berhasil Untuk = ".$user['nama_lengkap']);
+
+										$data_send_notif = [
+											'handphone' => trim($user['handphone']),
+											'namalengkap' => trim($user['nama_lengkap']),
+											'namaKelas' => trim($getListKelas['nama_kelas']),
+											'metodeBayar' => trim($orderBook['metode_bayar']),
+											'nominal_payment' => number_format(trim($orderPayment['nominal_payment']), 2),
+											'date_payment' => trim($orderPayment['date_payment']),
+											'url_virtual_account' => trim(base_url('P/Payment/virtual_account/'.$orderPayment['id_virtual_account']))
+										];
+
+										$dateSendNotif = "";
+										if(trim(str_replace(' ', '', date('Y-m-d', strtotime($tanggal_bayar[$ip])))) < date('Y-m-d')){
+											$dateSendNotif = date('Y-m-d');
+											$this->service->send_whatsapp($data_send_notif, 'generate_payment');
+										}else{
+											$dateSendNotif = trim($orderPayment['date_payment']);
+											$this->service->send_whatsapp($data_send_notif, 'generate_payment',trim($orderPayment['date_payment']));
+											//function generate jatuh tempo
+											$this->generateNotifJatuhTempo($data_send_notif, trim($orderPayment['date_payment']));
+										}
+
+										// echo json_encode(['dateSend' => $dateSendNotif,'dataAgo' => trim(str_replace(' ', '', date('Y-m-d', strtotime($tanggal_bayar[$ip])))) ]);die;
+										// if(trim($this->input->post('sequence_payment')) == 1){
+										// 	$this->service->send_whatsapp($data_send_notif, 'generate_payment');
+										// }else{
+										// 	$this->service->send_whatsapp($data_send_notif, 'generate_payment',trim($orderPayment['date_payment']));
+										// 	if(trim($this->input->post('sequence_payment')) > 1){
+										// 		//function generate jatuh tempo
+										// 		$this->generateNotifJatuhTempo($data_send_notif, trim($orderPayment['date_payment']));
+										// 	}
+										// }
+									}
+								}
+							}
 							//if order payment status N send notif wa 
-
-							if($add_db_op){
+							if(trim($status_payment[$ip]) == "Y"){
+								$checkAllLunas++;
+							}
+							if($call_id_op){
 								$checkData = true;
 							}
 						}
+
+						if($checkAllLunas == count($tanggal_bayar)){
+							$this->M->update_to_db('order_booking', ['status_order' => 'D'], 'id_order_booking', trim($call_id_ob));
+						}
+
 						$totalDataImport++;
 					}
             	}

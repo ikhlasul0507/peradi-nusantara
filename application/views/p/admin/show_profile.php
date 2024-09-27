@@ -37,6 +37,8 @@
                         <label>KTP</label>
                         <input type="file" class="form-control" name="foto_ktp"
                             placeholder="foto_ktp" value="<?= $list_data['foto_ktp'];?>">
+                        <input type="hidden" class="form-control" name="foto_ktp_lama"
+                            placeholder="foto_ktp" value="<?= $list_data['foto_ktp'];?>">
                     </div>
                      <div class="col-sm-6 mb-3 mb-sm-0">
                         <a href="<?= base_url('assets/p/img/'.$list_data['foto_ktp']);?>" target="blank">

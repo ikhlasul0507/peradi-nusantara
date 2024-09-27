@@ -1,5 +1,5 @@
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container-fluid ">
     <div class="card shadow mb-4">
         <div class="card-header py-3 align-items-center justify-content-between d-sm-flex">
             <h6 class="m-0 font-weight-bold text-primary">
@@ -19,7 +19,7 @@
                  <a data-toggle="modal" data-target="#modalAddUser" class="btn btn-sm btn-primary" href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah User</a>
             <?php } ?>
         </div>
-        <div class="card-body">
+        <div class="card-body ">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -32,7 +32,7 @@
                             <th>Nama Lengkap/Usia</th>
                             <th>Handphone</th>
                             <th>Kampus/Semester</th>
-                            <th>Status</th>
+                            <th>Status/Marketing</th>
                             <th>Password</th>
                         </tr>
                     </thead>
@@ -52,10 +52,13 @@
                             <td><?= $value['pic'] ." - ". $value['reference'];?></td>
                             <td><?= $value['email'];?></td>
                             <td><?= $value['nama_lengkap'];?>-<?= $value['usia'];?></td>
-                            <td><?= $value['handphone'];?></td>
+                            <td>
+                                <?= $value['handphone'];?>
+                                <a href="<?= base_url('assets/p/img/'.$value['foto_ktp']);?>" target="blank">Foto KTP</a>
+                            </td>
                             <td><?= $value['asal_kampus'];?>-<?= $value['semester'];?></td>
                             <td>
-                                <?= $value['is_active'] == "Y" ? "Aktif" : "Tidak Aktif";?></br>
+                                <?= $value['is_active'] == "Y" ? "Aktif" : "Tidak Aktif";?>/<?= $value['is_marketing'] == "Y" ? "Ya" : "Tidak";?>
                                
                             </td>
                             <td>

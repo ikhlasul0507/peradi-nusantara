@@ -25,6 +25,12 @@
             background-position: center;
             background-size: cover;
         }
+
+        .bg-default{
+            background: url("<?= base_url('assets/p/img/bg-default.jpg');?>");
+            background-position: center;
+            background-size: cover;
+        }
         .list-contact {
             max-height: calc(110vh - 180px);/* Maximum height is the full height of the viewport */
             overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
@@ -81,7 +87,7 @@
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
 </head>
 
-<body> 
+<body class="bg-default"> 
     <div class="">
         <div class="row">
             <!-- Third Column -->
@@ -139,7 +145,7 @@
                           <label for="floatingTextarea" id="lastNotes">
                           <!-- Catatan Terakhir : 2024-09-21 12:13:45 -->
                           </label>
-                          <textarea class="form-control text-dark" placeholder="..." id="floatingTextarea"></textarea>
+                          <textarea class="form-control text-dark bg-default" placeholder="..." id="floatingTextarea"></textarea>
                         </div>
                         <button class="btn btn-primary mt-3" id="btnPerbaharui">Perbaharui Catatan</button>
                     </div>

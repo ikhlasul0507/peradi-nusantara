@@ -25,26 +25,30 @@
             background-position: center;
             background-size: cover;
         }
-        
+        .bg-default{
+            background: url("<?= base_url('assets/p/img/bg-default.jpg');?>");
+            background-position: center;
+            background-size: cover;
+        }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-default">
 
-    <div class="container">
+    <div class="container ">
 
         <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
+            <div class="card-body p-0 bg-primary">
                 <div class="row">
                     <!-- <div class="col-lg-6 d-none d-lg-block bg-register-image"></div> -->
-                    <div class="col-lg-12">
-                        <div class="p-4 mt-3">
+                    <div class="col-lg-12 ">
+                        <div class="p-4 mt-3 ">
                             <div class="text-center">
-                                <h4 class="h4 text-gray-900">Management System</h4>
-                                <h6 class="h6 text-gray-900">Peradi Nusantara</h6>
+                                <h4 class="h4 text-light">Management System</h4>
+                                <h6 class="h6 text-light">Peradi Nusantara</h6>
                             </div>
-                            <hr>
+                            <hr style="height: 1px;color: white;background-color: white;">
                             <div class="form-group text-center">
                                 <a href="<?= base_url('P/Admin');?>" class="btn btn-danger btn-lg mt-3 ml-3">
                                     <i class="fa fa-home" aria-hidden="true" style="font-size:48px;"></i>
@@ -65,7 +69,7 @@
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <div class="status-indicator bg-success"></div>
-                        <span>Check Connection : GOOD <i class="fas fa-check"></i></span>
+                        <span>Check Connection : GOOD <i class="fas fa-check text-success"></i></span>
                     </div>
                 </div>
             </footer>
