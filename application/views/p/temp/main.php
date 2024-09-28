@@ -30,16 +30,20 @@
             background-position: center;
             background-size: cover;
         }
+        .container .card-body{
+            border-top-left-radius: 100px;
+            border-top-right-radius: 100px;
+        }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
 </head>
 
 <body class="bg-default">
 
-    <div class="container ">
+    <div class="container">
 
         <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0 bg-primary">
+            <div class="card-body p-0 bg-primary mt-3">
                 <div class="row">
                     <!-- <div class="col-lg-6 d-none d-lg-block bg-register-image"></div> -->
                     <div class="col-lg-12 ">
@@ -68,8 +72,11 @@
                 <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <div class="status-indicator bg-success"></div>
+                        <a href="<?= base_url('P/Auth/process_logout');?>">
+                            <i class="fas fa-sign-out-alt text-danger fa-lg fa-fw mr-2"></i>
+                        </a>
                         <span>Check Connection : GOOD <i class="fas fa-check text-success"></i></span>
+
                     </div>
                 </div>
             </footer>

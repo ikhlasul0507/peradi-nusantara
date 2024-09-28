@@ -64,7 +64,7 @@
                                 Angkatan : <?= $value['angkatan'];?><br>
                             </td>
                             <td>
-                                <button class="btn btn-primary" disabled>Belum Lunas</button><br>
+                                <button class="badge badge-primary" disabled>Belum Lunas</button><br>
                             </td>
                         </tr>
                         <?php } ?>

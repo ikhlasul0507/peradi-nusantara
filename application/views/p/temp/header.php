@@ -163,6 +163,12 @@
             background-position: center;
             background-size: cover;
         }
+        .dataTable{
+            color: black;
+        }
+        .dataTable thead th{
+            background-color: silver;
+        }
     </style>
 </head>
 
@@ -379,7 +385,7 @@
                             </a>
                   
                         </li>
-                         <?php if($this->session->userdata('user_level') <= 1){ ?>
+                        <?php if($this->session->userdata('user_level') <= 1){ ?>
                           <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
@@ -453,8 +459,8 @@
                         </li>
                         <?php if($this->session->userdata('user_level') <= 3){ ?>
                         <li class="nav-item dropdown mx-1">
-                            <a class="nav-link " href="<?= base_url('P/Admin/main');?>">
-                                <i class="fa fa-bars text-gray-600"></i>
+                            <a class="nav-link " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Menu Utama" href="<?= base_url('P/Admin/main');?>">
+                                <i class="fa fa-th-large text-gray-600"></i>
                             </a>
                   
                         </li>

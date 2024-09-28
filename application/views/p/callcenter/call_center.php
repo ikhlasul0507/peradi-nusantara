@@ -83,6 +83,9 @@
         .no-arrow{
             margin-top: 10px;
         }
+        .dropdown-item{
+            padding-left: 0px;
+        }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
 </head>
@@ -231,20 +234,25 @@
 
                     if(cs.status_call_center === "N"){
                         var nameClassCard = "card border-left-danger";
+                        var bgStatus = "bg-danger";
                     }else if(cs.status_call_center === "P"){
                         var nameClassCard = "card border-left-primary";
+                        var bgStatus = "bg-primary";
                     }else if(cs.status_call_center === "H"){
                         var nameClassCard = "card border-left-dark";
+                        var bgStatus = "bg-dark";
                     }else if(cs.status_call_center === "F"){
                         var nameClassCard = "card border-left-warning";
+                        var bgStatus = "bg-warning";
                     }else if(cs.status_call_center === "D"){
                         var nameClassCard = "card border-left-success";
+                        var bgStatus = "bg-success";
                     }
 
                     var dataHTML = '<div class="'+nameClassCard+'"  id="dataCS">'+
                                  '<a class="dropdown-item d-flex align-items-center" href="#">'+
                                      '<div class="dropdown no-arrow mr-2">'+
-                                        '<h6 class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                                        '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
                                             '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
                                         '</h6>'+
                                         '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
@@ -254,7 +262,7 @@
                                         '</div>'+
                                     '</div>'+
                                     '<div class="dropdown-list-image mr-3">'+
-                                        '<img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>" alt="...">'+
+                                        '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
                                         '<div class="status-indicator bg-success"></div>'+
                                     '</div>'+
                                     '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+

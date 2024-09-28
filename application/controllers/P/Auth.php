@@ -156,7 +156,11 @@ class Auth extends CI_Controller {
 					];
 					$this->session->set_userdata($data_session);
 	        		$data = $this->session->set_flashdata('pesan', 'Selamat Anda Berhasil Login !');
-					redirect('P/Admin',$data);
+	        		if(trim($user['user_level']) <= 3){
+	        			redirect('P/Admin/main',$data);
+	        		}else{
+						redirect('P/Admin',$data);
+					}
 				}else{
 					$data = $this->session->set_flashdata('pesan', 'Akun tidak aktif sementara !');
 					redirect('P/Auth/login',$data);

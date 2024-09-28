@@ -41,7 +41,7 @@
                                 <!-- <a class="btn btn-danger btn-circle" onclick="confirmDeleteData('<?= base_url('P/Admin/delete_order_class/').$value['id_order_booking'];?>')">
                                     <i class="fas fa-trash"></i>
                                 </a> -->
-                                <a href="<?= base_url('P/Admin/valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>" class="btn btn-warning btn-circle">
+                                <a href="<?= base_url('P/Admin/valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>" class="btn btn-success btn-circle">
                                     <i class="fas fa-info-circle"></i>
                                 </a> Lihat Detail
                                
