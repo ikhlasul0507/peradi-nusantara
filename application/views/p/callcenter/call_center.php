@@ -267,7 +267,7 @@
                                     '</div>'+
                                     '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
                                         '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
-                                        '<div class="small text-truncate">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
+                                        '<div class="small text-truncate font-weight-bold">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
                                     '</div>'+
                                 '</a>'+
                             '</div>';
