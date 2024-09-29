@@ -130,6 +130,9 @@
                             <div class="text-center">
                                 <a class="small" href="<?= base_url('P/Auth/login');?>">Sudah punya akun ? Masuk!</a>
                             </div>
+                            <div class="text-center">
+                                <a class="small" href="https://peradinusantara.org/">Halaman Utama</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -129,9 +129,9 @@
                     <div class="card-header d-flex align-items-center justify-content-between" id="detailUser">
                         <input type="hidden" id="id_history_call_center">
                         <select class="form-control col-3 statusWA text-light" id="myStatusWa">
-                            <option class="bg-danger text-light" value="N">New Request</option>
-                            <option class="bg-primary text-light" value="P">Process Request</option>
-                            <option class="bg-dark text-light" value="H">Hold Request</option>
+                            <option class="bg-danger text-light" value="N">New Customer</option>
+                            <option class="bg-primary text-light" value="P">Process Customer</option>
+                            <option class="bg-dark text-light" value="H">Hold Customer</option>
                             <option class="bg-warning text-light" value="F">Follow Up</option>
                             <option class="bg-success text-light" value="D">Done Payment</option>
                         </select>
@@ -172,9 +172,9 @@
                     </a>
 
                     <select class="form-control col-4 ml-2 statusWA text-light" style="font-size: 10px;" id="myStatusWaModal">
-                        <option class="bg-danger text-light" value="N">New Request</option>
-                        <option class="bg-primary text-light" value="P">Process Request</option>
-                        <option class="bg-dark text-light" value="H">Hold Request</option>
+                        <option class="bg-danger text-light" value="N">New Customer</option>
+                        <option class="bg-primary text-light" value="P">Process Customer</option>
+                        <option class="bg-dark text-light" value="H">Hold Customer</option>
                         <option class="bg-warning text-light" value="F">Follow Up</option>
                         <option class="bg-success text-light" value="D">Done Payment</option>
                     </select>
