@@ -71,7 +71,7 @@
     <script src="<?= base_url('assets/p/sistem/');?>js/demo/datatables-demo.js"></script>
 
     <script type="text/javascript">
-         // $("#accordionSidebar").addClass("toggled");
+         $("#accordionSidebar").addClass("toggled");
          $("#loading").hide();
          $(".loader").hide();
          
