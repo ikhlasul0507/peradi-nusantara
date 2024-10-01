@@ -1495,6 +1495,8 @@ class Admin extends CI_Controller {
 						'list_kelas' => trim($list_kelas),
 					];
 					$call_id_ob = $this->M->add_to_db('order_booking', $data_send_ob);
+					//add log activity
+					$this->M->add_log_history($this->session->userdata('nama_lengkap'),"Add Order ".$value['nama_kelas']." Berhasil Untuk = ".$value['nama_lengkap']);
 
 					if($call_id_ob){
 						//prepare insert to order payment
