@@ -22,8 +22,10 @@ THE SOFTWARE.
 
 git status
 git add -- . ':!application/config/database.php'
-git commit -m "Update Log Generate Payment"
+git commit -m "Update Log activity Import and notif"
 git push origin master
+
+Contoh
 
 For
 Deploy Again
