@@ -194,6 +194,43 @@ class Mbg extends CI_Model {
 					";
 		return $this->db->query($query)->result_array();
 	}
+
+	function get_order_booking_approved($where, $valuewhere)
+	{
+		$query = "SELECT
+					  ob.id_order_booking,
+					  ob.id_user,
+  					ob.id_master_kelas,
+					  ob.time_history,
+					  ob.metode_bayar,
+					  ob.status_order,
+					  ob.status_certificate,
+					  us.nama_lengkap,
+					  us.handphone,
+					  us.reference,
+					  us.pic,
+					  us.angkatan,
+					  ob.list_kelas
+					FROM
+					  (SELECT
+					    *
+					  FROM
+					    order_booking
+					  WHERE $where = '$valuewhere' AND status_certificate = 'A') ob,
+					  (SELECT
+					    id_user,
+					    nama_lengkap,
+					    handphone,
+					    reference,
+						  pic,
+						  angkatan
+					  FROM
+					    user) us
+					  WHERE ob.id_user = us.id_user
+					  ORDER BY ob.time_history DESC
+					";
+		return $this->db->query($query)->result_array();
+	}
 	
 	function get_order_booking_valid($id_user, $id_order_booking)
 	{
@@ -470,35 +507,44 @@ class Mbg extends CI_Model {
 	function getListHistoryCall($where = null, $valuewhere = null)
 	{
 		 $query = "SELECT
-							  hc.*,
-							  TIMESTAMPDIFF(SECOND, hc.last_call, NOW()) AS seconds_since_last_call,
-						    TIMESTAMPDIFF(MINUTE, hc.last_call, NOW()) AS minutes_since_last_call,
-						    TIMESTAMPDIFF(HOUR, hc.last_call, NOW()) AS hours_since_last_call,
-							  us.nama_lengkap,
-							  us.foto_ktp
+							  hc.*, 
+							  op.id_virtual_account
 							FROM
 							  (SELECT
-							    *
+							    hc.*,
+							    TIMESTAMPDIFF(SECOND, hc.last_call, NOW()) AS seconds_since_last_call,
+							    TIMESTAMPDIFF(MINUTE, hc.last_call, NOW()) AS minutes_since_last_call,
+							    TIMESTAMPDIFF(HOUR, hc.last_call, NOW()) AS hours_since_last_call,
+							    us.nama_lengkap,
+							    us.foto_ktp
 							  FROM
-							    history_call_center) AS hc,
+							    history_call_center AS hc
+							    INNER JOIN USER AS us
+							      ON hc.id_user = us.id_user) AS hc
+							LEFT JOIN
 							  (SELECT
-							    id_user,
-							    nama_lengkap,
-							    foto_ktp
+							    us.id_user,
+							    us.handphone,
+							    ap.id_virtual_account
 							  FROM
-							    user) us
-							WHERE hc.id_user = us.id_user";
+							    USER AS us
+							    INNER JOIN order_booking AS ob
+							      ON us.id_user = ob.id_user
+							    INNER JOIN order_payment AS ap
+							      ON ob.id_order_booking = ap.id_order_booking) AS op
+							  ON hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone";
 	   if($where == "query"){
 	   		$query = $query . " AND (us.nama_lengkap LIKE '%$valuewhere%'
 									  OR hc.customer_name LIKE '%$valuewhere%'
 									  OR hc.customer_phone LIKE '%$valuewhere%')";
 	   }
 	   if($where == "id"){
-	   		$query = $query . " AND hc.id_history_call_center='$valuewhere'";
+	   		$query = $query . " WHERE hc.id_history_call_center='$valuewhere'";
 	   }
 
 	   $query = $query . " ORDER BY hc.priority DESC, hc.time_history DESC";
 		 return $this->db->query($query)->result_array();
+
 	}
 
 

@@ -103,7 +103,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">Daftar Kontak
                         </h6>
                         <input type="text" placeholder="Cari Kontak" id="searchInput" class="form-control col-6" name="" minlength="20">
-                        <a target="_blank" href="<?= base_url('cs');?>"><i class="fas fa-plus text-primary fa-lg"></i></a>
+                        <a href="#" id="showSampah"><i class="fa fa-archive text-dark fa-lg"></i></a>
                     </div>
                     <div class="card-body list-contact" id="userData" style="padding-left: 15px;">
                         <div class="card border-left-danger">
@@ -219,7 +219,9 @@
     fetchData();
     setInterval(fetchData, 5000); 
     function fetchData(value = "") {
-        value = localStorage.getItem('search');
+        if(value === ""){
+            value = localStorage.getItem('search');
+        }
         $.ajax({
             url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
             type: "GET",
@@ -233,23 +235,47 @@
                 $.each(data, function(index, cs) {
 
                     if(cs.status_call_center === "N"){
-                        var nameClassCard = "card border-left-danger";
-                        var bgStatus = "bg-danger";
-                    }else if(cs.status_call_center === "P"){
                         var nameClassCard = "card border-left-primary";
                         var bgStatus = "bg-primary";
-                    }else if(cs.status_call_center === "H"){
+                        var textToolTip = "Chat Baru"
+                    }
+                    if(parseInt(cs.hours_since_last_call) > (1 * 24)){
+                        var nameClassCard = "card border-left-danger";
+                        var bgStatus = "bg-danger";
+                        var textToolTip = "Chat No Respon 1x24 jam";
+                    }
+                    if(parseInt(cs.hours_since_last_call) > (3 * 24)){
                         var nameClassCard = "card border-left-dark";
                         var bgStatus = "bg-dark";
-                    }else if(cs.status_call_center === "F"){
-                        var nameClassCard = "card border-left-warning";
-                        var bgStatus = "bg-warning";
-                    }else if(cs.status_call_center === "D"){
-                        var nameClassCard = "card border-left-success";
-                        var bgStatus = "bg-success";
+                        var textToolTip = "Chat No Respon 3x24 jam";
                     }
 
-                    var dataHTML = '<div class="'+nameClassCard+'"  id="dataCS">'+
+                    if(cs.status_call_center === "P"){
+                        var nameClassCard = "card border-left-warning";
+                        var bgStatus = "bg-warning";
+                        var textToolTip = "Follow Up Chat";
+                    }
+
+                    if(cs.id_virtual_account !== null){
+                        var nameClassCard = "card border-left-success";
+                        var bgStatus = "bg-success";
+                        var textToolTip = "Chat sudah order";
+                    }
+                    // else if(cs.status_call_center === "P"){
+                    //     var nameClassCard = "card border-left-primary";
+                    //     var bgStatus = "bg-primary";
+                    // }else if(cs.status_call_center === "H"){
+                    //     var nameClassCard = "card border-left-dark";
+                    //     var bgStatus = "bg-dark";
+                    // }else if(cs.status_call_center === "F"){
+                    //     var nameClassCard = "card border-left-warning";
+                    //     var bgStatus = "bg-warning";
+                    // }else if(cs.status_call_center === "D"){
+                    //     var nameClassCard = "card border-left-success";
+                    //     var bgStatus = "bg-success";
+                    // }
+
+                    var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
                                  '<a class="dropdown-item d-flex align-items-center" href="#">'+
                                      '<div class="dropdown no-arrow mr-2">'+
                                         '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
@@ -281,6 +307,10 @@
         });
     }
 
+    
+    $('#showSampah').on('click', function (e) {
+        fetchData("showSampah");
+    });
     $('#searchInput').on('keyup', function (e) {
         var ss = $(this).val();
         localStorage.setItem('search', ss);

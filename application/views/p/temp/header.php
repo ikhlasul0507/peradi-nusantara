@@ -196,6 +196,7 @@
                 $daftarorderan = "";
                 $DoneClass = "";
                 $Sertifikat = "";
+                $DoneSertifikat = "";
                 $master_product = "";
                 $parameter = "";
                 $report_peserta = "";
@@ -232,6 +233,8 @@
                      $master = "active";
                 }else if($segment2 == "report_pembayaran"){
                      $report_pembayaran = "active";
+                }else if($segment2 == "DoneSertifikat"){
+                     $DoneSertifikat = "active";
                 }
             ?>
 
@@ -273,6 +276,11 @@
                 <a class="nav-link" href="<?= base_url('P/Admin/Sertifikat');?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Approve Sertifikat</span></a>
+            </li>
+            <li class="nav-item <?=$DoneSertifikat;?>">
+                <a class="nav-link" href="<?= base_url('P/Admin/DoneSertifikat');?>">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Sudah Approve</span></a>
             </li>
              <?php }?>
             <!-- Divider -->

@@ -115,7 +115,7 @@ class Admin extends CI_Controller {
     	if ($this->input->is_ajax_request()) {
 	    	$query = $this->input->post('query');
 	    	$value = $this->input->post('value');
-	    	$updateDB = $this->M->update_to_db('history_call_center',['notes_call'=>$value],'id_history_call_center',$query);
+	    	$updateDB = $this->M->update_to_db('history_call_center',['notes_call'=>$value,'status_call_center' => 'P'],'id_history_call_center',$query);
 	    	if($updateDB){
 	    		echo json_encode(['status_code' => 200, 'msg' => "Berhasil Update"]);
 	    	}else{
@@ -406,6 +406,17 @@ class Admin extends CI_Controller {
 		$data['allowButtonApprove'] = $this->M->getParameter('@allowButtonApprove');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/sertifikat',$data);
+		$this->load->view('p/temp/footer');
+	}
+
+	public function DoneSertifikat()
+	{
+		$data['list_data'] = $this->M->get_order_booking_approved('status_order','D');
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$data['allowButtonApprove'] = $this->M->getParameter('@allowButtonApprove');
+		$this->load->view('p/temp/header',$data);
+		$this->load->view('p/admin/done_sertifikat',$data);
 		$this->load->view('p/temp/footer');
 	}
 
