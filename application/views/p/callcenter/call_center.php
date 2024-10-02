@@ -194,17 +194,18 @@
 
     </div>
     <!-- /.container-fluid -->
-    <div class="modal fade show bd-example-modal-lg" id="modalGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- /.container-fluid -->
+    <div class="modal fade show bd-example-modal-lg" id="modalGroup" tabindex="-1" role="dialog" aria-labelledby="modalGroupLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header d-flex align-items-center justify-content-between" id="">
-                    <select class="form-control col-10 ml-2" id="">
+                <div class="modal-header d-flex align-items-center justify-content-between">
+                    <select class="form-control col-10 ml-2" id="marketingNameSelect">
                         <option value="" selected>--Pilih Nama Marketing</option>
                         <option value="N">New Customer</option>
                         <option value="N">New Customer</option>
                     </select>
-                    <p class="m-0 font-weight-bold ml-2 text-primary" style="font-size: 10px;" id="">
+                    <p class="m-0 font-weight-bold ml-2 text-primary" style="font-size: 10px;" id="marketingName">
                         <!-- Agung Rilo -->
                     </p>
                     <button class="close" type="button" id="modalGroupClose" data-dismiss="modal" aria-label="Close">
@@ -213,12 +214,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-floating">
-                          <label for="floatingTextarea" id="">
-                          <!-- Catatan Terakhir : 2024-09-21 12:13:45 -->
-                          </label>
-                          <textarea class="form-control text-dark" placeholder="..." id=""></textarea>
+                        <label for="floatingTextareaGroup" id="lastNoteGroupLabel">
+                            <!-- Catatan Terakhir : 2024-09-21 12:13:45 -->
+                        </label>
+                        <textarea class="form-control text-dark" placeholder="..." id="floatingTextareaGroup"></textarea>
                     </div>
-                    <button class="btn btn-primary mt-3" id="">Perbaharui Catatan</button>
+                    <button class="btn btn-primary mt-3" id="btnUpdateGroup">Perbaharui Catatan</button>
                 </div>
             </div>
         </div>
@@ -262,6 +263,7 @@
     </div>
     
 </body>
+
 <script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script>
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/p/sistem/');?>vendor/jquery/jquery.min.js"></script>
