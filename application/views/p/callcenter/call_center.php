@@ -106,6 +106,9 @@
             #nameCustomer{
                 font-size: 11px;
             }
+            #nameCS{
+                font-size: 10px;
+            }
         }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
@@ -550,6 +553,10 @@
     }
 
     function fetchData(value = "") {
+        var isMobile = false;
+        if (window.innerWidth <= 896) {
+            isMobile = true;
+        }
         value = localStorage.getItem('search');
         $.ajax({
             url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
@@ -608,6 +615,11 @@
                     }else{
                         var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',0)">Pindahkan Dari Sampah</button>';
                     }
+                    if(isMobile){
+                        if(cs.customer_name.length > 18){
+                            cs.customer_name = cs.customer_name.substring(0,18) + "..."
+                        }
+                    }
                     var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
                                  '<a class="dropdown-item d-flex align-items-center" href="#">'+
                                      '<div class="dropdown no-arrow mr-2">'+
@@ -626,7 +638,7 @@
                                     '</div>'+
                                     '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
                                         '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
-                                        '<div class="small text-truncate font-weight-bold">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
+                                        '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
                                     '</div>'+
                                     '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
                                 '</a>'+
