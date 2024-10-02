@@ -504,8 +504,12 @@ class Mbg extends CI_Model {
 			return $this->db->query($query)->result_array();
 	}
 
-	function getListHistoryCall($where = null, $valuewhere = null)
+	function getListHistoryCall($where = null, $valuewhere = null, $id_user = null)
 	{
+		 $isDeleted = 'N';
+		 if($valuewhere === "showSampah"){
+		 		$isDeleted = 'Y';
+		 }
 		 $query = "SELECT
 							  hc.*, 
 							  op.id_virtual_account
@@ -532,17 +536,21 @@ class Mbg extends CI_Model {
 							      ON us.id_user = ob.id_user
 							    INNER JOIN order_payment AS ap
 							      ON ob.id_order_booking = ap.id_order_booking) AS op
-							  ON hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone";
-	   if($where == "query"){
-	   		$query = $query . " AND (us.nama_lengkap LIKE '%$valuewhere%'
+							  ON hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone WHERE hc.is_deleted='$isDeleted' ";
+		 if($id_user != null){
+		 			$query = $query . " AND hc.id_user='$id_user'";
+		 }
+	   if($where == "query" && $valuewhere !== "showSampah"){
+	   		$query = $query . " AND (hc.nama_lengkap LIKE '%$valuewhere%'
 									  OR hc.customer_name LIKE '%$valuewhere%'
 									  OR hc.customer_phone LIKE '%$valuewhere%')";
 	   }
 	   if($where == "id"){
-	   		$query = $query . " WHERE hc.id_history_call_center='$valuewhere'";
+	   		$query = $query . " AND hc.id_history_call_center='$valuewhere'";
 	   }
 
 	   $query = $query . " ORDER BY hc.priority DESC, hc.time_history DESC";
+
 		 return $this->db->query($query)->result_array();
 
 	}

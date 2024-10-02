@@ -49,10 +49,17 @@
             max-width: 100%;
             overflow-x: hidden; /* Prevent horizontal overflow on the whole page */
         }
-        @media (max-width: 1366px) {
-            .list-contact {
-                max-height: calc(110vh - 150px); /* Adjust for mobile devices */
-            }
+
+        .no-arrow{
+            margin-top: 10px;
+        }
+        .dropdown-item{
+            padding-left: 0px;
+        }
+        #nameCustomer{
+            white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
         }
         .tab-area{
             display: inline;
@@ -64,6 +71,26 @@
             height: calc(100vh - 180px);/* Maximum height is the full height of the viewport */
             overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
         }
+        .text-label-status{
+            position: absolute; /* Make the element positioned relative to the nearest positioned ancestor */
+            bottom: 0; /* Align it to the top */
+            right: 0; /* Align it to the left */
+            padding: 0px; /* Optional: add some padding for better readability */
+            font-size: 9px;
+            border: 1px solid blue;
+        }
+        #clearSampah{
+            display: none;
+        }
+        @media (max-width: 1366px) {
+            .list-contact {
+                max-height: calc(110vh - 150px); /* Adjust for mobile devices */
+            }
+            #nameCustomer{
+                font-size: 13px;
+            }
+        }
+
         @media (max-width: 896px) {
             .tab-area{
                 display: none;
@@ -79,12 +106,6 @@
             #nameCustomer{
                 font-size: 11px;
             }
-        }
-        .no-arrow{
-            margin-top: 10px;
-        }
-        .dropdown-item{
-            padding-left: 0px;
         }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
@@ -103,7 +124,9 @@
                         <h6 class="m-0 font-weight-bold text-primary">Daftar Kontak
                         </h6>
                         <input type="text" placeholder="Cari Kontak" id="searchInput" class="form-control col-6" name="" minlength="20">
-                        <a href="#" id="showSampah"><i class="fa fa-archive text-dark fa-lg"></i></a>
+                        <a href="#" id="showGroup"><i class="fa fa-users text-primary ml-2 fa-lg"></i></a>
+                        <a href="#" id="showSampah"><i class="fa fa-archive text-dark ml-2 fa-lg"></i></a>
+                        <a href="#" id="clearSampah"><i class="fa fa-times text-danger ml-2 fa-lg"></i></a>
                     </div>
                     <div class="card-body list-contact" id="userData" style="padding-left: 15px;">
                         <div class="card border-left-danger">
@@ -158,7 +181,35 @@
 
     </div>
     <!-- /.container-fluid -->
-
+    <div class="modal fade show bd-example-modal-lg" id="modalGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center justify-content-between" id="detailUser">
+                    <select class="form-control col-4 ml-2" id="">
+                        <option value="" selected>--Pilih Nama Marketing</option>
+                        <option value="N">New Customer</option>
+                        <option value="N">New Customer</option>
+                    </select>
+                    <p class="m-0 font-weight-bold ml-2 text-primary" style="font-size: 10px;" id="nameContactModal">
+                        <!-- Agung Rilo -->
+                    </p>
+                    <button class="close" type="button" id="modalClose" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating">
+                          <label for="floatingTextarea" id="lastNotesModal">
+                          <!-- Catatan Terakhir : 2024-09-21 12:13:45 -->
+                          </label>
+                          <textarea class="form-control text-dark" placeholder="..." id="floatingTextareaModal"></textarea>
+                    </div>
+                    <button class="btn btn-primary mt-3" id="btnPerbaharuiModal">Perbaharui Catatan</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Logout Modal-->
     <div class="modal fade show" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -214,102 +265,54 @@
     $('#btnPerbaharui').hide();
     $('#btnSendWA').hide();
     $('#myStatusWa').hide();
-    
+
     localStorage.setItem('search', '');
+
     fetchData();
     setInterval(fetchData, 5000); 
-    function fetchData(value = "") {
-        if(value === ""){
-            value = localStorage.getItem('search');
-        }
-        $.ajax({
-            url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
-            type: "GET",
-            data: { query: value },
-            dataType: "json", // Expect JSON data
-            success: function(data) {
-                // Empty previous data
-                $('#userData').empty();
-                
-                // Loop through the returned data and append it to the div
-                $.each(data, function(index, cs) {
 
-                    if(cs.status_call_center === "N"){
-                        var nameClassCard = "card border-left-primary";
-                        var bgStatus = "bg-primary";
-                        var textToolTip = "Chat Baru"
-                    }
-                    if(parseInt(cs.hours_since_last_call) > (1 * 24)){
-                        var nameClassCard = "card border-left-danger";
-                        var bgStatus = "bg-danger";
-                        var textToolTip = "Chat No Respon 1x24 jam";
-                    }
-                    if(parseInt(cs.hours_since_last_call) > (3 * 24)){
-                        var nameClassCard = "card border-left-dark";
-                        var bgStatus = "bg-dark";
-                        var textToolTip = "Chat No Respon 3x24 jam";
-                    }
+    function detectDeviceWidth() {
+      const width = window.innerWidth; // Get the viewport width
+      console.log('Device width:', width + 'px');
 
-                    if(cs.status_call_center === "P"){
-                        var nameClassCard = "card border-left-warning";
-                        var bgStatus = "bg-warning";
-                        var textToolTip = "Follow Up Chat";
-                    }
+      // Show the width on the page
+      // document.getElementById("deviceWidthDisplay").innerText = "Device width: " + width + "px";
 
-                    if(cs.id_virtual_account !== null){
-                        var nameClassCard = "card border-left-success";
-                        var bgStatus = "bg-success";
-                        var textToolTip = "Chat sudah order";
-                    }
-                    // else if(cs.status_call_center === "P"){
-                    //     var nameClassCard = "card border-left-primary";
-                    //     var bgStatus = "bg-primary";
-                    // }else if(cs.status_call_center === "H"){
-                    //     var nameClassCard = "card border-left-dark";
-                    //     var bgStatus = "bg-dark";
-                    // }else if(cs.status_call_center === "F"){
-                    //     var nameClassCard = "card border-left-warning";
-                    //     var bgStatus = "bg-warning";
-                    // }else if(cs.status_call_center === "D"){
-                    //     var nameClassCard = "card border-left-success";
-                    //     var bgStatus = "bg-success";
-                    // }
-
-                    var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
-                                 '<a class="dropdown-item d-flex align-items-center" href="#">'+
-                                     '<div class="dropdown no-arrow mr-2">'+
-                                        '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-                                            '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
-                                        '</h6>'+
-                                        '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
-                                            '<div class="dropdown-header">Options:</div>'+
-                                            '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
-                                            '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+')">Delete</button>'+
-                                        '</div>'+
-                                    '</div>'+
-                                    '<div class="dropdown-list-image mr-3">'+
-                                        '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
-                                        '<div class="status-indicator bg-success"></div>'+
-                                    '</div>'+
-                                    '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
-                                        '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
-                                        '<div class="small text-truncate font-weight-bold">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
-                                    '</div>'+
-                                '</a>'+
-                            '</div>';
-                    $('#userData').append(dataHTML);
-                });
-            },
-            error: function() {
-                alert("Error loading data");
-                window.location.href = '<?= base_url("P/Auth/login");?>';
-            }
-        });
+      // Optionally, you can check for specific ranges
+      if (width >= 1200) {
+        console.log("This is likely a desktop or laptop.");
+      } else if (width >= 768 && width < 1200) {
+        console.log("This is likely a tablet or smaller laptop.");
+      } else {
+        console.log("This is likely a mobile device.");
+      }
     }
 
-    
+    // Call the function on page load
+    window.onload = detectDeviceWidth;
+
+    // Update the width if the window is resized
+    window.onresize = detectDeviceWidth;
+
+   
+
+     
+    $('#showGroup').on('click', function (e) {
+        document.getElementById('modalGroup').style.display = "block";
+    });
+
     $('#showSampah').on('click', function (e) {
-        fetchData("showSampah");
+        localStorage.setItem('search', "showSampah");
+        document.getElementById("showSampah").style.display = "none";
+        document.getElementById("clearSampah").style.display = "inline";
+        fetchData();
+    });
+
+     $('#clearSampah').on('click', function (e) {
+        localStorage.setItem('search', "");
+        document.getElementById("clearSampah").style.display = "none";
+        document.getElementById("showSampah").style.display = "inline";
+        fetchData();
     });
     $('#searchInput').on('keyup', function (e) {
         var ss = $(this).val();
@@ -340,6 +343,7 @@
 
     $('#modalClose').on('click', function() {
         document.getElementById('modalDetail').style.display = "none";
+        document.getElementById('modalGroup').style.display = "none";
     });
     
     var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
@@ -433,12 +437,18 @@
         });
         // body...
     }
-    function deleteCS(id) {
+    function deleteCS(id, value) {
+        if(value > 0){
+            value = "Y"
+        }else{
+            value = "N"
+        }
         $.ajax({
             url: "<?php echo base_url('P/Admin/delete_wa_call_center'); ?>", 
             type: "GET",
             data: { 
-                query: id
+                query: id,
+                value: value
             },
             dataType: "json", // Expect JSON data
             success: function(data) {
@@ -535,6 +545,98 @@
             },
             error: function() {
                 alert("Error loading data");
+            }
+        });
+    }
+
+    function fetchData(value = "") {
+        value = localStorage.getItem('search');
+        $.ajax({
+            url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
+            type: "GET",
+            data: { query: value },
+            dataType: "json", // Expect JSON data
+            success: function(data) {
+                // Empty previous data
+                $('#userData').empty();
+                
+                // Loop through the returned data and append it to the div
+                $.each(data, function(index, cs) {
+
+                    if(cs.status_call_center === "N"){
+                        var nameClassCard = "card border-left-primary";
+                        var bgStatus = "bg-primary";
+                        var textToolTip = "Chat Baru"
+                    }
+                    if(parseInt(cs.hours_since_last_call) > (1 * 24)){
+                        var nameClassCard = "card border-left-danger";
+                        var bgStatus = "bg-danger";
+                        var textToolTip = "Chat No Respon 1x24 jam";
+                    }
+                    if(parseInt(cs.hours_since_last_call) > (3 * 24)){
+                        var nameClassCard = "card border-left-dark";
+                        var bgStatus = "bg-dark";
+                        var textToolTip = "Chat No Respon 3x24 jam";
+                    }
+
+                    if(cs.status_call_center === "P"){
+                        var nameClassCard = "card border-left-warning";
+                        var bgStatus = "bg-warning";
+                        var textToolTip = "Follow Up Chat";
+                    }
+
+                    if(cs.id_virtual_account !== null){
+                        var nameClassCard = "card border-left-success";
+                        var bgStatus = "bg-success";
+                        var textToolTip = "Chat sudah order";
+                    }
+                    // else if(cs.status_call_center === "P"){
+                    //     var nameClassCard = "card border-left-primary";
+                    //     var bgStatus = "bg-primary";
+                    // }else if(cs.status_call_center === "H"){
+                    //     var nameClassCard = "card border-left-dark";
+                    //     var bgStatus = "bg-dark";
+                    // }else if(cs.status_call_center === "F"){
+                    //     var nameClassCard = "card border-left-warning";
+                    //     var bgStatus = "bg-warning";
+                    // }else if(cs.status_call_center === "D"){
+                    //     var nameClassCard = "card border-left-success";
+                    //     var bgStatus = "bg-success";
+                    // }
+                    if(cs.is_deleted === "N"){
+                        var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',1)">Pindahkan ke Sampah</button>';
+                    }else{
+                        var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',0)">Pindahkan Dari Sampah</button>';
+                    }
+                    var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
+                                 '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                                     '<div class="dropdown no-arrow mr-2">'+
+                                        '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                                            '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
+                                        '</h6>'+
+                                        '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
+                                            '<div class="dropdown-header">Options:</div>'+
+                                            '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
+                                            buttonSampah+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="dropdown-list-image mr-3">'+
+                                        '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
+                                        '<div class="status-indicator bg-success"></div>'+
+                                    '</div>'+
+                                    '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
+                                        '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
+                                        '<div class="small text-truncate font-weight-bold">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
+                                    '</div>'+
+                                    '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
+                                '</a>'+
+                            '</div>';
+                    $('#userData').append(dataHTML);
+                });
+            },
+            error: function() {
+                alert("Error loading data");
+                window.location.href = '<?= base_url("P/Auth/login");?>';
             }
         });
     }

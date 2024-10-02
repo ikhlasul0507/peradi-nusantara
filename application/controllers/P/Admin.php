@@ -52,7 +52,11 @@ class Admin extends CI_Controller {
 
 	public function call_center()
 	{	
-		$data['list_data'] = $this->M->getListHistoryCall();
+		if($this->session->userdata('user_level') <= 2){
+			$data['list_data'] = $this->M->getListHistoryCall();
+		}else{
+			$data['list_data'] = $this->M->getListHistoryCall(null,null,$this->session->userdata('id_user'));
+		}
 		$this->load->view('p/callcenter/call_center', $data);
 	}
 
@@ -101,8 +105,9 @@ class Admin extends CI_Controller {
     public function delete_wa_call_center()
     {
     	$query = $this->input->get('query');
-    	$deleteDB = $this->M->delete_to_db('history_call_center','id_history_call_center',$query);
-    	if(!$deleteDB){
+    	$value = $this->input->get('value');
+    	$updateDB = $this->M->update_to_db('history_call_center',['is_deleted'=>$value],'id_history_call_center',$query);
+    	if($updateDB){
     		echo json_encode(['status_code' => 200, 'msg' => "Berhasil Delete"]);
     	}else{
     		echo json_encode(['status_code' => 201, 'msg' => "Gagal Delete"]);
@@ -115,7 +120,14 @@ class Admin extends CI_Controller {
     	if ($this->input->is_ajax_request()) {
 	    	$query = $this->input->post('query');
 	    	$value = $this->input->post('value');
-	    	$updateDB = $this->M->update_to_db('history_call_center',['notes_call'=>$value,'status_call_center' => 'P'],'id_history_call_center',$query);
+	    	$date = new DateTime("now", new DateTimeZone("Asia/Jakarta"));
+			$formattedDate = $date->format('Y-m-d H:i:s');
+			$dataUpdate = [
+				'notes_call'=>$value,
+				'status_call_center' => 'P',
+				'last_call' => $formattedDate
+			];
+	    	$updateDB = $this->M->update_to_db('history_call_center',$dataUpdate,'id_history_call_center',$query);
 	    	if($updateDB){
 	    		echo json_encode(['status_code' => 200, 'msg' => "Berhasil Update"]);
 	    	}else{
