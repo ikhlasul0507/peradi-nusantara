@@ -109,6 +109,14 @@
             #nameCS{
                 font-size: 10px;
             }
+            .text-label-status{
+            position: absolute; /* Make the element positioned relative to the nearest positioned ancestor */
+            bottom: 0; /* Align it to the top */
+            right: 0; /* Align it to the left */
+            padding: 0px; /* Optional: add some padding for better readability */
+            font-size: 7px;
+            border: 1px solid blue;
+        }
         }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
