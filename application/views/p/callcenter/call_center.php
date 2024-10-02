@@ -58,8 +58,8 @@
         }
         #nameCustomer{
             white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .tab-area{
             display: inline;
@@ -105,6 +105,8 @@
             }
             #nameCustomer{
                 font-size: 11px;
+                position: absolute;
+                top: 0;
             }
             #nameCS{
                 font-size: 10px;
