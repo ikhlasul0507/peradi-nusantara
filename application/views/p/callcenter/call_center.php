@@ -164,12 +164,12 @@
                 <div class="card shadow mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between" id="detailUser">
                         <input type="hidden" id="id_history_call_center">
-                        <select class="form-control col-3 statusWA text-light" id="myStatusWa">
-                            <option class="bg-danger text-light" value="N">New Customer</option>
-                            <option class="bg-primary text-light" value="P">Process Customer</option>
-                            <option class="bg-dark text-light" value="H">Hold Customer</option>
-                            <option class="bg-warning text-light" value="F">Follow Up</option>
-                            <option class="bg-success text-light" value="D">Done Payment</option>
+                        
+                        <select class="form-control col-4 ml-2 statusWA text-light" style="font-size: 10px;" id="myStatusWaModal">
+                            <option class="bg-danger text-light" value="N">Hot</option>
+                            <option class="bg-primary text-light" value="P">Warm</option>
+                            <option class="bg-warning text-light" value="H">Could</option>
+                            <option class="bg-success text-light" value="F">Closing</option>
                         </select>
                         <h5 class="m-0 font-weight-bold text-primary" id="nameContact">
                             <!-- Agung Rilo -->
@@ -198,27 +198,27 @@
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header d-flex align-items-center justify-content-between" id="detailUser">
-                    <select class="form-control col-4 ml-2" id="">
+                <div class="modal-header d-flex align-items-center justify-content-between" id="">
+                    <select class="form-control col-10 ml-2" id="">
                         <option value="" selected>--Pilih Nama Marketing</option>
                         <option value="N">New Customer</option>
                         <option value="N">New Customer</option>
                     </select>
-                    <p class="m-0 font-weight-bold ml-2 text-primary" style="font-size: 10px;" id="nameContactModal">
+                    <p class="m-0 font-weight-bold ml-2 text-primary" style="font-size: 10px;" id="">
                         <!-- Agung Rilo -->
                     </p>
-                    <button class="close" type="button" id="modalClose" data-dismiss="modal" aria-label="Close">
+                    <button class="close" type="button" id="modalGroupClose" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-floating">
-                          <label for="floatingTextarea" id="lastNotesModal">
+                          <label for="floatingTextarea" id="">
                           <!-- Catatan Terakhir : 2024-09-21 12:13:45 -->
                           </label>
-                          <textarea class="form-control text-dark" placeholder="..." id="floatingTextareaModal"></textarea>
+                          <textarea class="form-control text-dark" placeholder="..." id=""></textarea>
                     </div>
-                    <button class="btn btn-primary mt-3" id="btnPerbaharuiModal">Perbaharui Catatan</button>
+                    <button class="btn btn-primary mt-3" id="">Perbaharui Catatan</button>
                 </div>
             </div>
         </div>
@@ -236,11 +236,10 @@
                     </a>
 
                     <select class="form-control col-4 ml-2 statusWA text-light" style="font-size: 10px;" id="myStatusWaModal">
-                        <option class="bg-danger text-light" value="N">New Customer</option>
-                        <option class="bg-primary text-light" value="P">Process Customer</option>
-                        <option class="bg-dark text-light" value="H">Hold Customer</option>
-                        <option class="bg-warning text-light" value="F">Follow Up</option>
-                        <option class="bg-success text-light" value="D">Done Payment</option>
+                        <option class="bg-danger text-light" value="N">Hot</option>
+                        <option class="bg-primary text-light" value="P">Warm</option>
+                        <option class="bg-warning text-light" value="H">Could</option>
+                        <option class="bg-success text-light" value="F">Closing</option>
                     </select>
                     <p class="m-0 font-weight-bold ml-2 text-primary" style="font-size: 10px;" id="nameContactModal">
                         <!-- Agung Rilo -->
@@ -356,9 +355,11 @@
 
     $('#modalClose').on('click', function() {
         document.getElementById('modalDetail').style.display = "none";
+    });
+
+    $('#modalGroupClose').on('click', function() {
         document.getElementById('modalGroup').style.display = "none";
     });
-    
     var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
     var csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
 
@@ -658,7 +659,7 @@
             },
             error: function() {
                 alert("Error loading data");
-                window.location.href = '<?= base_url("P/Auth/login");?>';
+                window.location.reload();
             }
         });
     }
