@@ -288,6 +288,30 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
+
+		//=================================================================================================
+		//quick true is msg from chatbot, false from users
+		$title = "Table structure for table `chat_whatsapp`";
+		$query = "CREATE TABLE IF NOT EXISTS `chat_whatsapp` (
+				  `id_chat_whatsapp` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `quick` TINYINT(1), 
+				  `device` varchar(50) NOT NULL,
+				  `pesan` varchar(50) NOT NULL,
+				  `pengirim` text NULL,
+				  `member` varchar(50),
+				  `message` varchar(50) NOT NULL,
+				  `text` text NULL,
+				  `sender` varchar(50),
+				  `name` varchar(50),
+				  `type` varchar(20),
+				  PRIMARY KEY (`id_chat_whatsapp`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
 	}
 
 
@@ -347,7 +371,8 @@ class Migrate extends CI_Controller
 					(38, '@allowImportDataPeserta', 'N', 'O'),
 					(39, '@allowButtonApprove', 'N', 'O'),
 					(40, '@totalRowPerPagePaging', '100', 'T'),
-					(41, '@waAdminNotif', '088973832651', 'T')
+					(41, '@waAdminNotif', '088973832651', 'T'),
+					(42, '@manualNumberCertificate', 'N', 'O')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";

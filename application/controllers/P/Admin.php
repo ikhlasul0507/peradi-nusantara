@@ -80,10 +80,10 @@ class Admin extends CI_Controller {
         echo json_encode($data);
     }
 
-    public function change_status_wa_call_center()
+    public function change_type_group_wa_call_center()
     {
     	$query = explode("-", $this->input->get('query'));
-    	$updateDB = $this->M->update_to_db('history_call_center',['status_call_center'=>$query[1]],'id_history_call_center',$query[0]);
+    	$updateDB = $this->M->update_to_db('history_call_center',['type_group'=>$query[1]],'id_history_call_center',$query[0]);
     	if($updateDB){
     		echo json_encode(['status_code' => 200, 'msg' => "Berhasil Update"]);
     	}else{
@@ -1056,6 +1056,21 @@ class Admin extends CI_Controller {
 						$isPKPA = true;
 						$idUPA = (int) $this->M->getParameter('@idMasterUPAForLogicApprove'); //from parameter
 					}
+
+					if($this->M->getParameter('@manualNumberCertificate') == 'Y'){
+						if (strpos($getMK['nama_kelas'], 'PKPA') !== false) {
+							$createNumber = (int) $this->M->getParameter('@startNumberCertificatePKPA'); //from parameter
+						}else if (strpos($getMK['nama_kelas'], 'PARALEGAL') !== false) {
+							$createNumber = (int) $this->M->getParameter('@startNumberCertificateParalegal'); //from parameter
+						}else if (strpos($getMK['nama_kelas'], 'UPA') !== false) {
+							$createNumber = (int) $this->M->getParameter('@startNumberCertificateUPA'); //from parameter
+						}else if (strpos($getMK['nama_kelas'], 'BREVET') !== false) {
+							$createNumber = (int) $this->M->getParameter('@startNumberCertificateBREVET'); //from parameter
+						}else if (strpos($getMK['nama_kelas'], 'CPT') !== false) {
+							$createNumber = (int) $this->M->getParameter('@startNumberCertificateCPT'); //from parameter
+						}
+					}
+					
 					$send_db = [
 						'id_user' => $orderB['id_user'],
 						'id_order_booking' => $val,

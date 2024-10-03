@@ -165,7 +165,8 @@
                     <div class="card-header d-flex align-items-center justify-content-between" id="detailUser">
                         <input type="hidden" id="id_history_call_center">
                         
-                        <select class="form-control col-4 ml-2 statusWA text-light" style="font-size: 10px;" id="myStatusWaModal">
+                        <select class="form-control col-4 ml-2 statusWA text-light" id="typeGroup">
+                            <option value="">Add Group</option>
                             <option class="bg-danger text-light" value="N">Hot</option>
                             <option class="bg-primary text-light" value="P">Warm</option>
                             <option class="bg-warning text-light" value="H">Could</option>
@@ -236,7 +237,7 @@
                         <i class="fab fa-whatsapp" aria-hidden="true"></i>
                     </a>
 
-                    <select class="form-control col-4 ml-2 statusWA text-light" style="font-size: 10px;" id="myStatusWaModal">
+                    <select class="form-control col-4 ml-2 statusWA text-light" style="font-size: 10px;" id="typeGroupModal">
                         <option class="bg-danger text-light" value="N">Hot</option>
                         <option class="bg-primary text-light" value="P">Warm</option>
                         <option class="bg-warning text-light" value="H">Could</option>
@@ -278,7 +279,7 @@
 
     $('#btnPerbaharui').hide();
     $('#btnSendWA').hide();
-    $('#myStatusWa').hide();
+    $('#typeGroup').hide();
 
     localStorage.setItem('search', '');
 
@@ -333,13 +334,13 @@
         localStorage.setItem('search', ss);
         fetchData();
     });
-    $('#myStatusWa').on('change', function() {
+    $('#typeGroup').on('change', function() {
         var selectedValue = $(this).val(); // Get the selected value
-        changeStatusWA(selectedValue);
+        changeTypeGroup(selectedValue);
     });
-    $('#myStatusWaModal').on('change', function() {
+    $('#typeGroupModal').on('change', function() {
         var selectedValue = $(this).val(); // Get the selected value
-        changeStatusWA(selectedValue);
+        changeTypeGroup(selectedValue);
     });
     
 
@@ -388,10 +389,10 @@
             }
         });
     }
-    function changeStatusWA(valueStatus){
+    function changeTypeGroup(valueStatus){
         var id_history_call_center = $('#id_history_call_center').val();
         $.ajax({
-            url: "<?php echo base_url('P/Admin/change_status_wa_call_center'); ?>", 
+            url: "<?php echo base_url('P/Admin/change_type_group_wa_call_center'); ?>", 
             type: "GET",
             data: { query: id_history_call_center+"-"+valueStatus },
             dataType: "json", // Expect JSON data
@@ -493,7 +494,7 @@
                 $('#nameContact').empty();
                 $('#btnPerbaharui').show();
                 $('#btnSendWA').show();
-                $('#myStatusWa').show();
+                $('#typeGroup').show();
                 $('#nameContact').text(data[0].customer_phone+"-"+data[0].customer_name);
                 $('#nameContactModal').text(data[0].customer_phone+"-"+data[0].customer_name);
                 $('#lastNotes').text("Online Terakhir : "+data[0].last_call);
@@ -503,35 +504,31 @@
                 $('#btnSendWA').attr('href', linkTOWA);
                 $('#btnSendWAModal').attr('href', linkTOWA);
 
-                $('#myStatusWa').removeClass('bg-danger bg-primary bg-dark bg-warning bg-success');
-                if(data[0].status_call_center === "N"){
-                    $('#myStatusWa').addClass('bg-danger');
-                }else if(data[0].status_call_center === "P"){
-                    $('#myStatusWa').addClass('bg-primary');
-                }else if(data[0].status_call_center === "H"){
-                    $('#myStatusWa').addClass('bg-dark');
-                }else if(data[0].status_call_center === "F"){
-                    $('#myStatusWa').addClass('bg-warning');
-                }else if(data[0].status_call_center === "D"){
-                    $('#myStatusWa').addClass('bg-success');
+                $('#typeGroup').removeClass('bg-danger bg-primary bg-dark bg-warning bg-success');
+                if(data[0].type_group === "N"){
+                    $('#typeGroup').addClass('bg-danger');
+                }else if(data[0].type_group === "P"){
+                    $('#typeGroup').addClass('bg-primary');
+                }else if(data[0].type_group === "H"){
+                    $('#typeGroup').addClass('bg-warning');
+                }else if(data[0].type_group === "F"){
+                    $('#typeGroup').addClass('bg-success');
                 }
 
-                $('#myStatusWa option[value="'+data[0].status_call_center+'"]').prop('selected', true);
+                $('#typeGroup option[value="'+data[0].type_group+'"]').prop('selected', true);
 
-                $('#myStatusWaModal').removeClass('bg-danger bg-primary bg-dark bg-warning bg-success');
-                if(data[0].status_call_center === "N"){
-                    $('#myStatusWaModal').addClass('bg-danger');
-                }else if(data[0].status_call_center === "P"){
-                    $('#myStatusWaModal').addClass('bg-primary');
-                }else if(data[0].status_call_center === "H"){
-                    $('#myStatusWaModal').addClass('bg-dark');
-                }else if(data[0].status_call_center === "F"){
-                    $('#myStatusWaModal').addClass('bg-warning');
-                }else if(data[0].status_call_center === "D"){
-                    $('#myStatusWaModal').addClass('bg-success');
+                $('#typeGroupModal').removeClass('bg-danger bg-primary bg-dark bg-warning bg-success');
+                if(data[0].type_group === "N"){
+                    $('#typeGroupModal').addClass('bg-danger');
+                }else if(data[0].type_group === "P"){
+                    $('#typeGroupModal').addClass('bg-primary');
+                }else if(data[0].type_group === "H"){
+                    $('#typeGroupModal').addClass('bg-warning');
+                }else if(data[0].type_group === "F"){
+                    $('#typeGroupModal').addClass('bg-success');
                 }
 
-                $('#myStatusWaModal option[value="'+data[0].status_call_center+'"]').prop('selected', true);
+                $('#typeGroupModal option[value="'+data[0].type_group+'"]').prop('selected', true);
                 const today = new Date();
                 const year = today.getFullYear();
                 const month = String(today.getMonth() + 1).padStart(2, '0'); 
