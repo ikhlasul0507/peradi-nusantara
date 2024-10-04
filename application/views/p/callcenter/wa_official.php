@@ -116,7 +116,7 @@
             bottom: 0; /* Align it to the top */
             right: 0; /* Align it to the left */
             padding: 0px; /* Optional: add some padding for better readability */
-            font-size: 16px;
+            font-size: 12px;
             border: 1px solid blue;
         }
         }
@@ -423,15 +423,18 @@
                     if(cs.nama_lengkap == null){
                         cs.nama_lengkap = "Stand By..."
                     }
+
+                    var msgSendWa = "hi, "+cs.name+"%0a%0aSilahkan Klik Halaman Berikut %0aUntuk Memulai Chat %0ahttps://app.peradinusantara.org/cs %0a%0aTerima Kasih";
+                    var linkTOWA = "https://api.whatsapp.com/send/?phone="+cs.sender+"&text="+msgSendWa;
                     var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
-                                 '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                                 '<a class="dropdown-item d-flex align-items-center" target="blank" href="'+linkTOWA+'">'+
                                     '<div class="dropdown-list-image mr-3">'+
-                                        '<img class="rounded-circle" src="<?= base_url('assets/p/img/logo_peradi.jpg');?>" alt="...">'+
+                                        '<img class="rounded-circle" src="<?= base_url('assets/p/img/logo_wa.jpg');?>" alt="...">'+
                                         '<div class="status-indicator bg-success"></div>'+
                                     '</div>'+
                                     '<div class="font-weight-bold">'+
                                         '<div class="text-truncate text-primary" id="nameCustomer">'+cs.sender+"-"+cs.name+'</div>'+
-                                        '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.time_history+'</div>'+
+                                        '<div class="small text-truncate font-weight-bold" id="nameCS">Start : '+cs.time_history+'</div>'+
                                     '</div>'+
                                     '<div class="small font-weight-bold '+bgStatus+' text-light text-label-status ">Progress '+cs.nama_lengkap+'</div>'+
                                 '</a>'+

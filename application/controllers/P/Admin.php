@@ -57,6 +57,7 @@ class Admin extends CI_Controller {
 		}else{
 			$data['list_data'] = $this->M->getListHistoryCall(null,null,$this->session->userdata('id_user'));
 		}
+		$data['list_marketing'] = $this->M->getAllMarketing();
 		$this->load->view('p/callcenter/call_center', $data);
 	}
 	public function wa_official()
@@ -77,14 +78,23 @@ class Admin extends CI_Controller {
 	public function get_data_call_center() {
 		$query = $this->input->get('query');
 		if($query != ""){
-        	$data =$this->M->getListHistoryCall("query", $query);
+			if($this->session->userdata('user_level') <= 2){
+        		$data =$this->M->getListHistoryCall("query", $query);
+			}else{
+        		$data =$this->M->getListHistoryCall("query", $query,$this->session->userdata('id_user'));
+			}
     	}else{
-    		$data =$this->M->getListHistoryCall();
+    		if($this->session->userdata('user_level') <= 2){
+				$data = $this->M->getListHistoryCall();
+			}else{
+				$data = $this->M->getListHistoryCall(null,null,$this->session->userdata('id_user'));
+			}
     	}
         echo json_encode($data);
     }
 
-    public function get_data_call_center_detail() {
+    public function get_data_call_center_detail() 
+    {
 		$query = $this->input->get('query');
 		if($query != ""){
         	$data =$this->M->getListHistoryCall("id", $query);
@@ -92,6 +102,14 @@ class Admin extends CI_Controller {
     		$data =$this->M->getListHistoryCall();
     	}
         echo json_encode($data);
+    }
+
+    public function get_group_marketing_call()
+    {
+    	$id_user = $this->input->get('id_user') == "" ? null : $this->input->get('id_user');
+    	$type_group = $this->input->get('type_group') == "" ? null : $this->input->get('type_group');
+    	$data = $this->M->getGroupMarketingCall($id_user, $type_group);
+    	echo json_encode($data);
     }
 
     public function change_type_group_wa_call_center()
@@ -1074,14 +1092,8 @@ class Admin extends CI_Controller {
 					if($this->M->getParameter('@manualNumberCertificate') == 'Y'){
 						if (strpos($getMK['nama_kelas'], 'PKPA') !== false) {
 							$createNumber = (int) $this->M->getParameter('@startNumberCertificatePKPA'); //from parameter
-						}else if (strpos($getMK['nama_kelas'], 'PARALEGAL') !== false) {
-							$createNumber = (int) $this->M->getParameter('@startNumberCertificateParalegal'); //from parameter
 						}else if (strpos($getMK['nama_kelas'], 'UPA') !== false) {
 							$createNumber = (int) $this->M->getParameter('@startNumberCertificateUPA'); //from parameter
-						}else if (strpos($getMK['nama_kelas'], 'BREVET') !== false) {
-							$createNumber = (int) $this->M->getParameter('@startNumberCertificateBREVET'); //from parameter
-						}else if (strpos($getMK['nama_kelas'], 'CPT') !== false) {
-							$createNumber = (int) $this->M->getParameter('@startNumberCertificateCPT'); //from parameter
 						}
 					}
 					

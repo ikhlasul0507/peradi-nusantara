@@ -600,4 +600,53 @@ class Mbg extends CI_Model {
 			return $this->db->query($query)->result_array();
 	}
 
+	function getAllMarketing()
+	{	
+			$query= 'SELECT id_user, nama_lengkap FROM user WHERE is_marketing = "Y"';
+			return $this->db->query($query)->result_array();
+	}
+
+	function getGroupMarketingCall($id_user = null, $type_group = null)
+	{
+		 $query = "SELECT
+							  hc.*,
+							  op.id_virtual_account
+							FROM
+							  (SELECT
+							    hc.*,
+							    TIMESTAMPDIFF(SECOND, hc.last_call, NOW()) AS seconds_since_last_call,
+							    TIMESTAMPDIFF(MINUTE, hc.last_call, NOW()) AS minutes_since_last_call,
+							    TIMESTAMPDIFF(HOUR, hc.last_call, NOW()) AS hours_since_last_call,
+							    us.nama_lengkap,
+							    us.foto_ktp
+							  FROM
+							    history_call_center AS hc
+							    INNER JOIN USER AS us
+							      ON hc.id_user = us.id_user) AS hc
+							  LEFT JOIN
+							    (SELECT
+							      us.id_user,
+							      us.handphone,
+							      ap.id_virtual_account
+							    FROM
+							      USER AS us
+							      INNER JOIN order_booking AS ob
+							        ON us.id_user = ob.id_user
+							      INNER JOIN order_payment AS ap
+							        ON ob.id_order_booking = ap.id_order_booking) AS op
+							    ON hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone";
+		 if($id_user != null && $type_group == null){
+		 			$query = $query . " WHERE hc.id_user='$id_user'";
+		 }else if($id_user == null && $type_group != null){
+		 			$query = $query . " WHERE hc.type_group='$type_group'";
+		 }else if($id_user != null && $type_group != null){
+		 			$query = $query . " WHERE hc.id_user='$id_user' AND hc.type_group='$type_group'";
+		 }
+	   
+	   $query = $query . " ORDER BY hc.priority DESC, hc.time_history DESC";
+
+		 return $this->db->query($query)->result_array();
+
+	}
+
 }

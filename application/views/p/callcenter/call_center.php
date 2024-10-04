@@ -201,26 +201,58 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header d-flex align-items-center justify-content-between">
-                    <select class="form-control col-10 ml-2" id="marketingNameSelect">
-                        <option value="" selected>--Pilih Nama Marketing</option>
-                        <option value="N">New Customer</option>
-                        <option value="N">New Customer</option>
-                    </select>
-                    <p class="m-0 font-weight-bold ml-2 text-primary" style="font-size: 10px;" id="marketingName">
-                        <!-- Agung Rilo -->
+                   
+                    <p class="m-0 font-weight-bold ml-2 text-primary" id="marketingName">
+                        Show Data Group Call Center
                     </p>
                     <button class="close" type="button" id="modalGroupClose" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-floating">
-                        <label for="floatingTextareaGroup" id="lastNoteGroupLabel">
-                            <!-- Catatan Terakhir : 2024-09-21 12:13:45 -->
-                        </label>
-                        <textarea class="form-control text-dark" placeholder="..." id="floatingTextareaGroup"></textarea>
+                    <div>
+                         <select class="form-control" id="marketingNameSelect">
+                            <option value="" selected>--Pilih Nama Marketing</option>
+                            <?php foreach ($list_marketing as $lm) { ?>
+                            <option value="<?= $lm['id_user'];?>"><?= $lm['nama_lengkap'];?></option>
+                            <?php } ?>
+                        </select>
+                        <select class="form-control mt-2" id="typeAllGroup">
+                            <option value="" selected>--Pilih Group--</option>
+                            <option value="N">Hot</option>
+                            <option value="P">Warm</option>
+                            <option value="H">Could</option>
+                            <option value="F">Closing</option>
+                        </select>
                     </div>
-                    <button class="btn btn-primary mt-3" id="btnUpdateGroup">Perbaharui Catatan</button>
+                    <div class="form-floating">
+                        <div class="card border-left-danger mt-4">
+                             <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                    <img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>"
+                                        alt="...">
+                                    <div class="status-indicator bg-success"></div>
+                                </div>
+                                <div class="font-weight-bold">
+                                    <div class="text-truncate text-primary" id="nameCustomer">Contoh Name</div>
+                                    <div class="small text-truncate">Contoh, Online 5m Ago</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="card border-left-danger mt-4">
+                             <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                    <img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>"
+                                        alt="...">
+                                    <div class="status-indicator bg-success"></div>
+                                </div>
+                                <div class="font-weight-bold">
+                                    <div class="text-truncate text-primary" id="nameCustomer">Contoh Name</div>
+                                    <div class="small text-truncate">Contoh, Online 5m Ago</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -334,6 +366,7 @@
         localStorage.setItem('search', ss);
         fetchData();
     });
+
     $('#typeGroup').on('change', function() {
         var selectedValue = $(this).val(); // Get the selected value
         changeTypeGroup(selectedValue);
@@ -342,7 +375,12 @@
         var selectedValue = $(this).val(); // Get the selected value
         changeTypeGroup(selectedValue);
     });
-    
+    $('#marketingNameSelect').on('change', function() {
+        fetchDataGroup();
+    });
+    $('#typeAllGroup').on('change', function() {
+        fetchDataGroup();
+    });
 
     $('#btnPerbaharui').on('click', function() {
         var id_history_call_center = $('#id_history_call_center').val();
@@ -576,85 +614,190 @@
             success: function(data) {
                 // Empty previous data
                 $('#userData').empty();
-                
-                // Loop through the returned data and append it to the div
-                $.each(data, function(index, cs) {
+                if(data.length > 0){
+                    // Loop through the returned data and append it to the div
+                    $.each(data, function(index, cs) {
 
-                    if(cs.status_call_center === "N"){
-                        var nameClassCard = "card border-left-primary";
-                        var bgStatus = "bg-primary";
-                        var textToolTip = "Chat Baru"
-                    }
-                    if(parseInt(cs.hours_since_last_call) > (1 * 24)){
-                        var nameClassCard = "card border-left-danger";
-                        var bgStatus = "bg-danger";
-                        var textToolTip = "Chat No Respon 1x24 jam";
-                    }
-                    if(parseInt(cs.hours_since_last_call) > (3 * 24)){
-                        var nameClassCard = "card border-left-dark";
-                        var bgStatus = "bg-dark";
-                        var textToolTip = "Chat No Respon 3x24 jam";
-                    }
-
-                    if(cs.status_call_center === "P"){
-                        var nameClassCard = "card border-left-warning";
-                        var bgStatus = "bg-warning";
-                        var textToolTip = "Follow Up Chat";
-                    }
-
-                    if(cs.id_virtual_account !== null){
-                        var nameClassCard = "card border-left-success";
-                        var bgStatus = "bg-success";
-                        var textToolTip = "Chat sudah order";
-                    }
-                    // else if(cs.status_call_center === "P"){
-                    //     var nameClassCard = "card border-left-primary";
-                    //     var bgStatus = "bg-primary";
-                    // }else if(cs.status_call_center === "H"){
-                    //     var nameClassCard = "card border-left-dark";
-                    //     var bgStatus = "bg-dark";
-                    // }else if(cs.status_call_center === "F"){
-                    //     var nameClassCard = "card border-left-warning";
-                    //     var bgStatus = "bg-warning";
-                    // }else if(cs.status_call_center === "D"){
-                    //     var nameClassCard = "card border-left-success";
-                    //     var bgStatus = "bg-success";
-                    // }
-                    if(cs.is_deleted === "N"){
-                        var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',1)">Pindahkan ke Sampah</button>';
-                    }else{
-                        var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',0)">Pindahkan Dari Sampah</button>';
-                    }
-                    if(isMobile){
-                        if(cs.customer_name.length > 18){
-                            cs.customer_name = cs.customer_name.substring(0,18) + "..."
+                        if(cs.status_call_center === "N"){
+                            var nameClassCard = "card border-left-primary";
+                            var bgStatus = "bg-primary";
+                            var textToolTip = "Chat Baru"
                         }
-                    }
-                    var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
-                                 '<a class="dropdown-item d-flex align-items-center" href="#">'+
-                                     '<div class="dropdown no-arrow mr-2">'+
-                                        '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-                                            '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
-                                        '</h6>'+
-                                        '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
-                                            '<div class="dropdown-header">Options:</div>'+
-                                            '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
-                                            buttonSampah+
+                        if(parseInt(cs.hours_since_last_call) > (1 * 24)){
+                            var nameClassCard = "card border-left-danger";
+                            var bgStatus = "bg-danger";
+                            var textToolTip = "Chat No Respon 1x24 jam";
+                        }
+                        if(parseInt(cs.hours_since_last_call) > (3 * 24)){
+                            var nameClassCard = "card border-left-dark";
+                            var bgStatus = "bg-dark";
+                            var textToolTip = "Chat No Respon 3x24 jam";
+                        }
+
+                        if(cs.status_call_center === "P"){
+                            var nameClassCard = "card border-left-warning";
+                            var bgStatus = "bg-warning";
+                            var textToolTip = "Follow Up Chat";
+                        }
+
+                        if(cs.id_virtual_account !== null){
+                            var nameClassCard = "card border-left-success";
+                            var bgStatus = "bg-success";
+                            var textToolTip = "Chat sudah order";
+                        }
+                        // else if(cs.status_call_center === "P"){
+                        //     var nameClassCard = "card border-left-primary";
+                        //     var bgStatus = "bg-primary";
+                        // }else if(cs.status_call_center === "H"){
+                        //     var nameClassCard = "card border-left-dark";
+                        //     var bgStatus = "bg-dark";
+                        // }else if(cs.status_call_center === "F"){
+                        //     var nameClassCard = "card border-left-warning";
+                        //     var bgStatus = "bg-warning";
+                        // }else if(cs.status_call_center === "D"){
+                        //     var nameClassCard = "card border-left-success";
+                        //     var bgStatus = "bg-success";
+                        // }
+                        if(cs.is_deleted === "N"){
+                            var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',1)">Pindahkan ke Sampah</button>';
+                        }else{
+                            var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',0)">Pindahkan Dari Sampah</button>';
+                        }
+                        if(isMobile){
+                            if(cs.customer_name.length > 18){
+                                cs.customer_name = cs.customer_name.substring(0,18) + "..."
+                            }
+                        }
+                        var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
+                                     '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                                         '<div class="dropdown no-arrow mr-2">'+
+                                            '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                                                '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
+                                            '</h6>'+
+                                            '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
+                                                '<div class="dropdown-header">Options:</div>'+
+                                                '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
+                                                buttonSampah+
+                                            '</div>'+
                                         '</div>'+
-                                    '</div>'+
-                                    '<div class="dropdown-list-image mr-3">'+
-                                        '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
-                                        '<div class="status-indicator bg-success"></div>'+
-                                    '</div>'+
-                                    '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
-                                        '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
-                                        '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
-                                    '</div>'+
-                                    '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
-                                '</a>'+
-                            '</div>';
-                    $('#userData').append(dataHTML);
-                });
+                                        '<div class="dropdown-list-image mr-3">'+
+                                            '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
+                                            '<div class="status-indicator bg-success"></div>'+
+                                        '</div>'+
+                                        '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
+                                            '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
+                                            '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
+                                        '</div>'+
+                                        '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
+                                    '</a>'+
+                                '</div>';
+                        $('#userData').append(dataHTML);
+                    });
+                }
+            },
+            error: function() {
+                alert("Error loading data");
+                window.location.reload();
+            }
+        });
+    }
+    function fetchDataGroup() {
+        var isMobile = false;
+        if (window.innerWidth <= 896) {
+            isMobile = true;
+        }
+        $.ajax({
+            url: "<?php echo base_url('P/Admin/get_group_marketing_call'); ?>", // AJAX URL to the controller function
+            type: "GET",
+            data: { 
+                id_user: $('#marketingNameSelect').val(),
+                type_group: $('#typeAllGroup').val()
+            },
+            dataType: "json", // Expect JSON data
+            success: function(data) {
+                // Empty previous data
+                console.log(data);
+                // $('#userData').empty();
+                if(data.length > 0){
+                    // Loop through the returned data and append it to the div
+                    // $.each(data, function(index, cs) {
+
+                    //     if(cs.status_call_center === "N"){
+                    //         var nameClassCard = "card border-left-primary";
+                    //         var bgStatus = "bg-primary";
+                    //         var textToolTip = "Chat Baru"
+                    //     }
+                    //     if(parseInt(cs.hours_since_last_call) > (1 * 24)){
+                    //         var nameClassCard = "card border-left-danger";
+                    //         var bgStatus = "bg-danger";
+                    //         var textToolTip = "Chat No Respon 1x24 jam";
+                    //     }
+                    //     if(parseInt(cs.hours_since_last_call) > (3 * 24)){
+                    //         var nameClassCard = "card border-left-dark";
+                    //         var bgStatus = "bg-dark";
+                    //         var textToolTip = "Chat No Respon 3x24 jam";
+                    //     }
+
+                    //     if(cs.status_call_center === "P"){
+                    //         var nameClassCard = "card border-left-warning";
+                    //         var bgStatus = "bg-warning";
+                    //         var textToolTip = "Follow Up Chat";
+                    //     }
+
+                    //     if(cs.id_virtual_account !== null){
+                    //         var nameClassCard = "card border-left-success";
+                    //         var bgStatus = "bg-success";
+                    //         var textToolTip = "Chat sudah order";
+                    //     }
+                    //     // else if(cs.status_call_center === "P"){
+                    //     //     var nameClassCard = "card border-left-primary";
+                    //     //     var bgStatus = "bg-primary";
+                    //     // }else if(cs.status_call_center === "H"){
+                    //     //     var nameClassCard = "card border-left-dark";
+                    //     //     var bgStatus = "bg-dark";
+                    //     // }else if(cs.status_call_center === "F"){
+                    //     //     var nameClassCard = "card border-left-warning";
+                    //     //     var bgStatus = "bg-warning";
+                    //     // }else if(cs.status_call_center === "D"){
+                    //     //     var nameClassCard = "card border-left-success";
+                    //     //     var bgStatus = "bg-success";
+                    //     // }
+                    //     if(cs.is_deleted === "N"){
+                    //         var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',1)">Pindahkan ke Sampah</button>';
+                    //     }else{
+                    //         var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',0)">Pindahkan Dari Sampah</button>';
+                    //     }
+                    //     if(isMobile){
+                    //         if(cs.customer_name.length > 18){
+                    //             cs.customer_name = cs.customer_name.substring(0,18) + "..."
+                    //         }
+                    //     }
+                    //     var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
+                    //                  '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                    //                      '<div class="dropdown no-arrow mr-2">'+
+                    //                         '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                    //                             '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
+                    //                         '</h6>'+
+                    //                         '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
+                    //                             '<div class="dropdown-header">Options:</div>'+
+                    //                             '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
+                    //                             buttonSampah+
+                    //                         '</div>'+
+                    //                     '</div>'+
+                    //                     '<div class="dropdown-list-image mr-3">'+
+                    //                         '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
+                    //                         '<div class="status-indicator bg-success"></div>'+
+                    //                     '</div>'+
+                    //                     '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
+                    //                         '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
+                    //                         '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
+                    //                     '</div>'+
+                    //                     '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
+                    //                 '</a>'+
+                    //             '</div>';
+                    //     $('#userData').append(dataHTML);
+                    // });
+                }
             },
             error: function() {
                 alert("Error loading data");
