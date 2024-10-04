@@ -64,6 +64,13 @@
                                     <br>
                                     <small>Call Center</small>
                                 </a>
+                                <?php if($this->session->userdata('user_level') <= 2){ ?>
+                                <a href="<?= base_url('P/Admin/wa_official');?>" class="btn btn-danger btn-lg mt-3 ml-3">
+                                    <i class="fab fa-whatsapp" aria-hidden="true" style="font-size:48px;"></i>
+                                    <br>
+                                    <small>WA Official</small>
+                                </a>
+                                <?php } ?>
                             </div>
 
                         </div>

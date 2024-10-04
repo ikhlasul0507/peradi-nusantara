@@ -59,6 +59,20 @@ class Admin extends CI_Controller {
 		}
 		$this->load->view('p/callcenter/call_center', $data);
 	}
+	public function wa_official()
+	{	
+		$this->load->view('p/callcenter/wa_official');
+	}
+	
+	public function get_data_wa_official() {
+		$dateToday = $this->input->get('dateToday');
+		if($dateToday != ""){
+        	$data =$this->M->getChatWhatsappOfficial($dateToday);
+    	}else{
+    		$data =$this->M->getChatWhatsappOfficial();
+    	}
+        echo json_encode($data);
+    }
 
 	public function get_data_call_center() {
 		$query = $this->input->get('query');

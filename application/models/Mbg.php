@@ -555,5 +555,49 @@ class Mbg extends CI_Model {
 
 	}
 
+	function getChatWhatsappOfficial($dateToday = null)
+	{	
+			$whereDate = "";
+			if($dateToday != null){
+					$whereDate = " WHERE
+					      DATE(time_history) = '$dateToday' ";
+			}
+			$query= "SELECT
+					  cw.id_chat_whatsapp,
+					  cw.time_history,
+					  cw.sender,
+					  COALESCE(NULLIF(cw.name, ''), 'Wa Customer') AS name,
+					  hc.customer_phone,
+					  hc.nama_lengkap
+					FROM
+					  (
+					    SELECT
+					      id_chat_whatsapp,
+					      sender,
+					      name,time_history
+					    FROM
+					      chat_whatsapp
+					    $whereDate
+					    GROUP BY sender
+					  ) cw
+					LEFT JOIN
+					  (
+					    SELECT
+					      hc.customer_phone,
+					      hc.last_call,
+					      us.nama_lengkap
+					    FROM
+					      history_call_center hc
+					    INNER JOIN USER us ON hc.id_user = us.id_user
+					  ) hc
+					ON cw.sender = 
+					  CASE 
+					    WHEN SUBSTRING(hc.customer_phone, 1, 1) = '0' 
+					    THEN CONCAT('62', SUBSTRING(hc.customer_phone, 2))
+					    ELSE hc.customer_phone
+					  END
+					ORDER BY cw.time_history DESC";
+			return $this->db->query($query)->result_array();
+	}
 
 }
