@@ -29,6 +29,8 @@ class Migrate extends CI_Controller
 		$this->writeLine();
 		$this->alterTable();
 		$this->writeLine();
+		$this->alterTableIndex();
+		$this->writeLine();
 		$this->insertDataTable();
 		$this->writeLine();
 		echo "<h4>Congratulations your migrate successfully 100%</h4>";
@@ -408,7 +410,52 @@ class Migrate extends CI_Controller
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
 	}
+	public function alterTableIndex()
+	{
+		$column = "sender";
+		$table_name = "chat_whatsapp";
+		$title = "Create Index on " . $column . " for table " . $table_name;
+		$query = "SELECT COUNT(*) as count 
+		          FROM information_schema.statistics 
+		          WHERE table_schema=DATABASE() 
+		          AND table_name= '" . $table_name . "' 
+		          AND index_name = 'idx_" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
 
+		if ($check['count'] == '0') {
+		    $queryIndex = "CREATE INDEX idx_" . $column . " ON $table_name($column);";
+		    if ($this->db->query($queryIndex)) {
+		        echo "||............[Migrate successfully " . $title . "]</br>";
+		    } else {
+		        echo "||............[Migrate failed " . $title . "]</br>";
+		    }
+		} else {
+		    echo "||............[Index already exists for " . $column . " on table " . $table_name . "]</br>";
+		}
+
+		// Repeat for 'customer_phone' index
+		$column = "customer_phone";
+		$table_name = "history_call_center";
+		$title = "Create Index on " . $column . " for table " . $table_name;
+		$query = "SELECT COUNT(*) as count 
+		          FROM information_schema.statistics 
+		          WHERE table_schema=DATABASE() 
+		          AND table_name= '" . $table_name . "' 
+		          AND index_name = 'idx_" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+
+		if ($check['count'] == '0') {
+		    $queryIndex = "CREATE INDEX idx_" . $column . " ON $table_name($column);";
+		    if ($this->db->query($queryIndex)) {
+		        echo "||............[Migrate successfully " . $title . "]</br>";
+		    } else {
+		        echo "||............[Migrate failed " . $title . "]</br>";
+		    }
+		} else {
+		    echo "||............[Index already exists for " . $column . " on table " . $table_name . "]</br>";
+		}
+
+	}
 
 	public function alterTable()
 	{
@@ -795,6 +842,38 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate successfully " . $title . "]</br>";
 		}
+		//=================================================================================================
+		$columnsToModify = [
+		    "pesan" => "TEXT NULL",
+		    "pengirim" => "VARCHAR(50)",
+		    "message" => "TEXT NULL",
+		    "text" => "VARCHAR(50)"
+		];
+
+		$table_name = "chat_whatsapp";
+
+		foreach ($columnsToModify as $column => $newType) {
+		    $title = "Modify Column " . $column . " in table " . $table_name;
+		    $query = "SELECT COUNT(*) as count 
+		              FROM information_schema.columns 
+		              WHERE table_schema=DATABASE() 
+		              AND table_name= '" . $table_name . "' 
+		              AND column_name = '" . $column . "'";
+		    
+		    $check = $this->db->query($query)->first_row('array');
+
+		    if ($check['count'] > 0) {
+		        $queryAlter = "ALTER TABLE $table_name MODIFY $column $newType";
+		        if ($this->db->query($queryAlter)) {
+		            echo "||............[Migrate successfully: " . $title . "]</br>";
+		        } else {
+		            echo "||............[Migrate failed: " . $title . "]</br>";
+		        }
+		    } else {
+		        echo "||............[Column " . $column . " does not exist in table " . $table_name . "]</br>";
+		    }
+		}
+
 
 	}
 
