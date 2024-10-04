@@ -277,12 +277,14 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Approve Sertifikat</span></a>
             </li>
+            <?php } ?>
+            <?php if($this->session->userdata('user_level') <= 3){ ?>
             <li class="nav-item <?=$DoneSertifikat;?>">
                 <a class="nav-link" href="<?= base_url('P/Admin/DoneSertifikat');?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Sudah Approve</span></a>
             </li>
-             <?php }?>
+            <?php }?>
             <!-- Divider -->
             <!-- Divider -->
             <hr class="sidebar-divider">

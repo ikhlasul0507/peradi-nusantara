@@ -588,7 +588,7 @@ class Mbg extends CI_Model {
 					      us.nama_lengkap
 					    FROM
 					      history_call_center hc
-					    INNER JOIN USER us ON hc.id_user = us.id_user
+					    INNER JOIN user us ON hc.id_user = us.id_user
 					  ) hc
 					ON cw.sender = 
 					  CASE 
