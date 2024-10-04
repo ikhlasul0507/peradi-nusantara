@@ -225,8 +225,8 @@
                             <option value="F">Closing</option>
                         </select>
                     </div>
-                    <div class="form-floating">
-                        <div class="card border-left-danger mt-4">
+                    <div class="form-floating" id="listDataGroup">
+                        <!-- <div class="card border-left-danger mt-4">
                              <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
                                     <img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>"
@@ -251,7 +251,7 @@
                                     <div class="small text-truncate">Contoh, Online 5m Ago</div>
                                 </div>
                             </a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -702,12 +702,13 @@
         });
     }
     function fetchDataGroup() {
+
         var isMobile = false;
         if (window.innerWidth <= 896) {
             isMobile = true;
         }
         $.ajax({
-            url: "<?php echo base_url('P/Admin/get_group_marketing_call'); ?>", // AJAX URL to the controller function
+            url: "<?php echo base_url('P/Admin/get_group_marketing_call'); ?>", 
             type: "GET",
             data: { 
                 id_user: $('#marketingNameSelect').val(),
@@ -717,86 +718,87 @@
             success: function(data) {
                 // Empty previous data
                 console.log(data);
-                // $('#userData').empty();
+                $('#listDataGroup').empty();
                 if(data.length > 0){
                     // Loop through the returned data and append it to the div
-                    // $.each(data, function(index, cs) {
+                    $.each(data, function(index, cs) {
 
-                    //     if(cs.status_call_center === "N"){
-                    //         var nameClassCard = "card border-left-primary";
-                    //         var bgStatus = "bg-primary";
-                    //         var textToolTip = "Chat Baru"
-                    //     }
-                    //     if(parseInt(cs.hours_since_last_call) > (1 * 24)){
-                    //         var nameClassCard = "card border-left-danger";
-                    //         var bgStatus = "bg-danger";
-                    //         var textToolTip = "Chat No Respon 1x24 jam";
-                    //     }
-                    //     if(parseInt(cs.hours_since_last_call) > (3 * 24)){
-                    //         var nameClassCard = "card border-left-dark";
-                    //         var bgStatus = "bg-dark";
-                    //         var textToolTip = "Chat No Respon 3x24 jam";
-                    //     }
+                        if(cs.status_call_center === "N"){
+                            var nameClassCard = "card border-left-primary";
+                            var bgStatus = "bg-primary";
+                            var textToolTip = "Chat Baru"
+                        }
+                        if(parseInt(cs.hours_since_last_call) > (1 * 24)){
+                            var nameClassCard = "card border-left-danger";
+                            var bgStatus = "bg-danger";
+                            var textToolTip = "Chat No Respon 1x24 jam";
+                        }
+                        if(parseInt(cs.hours_since_last_call) > (3 * 24)){
+                            var nameClassCard = "card border-left-dark";
+                            var bgStatus = "bg-dark";
+                            var textToolTip = "Chat No Respon 3x24 jam";
+                        }
 
-                    //     if(cs.status_call_center === "P"){
-                    //         var nameClassCard = "card border-left-warning";
-                    //         var bgStatus = "bg-warning";
-                    //         var textToolTip = "Follow Up Chat";
-                    //     }
+                        if(cs.status_call_center === "P"){
+                            var nameClassCard = "card border-left-warning";
+                            var bgStatus = "bg-warning";
+                            var textToolTip = "Follow Up Chat";
+                        }
 
-                    //     if(cs.id_virtual_account !== null){
-                    //         var nameClassCard = "card border-left-success";
-                    //         var bgStatus = "bg-success";
-                    //         var textToolTip = "Chat sudah order";
-                    //     }
-                    //     // else if(cs.status_call_center === "P"){
-                    //     //     var nameClassCard = "card border-left-primary";
-                    //     //     var bgStatus = "bg-primary";
-                    //     // }else if(cs.status_call_center === "H"){
-                    //     //     var nameClassCard = "card border-left-dark";
-                    //     //     var bgStatus = "bg-dark";
-                    //     // }else if(cs.status_call_center === "F"){
-                    //     //     var nameClassCard = "card border-left-warning";
-                    //     //     var bgStatus = "bg-warning";
-                    //     // }else if(cs.status_call_center === "D"){
-                    //     //     var nameClassCard = "card border-left-success";
-                    //     //     var bgStatus = "bg-success";
-                    //     // }
-                    //     if(cs.is_deleted === "N"){
-                    //         var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',1)">Pindahkan ke Sampah</button>';
-                    //     }else{
-                    //         var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',0)">Pindahkan Dari Sampah</button>';
-                    //     }
-                    //     if(isMobile){
-                    //         if(cs.customer_name.length > 18){
-                    //             cs.customer_name = cs.customer_name.substring(0,18) + "..."
-                    //         }
-                    //     }
-                    //     var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
-                    //                  '<a class="dropdown-item d-flex align-items-center" href="#">'+
-                    //                      '<div class="dropdown no-arrow mr-2">'+
-                    //                         '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-                    //                             '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
-                    //                         '</h6>'+
-                    //                         '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
-                    //                             '<div class="dropdown-header">Options:</div>'+
-                    //                             '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
-                    //                             buttonSampah+
-                    //                         '</div>'+
-                    //                     '</div>'+
-                    //                     '<div class="dropdown-list-image mr-3">'+
-                    //                         '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
-                    //                         '<div class="status-indicator bg-success"></div>'+
-                    //                     '</div>'+
-                    //                     '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
-                    //                         '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
-                    //                         '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
-                    //                     '</div>'+
-                    //                     '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
-                    //                 '</a>'+
-                    //             '</div>';
-                    //     $('#userData').append(dataHTML);
-                    // });
+                        if(cs.id_virtual_account !== null){
+                            var nameClassCard = "card border-left-success";
+                            var bgStatus = "bg-success";
+                            var textToolTip = "Chat sudah order";
+                        }
+                        else if(cs.status_call_center === "P"){
+                            var nameClassCard = "card border-left-primary";
+                            var bgStatus = "bg-primary";
+                        }else if(cs.status_call_center === "H"){
+                            var nameClassCard = "card border-left-dark";
+                            var bgStatus = "bg-dark";
+                        }else if(cs.status_call_center === "F"){
+                            var nameClassCard = "card border-left-warning";
+                            var bgStatus = "bg-warning";
+                        }else if(cs.status_call_center === "D"){
+                            var nameClassCard = "card border-left-success";
+                            var bgStatus = "bg-success";
+                        }
+                        
+                        if(cs.is_deleted === "N"){
+                            var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',1)">Pindahkan ke Sampah</button>';
+                        }else{
+                            var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',0)">Pindahkan Dari Sampah</button>';
+                        }
+                        if(isMobile){
+                            if(cs.customer_name.length > 18){
+                                cs.customer_name = cs.customer_name.substring(0,18) + "..."
+                            }
+                        }
+                        var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
+                                     '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                                         '<div class="dropdown no-arrow mr-2">'+
+                                            '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                                                '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
+                                            '</h6>'+
+                                            '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
+                                                '<div class="dropdown-header">Options:</div>'+
+                                                '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
+                                                buttonSampah+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="dropdown-list-image mr-3">'+
+                                            '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
+                                            '<div class="status-indicator bg-success"></div>'+
+                                        '</div>'+
+                                        '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
+                                            '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
+                                            '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
+                                        '</div>'+
+                                        '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
+                                    '</a>'+
+                                '</div>';
+                        $('#listDataGroup').append(dataHTML);
+                    });
                 }
             },
             error: function() {
