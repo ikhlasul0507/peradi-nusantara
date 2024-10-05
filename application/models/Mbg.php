@@ -624,7 +624,7 @@ class Mbg extends CI_Model {
 							    us.foto_ktp
 							  FROM
 							    history_call_center AS hc
-							    INNER JOIN USER AS us
+							    INNER JOIN user AS us
 							      ON hc.id_user = us.id_user) AS hc
 							  LEFT JOIN
 							    (SELECT
@@ -632,7 +632,7 @@ class Mbg extends CI_Model {
 							      us.handphone,
 							      ap.id_virtual_account
 							    FROM
-							      USER AS us
+							      user AS us
 							      INNER JOIN order_booking AS ob
 							        ON us.id_user = ob.id_user
 							      INNER JOIN order_payment AS ap
