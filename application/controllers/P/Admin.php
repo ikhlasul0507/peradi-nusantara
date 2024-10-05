@@ -54,10 +54,11 @@ class Admin extends CI_Controller {
 	{	
 		if($this->session->userdata('user_level') <= 2){
 			$data['list_data'] = $this->M->getListHistoryCall();
+			$data['list_marketing'] = $this->M->getAllMarketing();
 		}else{
 			$data['list_data'] = $this->M->getListHistoryCall(null,null,$this->session->userdata('id_user'));
+			$data['list_marketing'] = $this->M->getAllMarketing($this->session->userdata('id_user'));
 		}
-		$data['list_marketing'] = $this->M->getAllMarketing();
 		$this->load->view('p/callcenter/call_center', $data);
 	}
 	public function wa_official()

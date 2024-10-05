@@ -18,7 +18,6 @@
                             <th>Detail Orderan</th>
                             <th>Data</th>
                             <th>Status Orderan</th>
-                            <th><input type="checkbox" id="selectAll" onclick="toggleCheckboxes(this)"> Select All</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,9 +58,6 @@
                                 <?php } ?>
                                 <button class="badge badge-danger" disabled><?= $getListKelas['nama_kelas'];?></button>
                                 <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="item" name="item" value="<?= $value['id_order_booking'];?>">
                             </td>
                         </tr>
                         <?php } ?>

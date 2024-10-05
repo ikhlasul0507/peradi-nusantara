@@ -600,9 +600,12 @@ class Mbg extends CI_Model {
 			return $this->db->query($query)->result_array();
 	}
 
-	function getAllMarketing()
+	function getAllMarketing($id_user = null)
 	{	
 			$query= 'SELECT id_user, nama_lengkap FROM user WHERE is_marketing = "Y"';
+			if($id_user != null){
+		 			$query = $query . " AND id_user='$id_user'";
+		 	}
 			return $this->db->query($query)->result_array();
 	}
 

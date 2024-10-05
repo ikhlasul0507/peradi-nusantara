@@ -225,7 +225,7 @@
                             <option value="F">Closing</option>
                         </select>
                     </div>
-                    <div class="form-floating" id="listDataGroup">
+                    <div class="form-floating mt-5" id="listDataGroup">
                         <!-- <div class="card border-left-danger mt-4">
                              <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
@@ -763,7 +763,7 @@
                             var nameClassCard = "card border-left-success";
                             var bgStatus = "bg-success";
                         }
-                        
+
                         if(cs.is_deleted === "N"){
                             var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',1)">Pindahkan ke Sampah</button>';
                         }else{
@@ -776,16 +776,6 @@
                         }
                         var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
                                      '<a class="dropdown-item d-flex align-items-center" href="#">'+
-                                         '<div class="dropdown no-arrow mr-2">'+
-                                            '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-                                                '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
-                                            '</h6>'+
-                                            '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
-                                                '<div class="dropdown-header">Options:</div>'+
-                                                '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
-                                                buttonSampah+
-                                            '</div>'+
-                                        '</div>'+
                                         '<div class="dropdown-list-image mr-3">'+
                                             '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
                                             '<div class="status-indicator bg-success"></div>'+
