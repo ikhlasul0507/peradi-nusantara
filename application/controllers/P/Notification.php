@@ -226,4 +226,74 @@ class Notification extends CI_Controller {
     		redirect($link);
     	}
     }
+
+    public function engineLogicPriorityCS()
+	{
+	    $date = new DateTime("now", new DateTimeZone("Asia/Jakarta"));
+	    $dateToday = $date->format('Y-m-d');
+	    $getUsersParam = $this->M->getParameter('@logicChooseUserCS');
+	    $arrayUsers = explode(",", $getUsersParam); // Example: 51-1-1,52-0-2,53-1-3
+	    $cekData = $this->M->getLogicCSDB($dateToday);
+	    $lastSequenceFromDB = $cekData == null ? 0 : $cekData[0]['sequence']; 
+	    $totalUsersParam = count($arrayUsers);
+	    $totalCheckData = count($cekData);
+	    $choose_id_user = 0;
+	    $seq = 0;
+	    
+	    $forFase = ceil($totalCheckData / $totalUsersParam);
+	    $allPriority = ($forFase % 2 == 0);
+	    if($cekData == null){
+	    	$allPriority = true;
+	    }
+	    for ($i = 0; $i < count($arrayUsers); $i++) {
+            $idUs = explode("-", $arrayUsers[$i]);
+            if(!$allPriority){
+            	//semuanya aja masuk
+            	if($lastSequenceFromDB == count($arrayUsers)){
+            		if ((int)$idUs[2] == 1) {
+            			$choose_id_user = (int)$idUs[0];
+            			$seq = 1;
+	                    break;
+            		}
+            	}else{
+            		if ((int)$idUs[2] == $lastSequenceFromDB + 1) {
+            			$choose_id_user = (int)$idUs[0];
+            			$seq = $lastSequenceFromDB + 1;
+	                    break;
+            		}
+            	}
+            }else{
+            	//hanya prioritas
+            	if((int)$idUs[1] > 0){
+            		if($lastSequenceFromDB == count($arrayUsers)){
+	            		if ((int)$idUs[2] == 1) {
+	            			$choose_id_user = (int)$idUs[0];
+	            			$seq = 1;
+		                    break;
+	            		}
+	            	}else{
+            			if ((int)$idUs[2] == $lastSequenceFromDB + 1) {
+	            			$choose_id_user = (int)$idUs[0];
+	            			$seq = $lastSequenceFromDB + 1;
+		                    break;
+	            		}
+	            	}
+            	}else{
+            		$seq = $lastSequenceFromDB + 1;
+            	}
+            }
+        }
+
+	    // Save the selected user and sequence to the database
+	    $send_db = [
+	        'id_user' => $choose_id_user,
+	        'sequence' => $seq
+	    ];
+	    $this->M->add_to_db('logic_cs', $send_db);
+
+	    // Return the selected user ID as a JSON response
+	    $arrayUsers = ['id_users' => $allPriority];
+	    echo json_encode($arrayUsers);
+	}
+
 }

@@ -652,4 +652,10 @@ class Mbg extends CI_Model {
 
 	}
 
+	function getLogicCSDB($dateToday)
+	{
+			$query = "SELECT * FROM logic_cs WHERE DATE(time_history) = '$dateToday' ORDER BY time_history DESC";
+			return $this->db->query($query)->result_array();
+	}
+
 }

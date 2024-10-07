@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 git status
 git add -- . ':!application/config/database.php'
-git commit -m "Update Feature ChatBoot"
+git commit -m "Update Fitur Chatbot"
 git push origin master
 
 Contoh
