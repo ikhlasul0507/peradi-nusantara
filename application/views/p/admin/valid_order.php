@@ -66,7 +66,7 @@
                             <button class="btn btn-sm btn-success" href="#" disabled>Selesai Belajar</button>
                             <a  class="btn btn-sm btn-primary" target="blank" href="<?= base_url('P/Payment/createInvoice/'.$value['id_order_booking']);?>">Cetak Invoice</a>
                         <?php } ?>
-                        <?php if($value['status_order'] == 'D' && $value['status_certificate'] == 'A'){ ?>
+                        <?php if($value['status_order'] == 'D' && $value['status_certificate'] == 'A' && $list_kelas_data['nama_kelas'] != 'SUMPAH'){ ?>
                             <a  class="btn btn-sm btn-warning" target="blank" href="<?= base_url('P/Payment/generateCertificate/'.$value['id_user'].'/'.$value['id_order_booking']);?>">Ambil Sertifikat</a>
                         <?php } ?>
                     </div>

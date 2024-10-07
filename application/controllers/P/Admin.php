@@ -57,7 +57,7 @@ class Admin extends CI_Controller {
 			$data['list_marketing'] = $this->M->getAllMarketing();
 		}else{
 			$data['list_data'] = $this->M->getListHistoryCall(null,null,$this->session->userdata('id_user'));
-			$data['list_marketing'] = $this->M->getAllMarketing($this->session->userdata('id_user'));
+			$data['list_marketing'] = $this->M->getAllMarketing();
 		}
 		$this->load->view('p/callcenter/call_center', $data);
 	}
@@ -1142,7 +1142,8 @@ class Admin extends CI_Controller {
 			// $add_db = $this->M->add_to_db('approve_cetificate', $send_db);
 			// if($add_db){
 			$check = true;
-			if($this->M->getParameter('@sendNotifApproveCertificate') == 'Y'){
+			if($this->M->getParameter('@sendNotifApproveCertificate') == 'Y' && 
+				$orderB['list_kelas'] != '5~'){
 				$array = explode("~", $orderB['list_kelas']);
                 $array = array_filter($array, function($value) {
                     return $value !== '';

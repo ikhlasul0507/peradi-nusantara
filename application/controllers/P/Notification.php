@@ -197,16 +197,7 @@ class Notification extends CI_Controller {
     		$this->M->update_to_db('history_call_center', $data_update, 'id_user', trim($id_userWa));
     	}else{
     		//get number from user;	
-    		$arrayID = [];
-    		$cekData = $this->M->getWhereList('user',['user_level'=> 3, 'is_marketing' => 'Y']);
-	        if($cekData){
-	        	foreach ($cekData as $key => $value) {
-	        		array_push($arrayID, $value['id_user']);
-	        	}
-	        }
-    		$random_key = array_rand($arrayID);
-
-    		$id_userWa = $arrayID[$random_key];
+    		$id_userWa = $this->getUserIDLogic();
     		$user = $this->M->getWhere('user',['id_user'=>trim($id_userWa)]);
     		$sender = $user['handphone'];
 
@@ -227,6 +218,35 @@ class Notification extends CI_Controller {
     	}
     }
 
+    public function getUserIDLogic()
+	{
+	    $getUsersParam = $this->M->getParameter('@logicChooseUserCS');
+	    $arrayUsers = explode(",", $getUsersParam);
+	    $idUserLogic = $this->engineLogicPriorityCS();
+	    $totalTry = 1; 
+
+	    if ($idUserLogic == 0) {
+	        for ($i = 0; $i < count($arrayUsers); $i++) {
+	            $idUs = explode("-", $arrayUsers[$i]);
+	            if ((int)$idUs[1] == 0) {
+	                $totalTry++; 
+	            }
+	        }
+	        if ($totalTry > 0) {
+	            for ($i = 0; $i < $totalTry; $i++) {
+	                $idUserLogic = $this->engineLogicPriorityCS(); 
+	                if ($idUserLogic > 0) {
+	                    break; 
+	                }
+	                sleep(2); 
+	            }
+	        }
+	    }
+	    return $idUserLogic;
+	    // $arrayUsers = ['id_users' => $idUserLogic];
+	    // echo json_encode($arrayUsers);
+	}
+
     public function engineLogicPriorityCS()
 	{
 	    $date = new DateTime("now", new DateTimeZone("Asia/Jakarta"));
@@ -243,46 +263,47 @@ class Notification extends CI_Controller {
 	    $forFase = ceil($totalCheckData / $totalUsersParam);
 	    $allPriority = ($forFase % 2 == 0);
 	    if($cekData == null){
-	    	$allPriority = true;
+	        $allPriority = true;
 	    }
 	    for ($i = 0; $i < count($arrayUsers); $i++) {
-            $idUs = explode("-", $arrayUsers[$i]);
-            if(!$allPriority){
-            	//semuanya aja masuk
-            	if($lastSequenceFromDB == count($arrayUsers)){
-            		if ((int)$idUs[2] == 1) {
-            			$choose_id_user = (int)$idUs[0];
-            			$seq = 1;
+	        $idUs = explode("-", $arrayUsers[$i]);
+	        if (!$allPriority) {
+
+	            // Handle user selection when not all priority
+	            if ($lastSequenceFromDB == count($arrayUsers)) {
+	                if ((int)$idUs[2] == 1) {
+	                    $choose_id_user = (int)$idUs[0];
+	                    $seq = 1;
 	                    break;
-            		}
-            	}else{
-            		if ((int)$idUs[2] == $lastSequenceFromDB + 1) {
-            			$choose_id_user = (int)$idUs[0];
-            			$seq = $lastSequenceFromDB + 1;
+	                }
+	            } else {
+	                if ((int)$idUs[2] == $lastSequenceFromDB + 1) {
+	                    $choose_id_user = (int)$idUs[0];
+	                    $seq = $lastSequenceFromDB + 1;
 	                    break;
-            		}
-            	}
-            }else{
-            	//hanya prioritas
-            	if((int)$idUs[1] > 0){
-            		if($lastSequenceFromDB == count($arrayUsers)){
-	            		if ((int)$idUs[2] == 1) {
-	            			$choose_id_user = (int)$idUs[0];
-	            			$seq = 1;
-		                    break;
-	            		}
-	            	}else{
-            			if ((int)$idUs[2] == $lastSequenceFromDB + 1) {
-	            			$choose_id_user = (int)$idUs[0];
-	            			$seq = $lastSequenceFromDB + 1;
-		                    break;
-	            		}
-	            	}
-            	}else{
-            		$seq = $lastSequenceFromDB + 1;
-            	}
-            }
-        }
+	                }
+	            }
+	        } else {
+	            // Handle user selection when all priority
+	            if ((int)$idUs[1] > 0) {
+	                if ($lastSequenceFromDB == count($arrayUsers)) {
+	                    if ((int)$idUs[2] == 1) {
+	                        $choose_id_user = (int)$idUs[0];
+	                        $seq = 1;
+	                        break;
+	                    }
+	                } else {
+	                    if ((int)$idUs[2] == $lastSequenceFromDB + 1) {
+	                        $choose_id_user = (int)$idUs[0];
+	                        $seq = $lastSequenceFromDB + 1;
+	                        break;
+	                    }
+	                }
+	            } else {
+	                $seq = $lastSequenceFromDB + 1;
+	            }
+	        }
+	    }
 
 	    // Save the selected user and sequence to the database
 	    $send_db = [
@@ -290,10 +311,9 @@ class Notification extends CI_Controller {
 	        'sequence' => $seq
 	    ];
 	    $this->M->add_to_db('logic_cs', $send_db);
-
-	    // Return the selected user ID as a JSON response
-	    $arrayUsers = ['id_users' => $allPriority];
-	    echo json_encode($arrayUsers);
+	    // Log the chosen user for debugging
+	    return $choose_id_user; // Return selected user ID
 	}
+
 
 }

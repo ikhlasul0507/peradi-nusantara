@@ -39,6 +39,16 @@ class Welcome extends CI_Controller {
 		echo $result;
     }
 
+    public function cekNotifPaymentNoSumpah()
+    {
+    	if('Y' == 'Y' && 
+				'5~' != '5~'){
+    		//
+    		echo "send without sumpah";
+    	}else{
+    		echo "no send";
+    	}
+    }
 	public function index()
 	{
 		redirect('P/Auth');
