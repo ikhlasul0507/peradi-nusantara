@@ -1071,7 +1071,7 @@ class Admin extends CI_Controller {
 
 					//number certificate
 					$createNumber = "";
-					$getCer = $this->db->query("SELECT number_certificate FROM approve_cetificate WHERE id_master_kelas = '$valIDKelas' ORDER BY number_certificate DESC LIMIT 1")->row_array();
+					$getCer = $this->db->query("SELECT number_certificate FROM approve_cetificate WHERE id_master_kelas = '$valIDKelas' ORDER BY CAST(number_certificate AS UNSIGNED) DESC LIMIT 1")->row_array();
 					if($getCer){
 						$createNumber = (int) $getCer['number_certificate'] + 1;
 					}else{
