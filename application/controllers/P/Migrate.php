@@ -409,7 +409,8 @@ class Migrate extends CI_Controller
 					(44, '@donePaymentCSEveryMonth', 'N', 'O'),
 					(45, '@setDatePaymentCSDeadline', '11', 'T'),
 					(46, '@lockLoginForEveryOneCS', 'N', 'O'),
-					(47, '@linkGroupWaSosilisasi', '-', 'T')
+					(47, '@linkGroupWaSosilisasi', '-', 'T'),
+					(48, '@sendNotifAutoChatbotFromSystem', 'Y', 'O')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";
