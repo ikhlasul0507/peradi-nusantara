@@ -40,6 +40,12 @@
             height: calc(90vh - 180px);/* Maximum height is the full height of the viewport */
             overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
         }
+
+        #modalGroup {
+            max-height: 80vh; /* Max height is 80% of the viewport height */
+            overflow-y: auto; /* Allows scrolling if content exceeds the height */
+        }
+        
         .rounded-circle{
             width: 50px;
             height: 50px;
@@ -376,7 +382,12 @@
         changeTypeGroup(selectedValue);
     });
     $('#marketingNameSelect').on('change', function() {
-        fetchDataGroup();
+        $('#listDataGroup').empty();
+        if($('#marketingNameSelect').val() != ""){
+            fetchDataGroup();
+        }else{
+            $('#typeAllGroup').val("");
+        }
     });
     $('#typeAllGroup').on('change', function() {
         fetchDataGroup();
@@ -776,6 +787,16 @@
                         }
                         var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
                                      '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                                         '<div class="dropdown no-arrow mr-2">'+
+                                                '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                                                    '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
+                                                '</h6>'+
+                                                '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
+                                                    '<div class="dropdown-header">Options:</div>'+
+                                                    '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
+                                                    buttonSampah+
+                                                '</div>'+
+                                            '</div>'+
                                         '<div class="dropdown-list-image mr-3">'+
                                             '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
                                             '<div class="status-indicator bg-success"></div>'+

@@ -329,6 +329,21 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
+		//=================================================================================================
+		//quick true is msg from chatbot, false from users
+		$title = "Table structure for table `token_wa`";
+		$query = "CREATE TABLE IF NOT EXISTS `token_wa` (
+				  `id_token_wa` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `id_user` int(11) NOT NULL,
+				  `token` varchar(50) NOT NULL,
+				  PRIMARY KEY (`id_token_wa`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
 	}
 
 
@@ -390,7 +405,11 @@ class Migrate extends CI_Controller
 					(40, '@totalRowPerPagePaging', '100', 'T'),
 					(41, '@waAdminNotif', '088973832651', 'T'),
 					(42, '@manualNumberCertificate', 'N', 'O'),
-					(43, '@logicChooseUserCS', '-', 'T')
+					(43, '@logicChooseUserCS', '-', 'T'),
+					(44, '@donePaymentCSEveryMonth', 'N', 'O'),
+					(45, '@setDatePaymentCSDeadline', '11', 'T'),
+					(46, '@lockLoginForEveryOneCS', 'N', 'O'),
+					(47, '@linkGroupWaSosilisasi', '-', 'T')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";

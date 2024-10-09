@@ -47,7 +47,16 @@ class Admin extends CI_Controller {
 
 	public function main()
 	{	
-		$this->load->view('p/temp/main');
+		$isLock = true;
+		if($this->session->userdata('user_level') <= 1){
+			$isLock = false;
+		}else{
+			if($this->M->getParameter('@lockLoginForEveryOneCS') == 'N'){
+				$isLock = false;
+			}
+		}
+		$data['lock'] = $isLock;
+		$this->load->view('p/temp/main', $data);
 	}
 
 	public function call_center()
@@ -57,7 +66,7 @@ class Admin extends CI_Controller {
 			$data['list_marketing'] = $this->M->getAllMarketing();
 		}else{
 			$data['list_data'] = $this->M->getListHistoryCall(null,null,$this->session->userdata('id_user'));
-			$data['list_marketing'] = $this->M->getAllMarketing();
+			$data['list_marketing'] = $this->M->getAllMarketing($this->session->userdata('id_user'));
 		}
 		$this->load->view('p/callcenter/call_center', $data);
 	}

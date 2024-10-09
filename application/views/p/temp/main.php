@@ -59,6 +59,8 @@
                                     <br>
                                     <small>System Info</small>
                                 </a>
+
+                                <?php if($lock != true){ ?>
                                 <a href="<?= base_url('P/Admin/call_center');?>" class="btn btn-danger btn-lg mt-3 ml-3">
                                     <i class="fas fa-phone"style="font-size:48px;"></i>
                                     <br>
@@ -70,7 +72,7 @@
                                     <br>
                                     <small>WA Official</small>
                                 </a>
-                                <?php } ?>
+                                <?php }} ?>
                             </div>
 
                         </div>

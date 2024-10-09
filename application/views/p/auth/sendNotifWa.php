@@ -160,21 +160,33 @@
                                 <div class='loader--text'></div>
                               </div>
                             </div>
-                            <form class="user" action="<?= base_url('P/Notification/process_call_wa')?>" method="post">
+                            <form class="user" name="chatForm" id="chatForm" action="<?= base_url('P/Notification/process_call_wa')?>" method="post">
                                  <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                                  <input type="hidden" name="initial" value="<?= $this->uri->segment(2); ?>">
                                 <div class="form-group">
-                                     <input type="text" class="form-control" required name="namalengkap"
-                                            placeholder="Nama lengkap" onkeypress="return isAlphaKey(event,'nama')">
+                                     <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            required 
+                                            name="namalengkap" 
+                                            id="namalengkap" 
+                                            placeholder="Nama lengkap" 
+                                            onkeypress="return isAlphaKey(event,'nama')">
                                 </div>
                                 <div class="form-group">
                                    <input type="tel" class="form-control"
-                                            required name="handphone" pattern="0[0-9]{9,}" placeholder="No Whatsapp Customer" onkeypress="return isNumberKey(event,'hp')">
+                                            required name="handphone" 
+                                            pattern="0[0-9]{9,}" 
+                                            id="handphone" 
+                                            placeholder="No Whatsapp Customer" 
+                                            onkeypress="return isNumberKey(event,'hp')"
+                                            oninput="validatePhoneNumber(this)">
                                 </div>
                        
-                                <button type="submit" class="btn btn-success">
+                                <button type="submit" class="btn btn-success" id="startChatButton" onclick="disableButton(this)">
                                     <i class="fab fa-whatsapp" aria-hidden="true"></i>
-                                Mulai Chat</button>
+                                    Mulai Chat
+                                </button>
                             </form>
                             <hr>
                         </div>
@@ -204,6 +216,20 @@
             });
           </script>
       <?php  endif; ?>
+    <script type="text/javascript">
+        function disableButton(button) {
+            if(document.getElementById("namalengkap").value != "" && 
+                document.getElementById("handphone").value != ""){
+                button.disabled = true;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sedang memulai...';
+                document.chatForm.submit();
+            }else{
+                Swal.fire({
+                    title: "Lengkapi Nama dan Handphone !",
+                  });
+            }
+        }
+    </script>
 </body>
 
 </html>

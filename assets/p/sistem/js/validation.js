@@ -105,3 +105,14 @@ function validateImageFile(event) {
         }
     }
 }
+
+function validatePhoneNumber(input) {
+    var value = input.value;
+    // If the first character is not 0, clear the input
+    if (value.length > 0 && value[0] !== '0') {
+        input.value = ''; // Reset the input field
+        Swal.fire({
+            title: "Phone number must start with 0",
+        });
+    }
+}

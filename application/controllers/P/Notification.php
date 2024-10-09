@@ -197,6 +197,7 @@ class Notification extends CI_Controller {
     		$this->M->update_to_db('history_call_center', $data_update, 'id_user', trim($id_userWa));
     	}else{
     		//get number from user;	
+    	
     		$id_userWa = $this->getUserIDLogic();
     		$user = $this->M->getWhere('user',['id_user'=>trim($id_userWa)]);
     		$sender = $user['handphone'];
