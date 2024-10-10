@@ -41,8 +41,8 @@
             overflow-y: auto; /* Allows scrolling if the content exceeds max-height */
         }
 
-        #modalGroup {
-            max-height: 80vh; /* Max height is 80% of the viewport height */
+        #listDataGroup {
+            max-height: calc(80vh - 150px);/* Max height is 80% of the viewport height */
             overflow-y: auto; /* Allows scrolling if content exceeds the height */
         }
         
@@ -118,19 +118,30 @@
                 font-size: 10px;
             }
             .text-label-status{
-            position: absolute; /* Make the element positioned relative to the nearest positioned ancestor */
-            bottom: 0; /* Align it to the top */
-            right: 0; /* Align it to the left */
-            padding: 0px; /* Optional: add some padding for better readability */
-            font-size: 7px;
-            border: 1px solid blue;
+                position: absolute; /* Make the element positioned relative to the nearest positioned ancestor */
+                bottom: 0; /* Align it to the top */
+                right: 0; /* Align it to the left */
+                padding: 0px; /* Optional: add some padding for better readability */
+                font-size: 7px;
+                border: 1px solid blue;
+            }
         }
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            top: 0;
+            left: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+            z-index: 999; /* Ensure it's on top */
         }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
 </head>
 
 <body class="bg-default"> 
+    <div class="modal-overlay" id="modal-overlay"></div>
     <div class="">
         <div class="row">
             <!-- Third Column -->
@@ -322,7 +333,7 @@
     localStorage.setItem('search', '');
 
     fetchData();
-    setInterval(fetchData, 5000); 
+    // setInterval(fetchData, 15000); 
 
     function detectDeviceWidth() {
       const width = window.innerWidth; // Get the viewport width
@@ -352,6 +363,8 @@
      
     $('#showGroup').on('click', function (e) {
         document.getElementById('modalGroup').style.display = "block";
+        document.getElementById('modal-overlay').style.display = "block";
+        
     });
 
     $('#showSampah').on('click', function (e) {
@@ -407,10 +420,12 @@
 
     $('#modalClose').on('click', function() {
         document.getElementById('modalDetail').style.display = "none";
+        document.getElementById('modal-overlay').style.display = "none";
     });
 
     $('#modalGroupClose').on('click', function() {
         document.getElementById('modalGroup').style.display = "none";
+        document.getElementById('modal-overlay').style.display = "none";
     });
     var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
     var csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
@@ -600,6 +615,7 @@
                 if (window.innerWidth <= 896) {
                     // Show the modal
                     document.getElementById('modalDetail').style.display = "block";
+                    document.getElementById('modal-overlay').style.display = "block";
                     var $textarea = $('#floatingTextareaModal');
                     $textarea.focus();
                     $textarea[0].setSelectionRange($textarea.val().length, $textarea.val().length);
@@ -679,30 +695,32 @@
                                 cs.customer_name = cs.customer_name.substring(0,18) + "..."
                             }
                         }
-                        var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
-                                     '<a class="dropdown-item d-flex align-items-center" href="#">'+
-                                         '<div class="dropdown no-arrow mr-2">'+
-                                            '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-                                                '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
-                                            '</h6>'+
-                                            '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
-                                                '<div class="dropdown-header">Options:</div>'+
-                                                '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
-                                                buttonSampah+
+                        if (typeof textToolTip !== 'undefined') {
+                            var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
+                                         '<a class="dropdown-item d-flex align-items-center" href="#">'+
+                                             '<div class="dropdown no-arrow mr-2">'+
+                                                '<h6 class="dropdown-toggle '+bgStatus+'" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                                                    '<i class="fas fa-ellipsis-v fa-lg fa-fw"></i>'+
+                                                '</h6>'+
+                                                '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in aria-labelledby="dropdownMenuLink">'+
+                                                    '<div class="dropdown-header">Options:</div>'+
+                                                    '<button class="dropdown-item" onclick="changePriority('+cs.id_history_call_center+')">Priority</button>'+
+                                                    buttonSampah+
+                                                '</div>'+
                                             '</div>'+
-                                        '</div>'+
-                                        '<div class="dropdown-list-image mr-3">'+
-                                            '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
-                                            '<div class="status-indicator bg-success"></div>'+
-                                        '</div>'+
-                                        '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
-                                            '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
-                                            '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
-                                        '</div>'+
-                                        '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
-                                    '</a>'+
-                                '</div>';
-                        $('#userData').append(dataHTML);
+                                            '<div class="dropdown-list-image mr-3">'+
+                                                '<img class="rounded-circle" src="<?= base_url('assets/p/img/');?>'+cs.foto_ktp+'" alt="...">'+
+                                                '<div class="status-indicator bg-success"></div>'+
+                                            '</div>'+
+                                            '<div class="font-weight-bold" onclick="getDetail('+cs.id_history_call_center+')">'+
+                                                '<div class="text-truncate text-primary" id="nameCustomer">'+cs.customer_phone+"-"+cs.customer_name+'</div>'+
+                                                '<div class="small text-truncate font-weight-bold" id="nameCS">'+cs.nama_lengkap+', Online '+convertSeconds(cs.seconds_since_last_call)+' Ago</div>'+
+                                            '</div>'+
+                                            '<div class="small font-weight-bold text-label-status ">'+textToolTip+'</div>'+
+                                        '</a>'+
+                                    '</div>';
+                            $('#userData').append(dataHTML);
+                        }
                     });
                 }
             },
@@ -733,7 +751,6 @@
                 if(data.length > 0){
                     // Loop through the returned data and append it to the div
                     $.each(data, function(index, cs) {
-
                         if(cs.status_call_center === "N"){
                             var nameClassCard = "card border-left-primary";
                             var bgStatus = "bg-primary";
