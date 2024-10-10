@@ -365,7 +365,14 @@ class Admin extends CI_Controller {
 
 	public function parameter()
 	{
-		$data['list_data'] = $this->M->getAllData('parameter');
+		if($this->session->userdata('user_level') == 3){
+			$ids = ['@startNumberCertificatePKPA', '@startNumberCertificateUPA']; // array of ids
+			$this->db->where_in('nama_parameter', $ids);
+			$query = $this->db->get('parameter')->result_array();
+			$data['list_data'] = $query;
+		}else{
+			$data['list_data'] = $this->M->getAllData('parameter');
+		}
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/temp/header',$data);
