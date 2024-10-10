@@ -182,8 +182,8 @@
                     <div class="card-header d-flex align-items-center justify-content-between" id="detailUser">
                         <input type="hidden" id="id_history_call_center">
                         
-                        <select class="form-control col-4 ml-2 statusWA text-light" id="typeGroup">
-                            <option value="">Add Group</option>
+                        <select class="form-control col-4 ml-2 statusWA" id="typeGroup">
+                            <option value="" selected>Add Group</option>
                             <option class="bg-danger text-light" value="N">Hot</option>
                             <option class="bg-primary text-light" value="P">Warm</option>
                             <option class="bg-warning text-light" value="H">Could</option>
@@ -286,7 +286,8 @@
                         <i class="fab fa-whatsapp" aria-hidden="true"></i>
                     </a>
 
-                    <select class="form-control col-4 ml-2 statusWA text-light" style="font-size: 10px;" id="typeGroupModal">
+                    <select class="form-control col-4 ml-2 statusWA" style="font-size: 10px;" id="typeGroupModal">
+                        <option value="" selected>Add Group</option>
                         <option class="bg-danger text-light" value="N">Hot</option>
                         <option class="bg-primary text-light" value="P">Warm</option>
                         <option class="bg-warning text-light" value="H">Could</option>
