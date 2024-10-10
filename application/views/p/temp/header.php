@@ -284,16 +284,16 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Sudah Approve</span></a>
             </li>
-            <li class="nav-item <?=$parameter;?>">
+           <!--  <li class="nav-item <?=$parameter;?>">
                  <a class="nav-link" href="<?= base_url('P/Admin/parameter');?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Parameter</span></a>
-            </li>
+            </li> -->
             <?php }?>
             <!-- Divider -->
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            
             <!-- Heading -->
             <div class="sidebar-heading">
                 Addons
