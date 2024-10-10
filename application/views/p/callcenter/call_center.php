@@ -334,7 +334,7 @@
     localStorage.setItem('search', '');
 
     fetchData();
-    // setInterval(fetchData, 15000); 
+    setInterval(fetchData, 60000);
 
     function detectDeviceWidth() {
       const width = window.innerWidth; // Get the viewport width
