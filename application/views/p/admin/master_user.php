@@ -25,6 +25,7 @@
                     <thead>
                         <tr>
                             <th>Aksi</th>
+                            <th>ID User</th>
                             <th>NIK</th>
                             <th>Angkatan</th>
                             <th>PIC/Reference</th>
@@ -47,6 +48,7 @@
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
+                            <td><?= $value['id_user'];?></td>
                             <td><?= $value['nik'];?></td>
                             <td><?= $value['angkatan'];?></td>
                             <td><?= $value['pic'] ." - ". $value['reference'];?></td>
