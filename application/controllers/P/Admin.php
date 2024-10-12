@@ -1171,6 +1171,8 @@ class Admin extends CI_Controller {
                 $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
                 $getListKelas = $this->db->query($query)->row_array();
 			// 		$master_kelas = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($orderB['id_master_kelas'])]);
+                $add_history = $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Approve Kelas ".$getListKelas['nama_kelas']. "Atas Nama ".$user['nama_lengkap']);
+
 				$user = $this->M->getWhere('user',['id_user'=>trim($orderB['id_user'])]);
 				$data_send_notif = [
 					'handphone' => trim($user['handphone']),

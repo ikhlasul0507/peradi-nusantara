@@ -565,7 +565,7 @@
                 $('#lastNotes').text("Online Terakhir : "+data[0].last_call);
                 $('#lastNotesModal').text("Online Terakhir : "+data[0].last_call);
 
-                var linkTOWA = "https://api.whatsapp.com/send/?phone=62"+data[0].customer_phone;
+                var linkTOWA = "https://api.whatsapp.com/send/?phone="+data[0].customer_phone;
                 $('#btnSendWA').attr('href', linkTOWA);
                 $('#btnSendWAModal').attr('href', linkTOWA);
 
