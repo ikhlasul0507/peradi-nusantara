@@ -58,7 +58,7 @@
                                         <?php if($transaction->va_numbers[0]->va_number == "Y") {?>
                                         <tr>
                                             <td colspan="2">
-                                                <img src="https://api.midtrans.com/v2/qris/<?= htmlspecialchars($transaction->transaction_id_qrcode) ?>/qr-code" style="width: 300px; height: 300px;">
+                                                <img src="https://api.midtrans.com/v2/qris/<?= htmlspecialchars($transaction->transaction_id) ?>/qr-code" style="width: 300px; height: 300px;">
                                                 <a href="https://api.midtrans.com/v2/qris/<?= htmlspecialchars($transaction->transaction_id_) ?>/qr-code">Download Gambar</a>
                                             </td>
                                         </tr>
