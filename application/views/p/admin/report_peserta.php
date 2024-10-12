@@ -27,8 +27,12 @@
                             placeholder="PIC" value="<?= $pic;?>">
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-0">
-                        <input type="text" class="form-control" name="angkatan"
-                            placeholder="Angkatan Peserta" value="<?= $angkatan;?>">
+                        <select class="form-control" required name="angkatan">
+                                <option value="<?= $angkatan; ?>" disabled selected>--Pilih Angkatan--</option>
+                                <?php for ($i= $startAngkatan; $i <= $endAngkatan; $i++) {?>
+                                    <option value="Angkatan Ke - <?=$i;?>">Angkatan Ke - <?=$i;?></option>
+                                <?php } ?>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -158,14 +162,15 @@
                         $tempNamaKelas = "";
                         $tempReferensi = "";
                         $tempPIC = "";
-
+                        $totalPeserta = 0;
+                        $totalNominalPayment = 0;
                         foreach ($list_report as $lr) { 
-
+                            $totalNominalPayment = $totalNominalPayment + $lr['nominal_payment'];
                             if(in_array($lr['id_user'].$lr['reference'], $arrayReferensi)){
                                 $tempReferensi = "-";
                             }else{
                                 $tempReferensi = $lr['id_user'].$lr['reference'];
-
+                                $totalPeserta++;
                                 array_push($arrayReferensi, $lr['id_user'].$lr['reference']);
                             }
 
@@ -275,6 +280,30 @@
                             <td><?= $lr['status_certificate'] == "P" ? "Belum Terbit" : "Telah Terbit";?></td>
                         </tr>
                         <?php } ?>
+                        <tfoot>
+                            <tr style="background-color: silver">
+                                <th colspan="2">Total Data</th>
+                                <!-- <th></th> -->
+                                <th><?= $totalPeserta; ?></th>
+                                <th></th>
+                                <th><?= $totalPeserta; ?></th>
+                                <th><?= $totalPeserta; ?></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <!-- <th><?= $tempReferensi;?></th> -->
+                                <th></th>
+                                <!-- <th><?= $tempPIC;?></th> -->
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th><?= 'Rp. '.number_format($totalNominalPayment, 2);?></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
                     </tbody>
                 </table>
             </div>

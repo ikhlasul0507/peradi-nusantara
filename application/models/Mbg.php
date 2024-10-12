@@ -329,68 +329,77 @@ class Mbg extends CI_Model {
 	function get_report($nama_peserta, $time_history, $id_master_kelas, $status_sertifikat, $status_lunas, $reference, $pic, $angkatan)
 	{
 		$query = "SELECT
-					  temp.*,
-					  us.nik,
-					  us.email,
-					  us.nama_lengkap,
-					  us.handphone,
-					  us.usia,
-					  us.asal_kampus,
-					  us.semester,
-					  us.nik,
-					  us.reference,
-					  us.pic,
-					  us.angkatan,
-					  op.id_virtual_account,
-					  op.sequence_payment,
-					  op.nominal_payment,
-					  op.date_payment,
-					  op.status_payment
-					FROM
-					  (SELECT
-					    ob.id_order_booking,
-					    ob.time_history,
-					    ob.id_user,
-					    ob.metode_bayar,
-					    ob.status_order,
-					    ob.status_certificate,
-					    ob.list_kelas,
-					    GROUP_CONCAT(
-					      mk.nama_kelas
-					      ORDER BY mk.nama_kelas SEPARATOR ', '
-					    ) AS nama_kelas,
-					    GROUP_CONCAT(
-					      mk.deskripsi_kelas
-					      ORDER BY mk.deskripsi_kelas SEPARATOR ', '
-					    ) AS deskripsi_kelas,
-					    GROUP_CONCAT(
-					      mk.link_group_wa
-					      ORDER BY mk.link_group_wa SEPARATOR ', '
-					    ) AS link_group_wa
-					  FROM
-					    order_booking ob
-					    LEFT JOIN master_kelas mk
-					      ON FIND_IN_SET(
-					        mk.id_master_kelas,
-					        REPLACE(ob.list_kelas, '~', ',')
-					      ) > 0
-					  GROUP BY ob.id_order_booking,
-					    ob.time_history,
-					    ob.id_user,
-					    ob.metode_bayar,
-					    ob.status_order,
-					    ob.status_certificate,
-					    ob.list_kelas) AS temp,
-					  (SELECT
-					    *
-					  FROM
-					    user) us,
-					  (SELECT
-					    *
-					  FROM
-					    order_payment) AS op
-					WHERE temp.id_user = us.id_user
-					  AND temp.id_order_booking = op.id_order_booking";
+							  temp.*,
+							  us.nik,
+							  us.email,
+							  us.nama_lengkap,
+							  us.handphone,
+							  us.usia,
+							  us.asal_kampus,
+							  us.semester,
+							  us.nik,
+							  us.reference,
+							  us.pic,
+							  us.angkatan,
+							  op.id_virtual_account,
+							  op.sequence_payment,
+							  op.nominal_payment,
+							  op.date_payment,
+							  op.status_payment
+							FROM
+							  (SELECT
+							    ob.id_order_booking,
+							    ob.time_history,
+							    ob.id_user,
+							    ob.metode_bayar,
+							    ob.status_order,
+							    ob.status_certificate,
+							    ob.list_kelas,
+							    
+							    IFNULL(GROUP_CONCAT(
+							      DISTINCT ac.number_certificate
+							      ORDER BY mk.nama_kelas SEPARATOR ', '
+							    ),'') AS number_certificate,
+							    
+							    GROUP_CONCAT(
+							      DISTINCT mk.nama_kelas
+							      ORDER BY mk.nama_kelas SEPARATOR ', '
+							    ) AS nama_kelas,
+							    GROUP_CONCAT(
+							      DISTINCT mk.deskripsi_kelas
+							      ORDER BY mk.deskripsi_kelas SEPARATOR ', '
+							    ) AS deskripsi_kelas,
+							    GROUP_CONCAT(
+							      DISTINCT mk.link_group_wa
+							      ORDER BY mk.link_group_wa SEPARATOR ', '
+							    ) AS link_group_wa
+							   FROM
+							    order_booking ob
+							    LEFT JOIN master_kelas mk
+							      ON FIND_IN_SET(
+							        mk.id_master_kelas,
+							        REPLACE(ob.list_kelas, '~', ',')
+							      ) > 0
+							    LEFT JOIN approve_cetificate ac
+							      ON ac.id_master_kelas = mk.id_master_kelas
+							      AND ob.id_user = ac.id_user
+							      AND FIND_IN_SET(
+							        ac.id_master_kelas,
+							        REPLACE(ob.list_kelas, '~', ',')
+							      ) > 0
+							  GROUP BY ob.id_order_booking,
+							    ob.time_history,
+							    ob.id_user,
+							    ob.metode_bayar,
+							    ob.status_order,
+							    ob.status_certificate,
+							    ob.list_kelas
+							  ) AS temp,
+							  (SELECT * FROM `USER` us WHERE us.id_user = temp.id_user) AS us,
+							  (SELECT * FROM order_payment op WHERE op.id_order_booking = temp.id_order_booking) AS op
+							WHERE
+							  us.id_user IS NOT NULL
+							  AND op.id_order_booking IS NOT NULL";
 
 		if($nama_peserta != ""){
 			$query = $query . " AND us.nama_lengkap LIKE '%$nama_peserta%'";
@@ -653,7 +662,7 @@ class Mbg extends CI_Model {
 	}
 
 	function getLogicCSDB($dateToday)
-	{
+	{	
 			$query = "SELECT * FROM logic_cs WHERE DATE(time_history) = '$dateToday' ORDER BY time_history DESC";
 			return $this->db->query($query)->result_array();
 	}

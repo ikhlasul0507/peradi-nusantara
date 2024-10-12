@@ -59,7 +59,7 @@
                                         <tr>
                                             <td colspan="2">
                                                 <img src="https://api.midtrans.com/v2/qris/<?= htmlspecialchars($transaction->transaction_id_qrcode) ?>/qr-code" style="width: 300px; height: 300px;">
-                                                <a href="https://api.midtrans.com/v2/qris/<?= htmlspecialchars($transaction->transaction_id_qrcode) ?>/qr-code">Download Gambar</a>
+                                                <a href="https://api.midtrans.com/v2/qris/<?= htmlspecialchars($transaction->transaction_id_) ?>/qr-code">Download Gambar</a>
                                             </td>
                                         </tr>
                                         <?php }else{ ?>

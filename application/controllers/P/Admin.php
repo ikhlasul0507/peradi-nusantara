@@ -237,6 +237,9 @@ class Admin extends CI_Controller {
 		$data['status_lunas'] = $status_lunas;
 		$data['time_history'] = $time_history;
 		$data['allowImportDataPeserta'] = $this->M->getParameter('@allowImportDataPeserta');
+		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
+		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
+		$data['list_pic'] = explode(",",$this->M->getParameter('@picRegister'));
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/report_peserta', $data);
 		$this->load->view('p/temp/footer');
