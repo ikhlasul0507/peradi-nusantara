@@ -241,6 +241,7 @@
                             <option value="H">Could</option>
                             <option value="F">Closing</option>
                         </select>
+                         <input type="date" id="searchDate" value="<?= date('Y-m-d');?>" class="form-control mt-2" name="" minlength="20">
                     </div>
                     <div class="form-floating mt-5" id="listDataGroup">
                         <!-- <div class="card border-left-danger mt-4">
@@ -404,6 +405,9 @@
         }
     });
     $('#typeAllGroup').on('change', function() {
+        fetchDataGroup();
+    });
+    $('#searchDate').on('change', function() {
         fetchDataGroup();
     });
 
@@ -742,7 +746,8 @@
             type: "GET",
             data: { 
                 id_user: $('#marketingNameSelect').val(),
-                type_group: $('#typeAllGroup').val()
+                type_group: $('#typeAllGroup').val(),
+                searchDate: $('#searchDate').val()
             },
             dataType: "json", // Expect JSON data
             success: function(data) {

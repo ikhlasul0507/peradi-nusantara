@@ -618,7 +618,7 @@ class Mbg extends CI_Model {
 			return $this->db->query($query)->result_array();
 	}
 
-	function getGroupMarketingCall($id_user = null, $type_group = null)
+	function getGroupMarketingCall($id_user = null, $type_group = null, $searchDate = null)
 	{
 		 $query = "SELECT
 							  hc.*,
@@ -655,6 +655,9 @@ class Mbg extends CI_Model {
 		 			$query = $query . " WHERE hc.id_user='$id_user' AND hc.type_group='$type_group'";
 		 }
 	   
+	   if($searchDate != null){
+		 			$query = $query . " AND DATE(hc.time_history) = '$searchDate'";
+		 }
 	   $query = $query . " ORDER BY hc.priority DESC, hc.time_history DESC";
 
 		 return $this->db->query($query)->result_array();

@@ -118,7 +118,8 @@ class Admin extends CI_Controller {
     {
     	$id_user = $this->input->get('id_user') == "" ? null : $this->input->get('id_user');
     	$type_group = $this->input->get('type_group') == "" ? null : $this->input->get('type_group');
-    	$data = $this->M->getGroupMarketingCall($id_user, $type_group);
+    	$searchDate = $this->input->get('searchDate') == "" ? null : $this->input->get('searchDate');
+    	$data = $this->M->getGroupMarketingCall($id_user, $type_group, $searchDate);
     	echo json_encode($data);
     }
 
