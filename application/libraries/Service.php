@@ -92,7 +92,7 @@ class Service {
 				$url = $params['url_login'];
 				return '*--Registrasi Telah Berhasil --*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Silahkan Login 
 Lakukan pembelian paket belajar
@@ -107,7 +107,7 @@ Terima Kasih
 				$url = $params['url_forget'];
 				return '*--Lupa Password --*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Silahkan  
 Lakukan Reset Password
@@ -121,7 +121,7 @@ Terima Kasih
 				$name = $params['namalengkap'];
 				return '*--Login Telah Berhasil --*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Selamat anda telah Login 
 
@@ -135,7 +135,7 @@ Terima Kasih
 				$metodeBayar = $params['metodeBayar'];
 				return '*--Pembelian Berhasil --*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Detail Pembelian:
 
@@ -175,7 +175,7 @@ Terima Kasih
 				// $link_wa = $params['link_wa'];
 				return '*--Validasi Pembelian Berhasil --*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Detail Pembelian:
 
@@ -198,7 +198,7 @@ Terima Kasih
 
 				return '*--Pembayaran Kelas--*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Lakukan Pembayaran 
 Pembelian Paket *'.$namaKelas.'*
@@ -222,7 +222,7 @@ Klik Link Berikut :
 
 				return '*--Pembayaran Kelas--*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Lakukan Pembayaran 
 Pembelian Paket *'.$namaKelas.'*
@@ -248,7 +248,7 @@ Klik Link Berikut :
 
 				return '*--Pembayaran Kelas--*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 *Abaikan Pesan ini !! Jika tagihan sudah lunas*
 
@@ -283,7 +283,7 @@ Klik Link Berikut :
 				}
 				return '*--Pembayaran Kelas Berhasil--*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Pembayaran Berhasil
 Pembelian Paket *'.$namaKelas.'*
@@ -310,7 +310,7 @@ Untuk melihat detail :
 
 				return '*--Pelunasan Pembayaran Kelas Berhasil--*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Pelunasan Pembayaran Berhasil
 Pembelian Paket *'.$namaKelas.'*
@@ -328,7 +328,7 @@ Untuk melihat invoice :
 
 				return '*--Sertifikat Terbit--*
 
-Halo '.$name.',
+Selamat Datang, '.$name.',
 
 Sertifikat Telah Terbit
 Pada Kelas *'.$namaKelas.'*
