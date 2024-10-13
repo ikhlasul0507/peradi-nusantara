@@ -395,7 +395,7 @@ class Mbg extends CI_Model {
 							    ob.status_certificate,
 							    ob.list_kelas
 							  ) AS temp,
-							  (SELECT * FROM `USER` us WHERE us.id_user = temp.id_user) AS us,
+							  (SELECT * FROM user us WHERE us.id_user = temp.id_user) AS us,
 							  (SELECT * FROM order_payment op WHERE op.id_order_booking = temp.id_order_booking) AS op
 							WHERE
 							  us.id_user IS NOT NULL

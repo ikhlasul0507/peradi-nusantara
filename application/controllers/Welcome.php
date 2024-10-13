@@ -57,11 +57,11 @@ class Welcome extends CI_Controller {
 
 	public function otp()
 	{
-		echo "hai";
-
-		
 		$curl = curl_init();
-
+		$message = "Halo,
+Selamat datang di Peradi Nusantara
+Silahkan Pilih Pertanyaan Berikut :";
+		$choices = 'Apa itu Peradi Nusantara ?,Layanan dan pelatihan apa Saja ?,Persyaratan nya apa saja ?,Harga nya berapa saja ?,Waktu dan Metode belajar nya seperti apa ?,Apakah disediakan Magang ?,Apakah bisa di ulang pembelajarannya ?,Bukan sarjana hukum apakah bisa ikut PKPA ?,Metode pembayaran nya apa saja ?,Pengajar nya siapa saja ?,Apa itu program Double Profesi ?,Bagaimana jika UPA tidak lulus ?';
 		curl_setopt_array($curl, array(
 		  CURLOPT_URL => 'https://api.fonnte.com/send',
 		  CURLOPT_RETURNTRANSFER => true,
@@ -71,26 +71,17 @@ class Welcome extends CI_Controller {
 		  CURLOPT_FOLLOWLOCATION => true,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => 'POST',
-		  CURLOPT_POSTFIELDS => array(
-			'target' => '082280524264',
-			'message' =>$this->template_meesage('verify_data'),
-			'url' => 'https://md.fonnte.com/images/wa-logo.png',
-			'schedule' => $this->getMilisecondTime(),
-		),
+		  CURLOPT_POSTFIELDS => array('target' => '082280524264',
+		  	'message' => $message,
+'choices' => $choices,'select' => 'single','pollname' => 'pollku'),
 		  CURLOPT_HTTPHEADER => array(
 		    'Authorization: UxptNbkURakM+D++6#sa'
 		  ),
 		));
 
 		$response = curl_exec($curl);
-		if (curl_errno($curl)) {
-		  $error_msg = curl_error($curl);
-		}
-		curl_close($curl);
 
-		if (isset($error_msg)) {
-		 echo $error_msg;
-		}
+		curl_close($curl);
 		echo $response;
 	}
 
