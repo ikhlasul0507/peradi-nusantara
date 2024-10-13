@@ -395,10 +395,12 @@ class Mbg extends CI_Model {
 							    ob.status_certificate,
 							    ob.list_kelas
 							  ) AS temp,
-							  (SELECT * FROM user us WHERE us.id_user = temp.id_user) AS us,
-							  (SELECT * FROM order_payment op WHERE op.id_order_booking = temp.id_order_booking) AS op
+							  (SELECT * FROM user us) AS us,
+							  (SELECT * FROM order_payment op) AS op
 							WHERE
-							  us.id_user IS NOT NULL
+								us.id_user = temp.id_user
+								AND op.id_order_booking = temp.id_order_booking
+							  AND us.id_user IS NOT NULL
 							  AND op.id_order_booking IS NOT NULL";
 
 		if($nama_peserta != ""){
