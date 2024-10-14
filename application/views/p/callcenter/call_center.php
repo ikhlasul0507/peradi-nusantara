@@ -699,6 +699,10 @@
                             if(cs.customer_name.length > 18){
                                 cs.customer_name = cs.customer_name.substring(0,18) + "..."
                             }
+                        }else{
+                            if(cs.customer_name.length > 23){
+                                cs.customer_name = cs.customer_name.substring(0,23) + "..."
+                            }
                         }
                         if (typeof textToolTip !== 'undefined') {
                             var dataHTML = '<div class="'+nameClassCard+'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="'+textToolTip+'"  id="dataCS">'+
