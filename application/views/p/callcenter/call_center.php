@@ -241,9 +241,10 @@
                             <option value="H">Could</option>
                             <option value="F">Closing</option>
                         </select>
-                         <input type="date" id="searchDate" value="<?= date('Y-m-d');?>" class="form-control mt-2" name="" minlength="20">
+                        <input type="date" id="searchDate" value="<?= date('Y-m-d');?>" class="form-control mt-2" name="" minlength="20">
+                        <label for="floatingTextarea" class="mt-3" id="totalCustomer"></label>
                     </div>
-                    <div class="form-floating mt-5" id="listDataGroup">
+                    <div class="form-floating mt-2" id="listDataGroup">
                         <!-- <div class="card border-left-danger mt-4">
                              <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
@@ -758,6 +759,9 @@
                 // Empty previous data
                 console.log(data);
                 $('#listDataGroup').empty();
+                $('#totalCustomer').html("Total Customer : " + data.length);
+
+                
                 if(data.length > 0){
                     // Loop through the returned data and append it to the div
                     $.each(data, function(index, cs) {
