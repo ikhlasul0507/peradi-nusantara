@@ -238,7 +238,7 @@ class Payment extends CI_Controller {
 			if($result){
 				$transaction = new stdClass();
 				$transaction->status_code = $result->status_code;
-				$transaction->transaction_id = $result->order_id;
+				$transaction->transaction_id = $result->transaction_id;
 				$transaction->transaction_id_qrcode = $result->transaction_id;
 				$transaction->gross_amount = $result->gross_amount;
 				$transaction->currency = $result->currency;

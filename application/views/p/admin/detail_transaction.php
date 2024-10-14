@@ -55,7 +55,7 @@
                                             <td>Virtual Account Bank</td>
                                             <td><h1><?= htmlspecialchars($transaction->va_numbers[0]->bank) ?></h1></td>
                                         </tr>
-                                        <?php if($transaction->payment_type == "qris") {?>
+                                        <?php if($transaction->va_numbers[0]->va_number == "Y") {?>
                                         <tr>
                                             <td colspan="2">
                                                 <img src="https://api.midtrans.com/v2/qris/<?= htmlspecialchars($transaction->transaction_id);?>/qr-code" style="width: 300px; height: 300px;">
