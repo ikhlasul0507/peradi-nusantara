@@ -784,19 +784,6 @@
                             var bgStatus = "bg-success";
                             var textToolTip = "Chat sudah order";
                         }
-                        else if(cs.status_call_center === "P"){
-                            var nameClassCard = "card border-left-primary";
-                            var bgStatus = "bg-primary";
-                        }else if(cs.status_call_center === "H"){
-                            var nameClassCard = "card border-left-dark";
-                            var bgStatus = "bg-dark";
-                        }else if(cs.status_call_center === "F"){
-                            var nameClassCard = "card border-left-warning";
-                            var bgStatus = "bg-warning";
-                        }else if(cs.status_call_center === "D"){
-                            var nameClassCard = "card border-left-success";
-                            var bgStatus = "bg-success";
-                        }
 
                         if(cs.is_deleted === "N"){
                             var buttonSampah = '<button class="dropdown-item" onclick="deleteCS('+cs.id_history_call_center+',1)">Pindahkan ke Sampah</button>';
