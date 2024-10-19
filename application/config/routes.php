@@ -53,4 +53,4 @@ $route['default_controller'] = 'Auth';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['cs'] = 'P/Notification/sendNotifWa';
+$route['cs'] = 'P/Callcenter';

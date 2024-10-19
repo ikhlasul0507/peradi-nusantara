@@ -160,7 +160,7 @@
                                 <div class='loader--text'></div>
                               </div>
                             </div>
-                            <form class="user" name="chatForm" id="chatForm" action="<?= base_url('P/Notification/process_call_wa')?>" method="post">
+                            <form class="user" name="chatForm" id="chatForm" action="<?= base_url('P/Callcenter/process_call_wa')?>" method="post">
                                  <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                                  <input type="hidden" name="initial" value="<?= $this->uri->segment(2); ?>">
                                 <div class="form-group">

@@ -546,7 +546,7 @@ class Mbg extends CI_Model {
 							    INNER JOIN order_booking AS ob
 							      ON us.id_user = ob.id_user
 							    INNER JOIN order_payment AS ap
-							      ON ob.id_order_booking = ap.id_order_booking) AS op
+							      ON ob.id_order_booking = ap.id_order_booking GROUP BY ob.id_order_booking) AS op
 							  ON hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone WHERE hc.is_deleted='$isDeleted' ";
 		 if($id_user != null){
 		 			$query = $query . " AND hc.id_user='$id_user'";
