@@ -7,7 +7,11 @@
                     || $table == 'parameter' 
                     || $table == 'log_history'
                     || $table == 'logic_cs'
-                    || $table == 'chat_whatsapp' 
+                    || $table == 'chat_whatsapp'
+                    || $table == 'cart'
+                    || $table == 'request_payment'
+                    || $table == 'forget_password'
+                    || $table == 'history_call_center' 
                     || $table == 'token_wa')){
                 continue;
             }?>
