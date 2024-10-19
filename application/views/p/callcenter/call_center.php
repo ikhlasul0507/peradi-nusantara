@@ -759,6 +759,7 @@
                 // Empty previous data
                 console.log(data);
                 $('#listDataGroup').empty();
+                $('#totalCustomer').empty();
                 $('#totalCustomer').html("Total Customer : " + data.length);
 
                 

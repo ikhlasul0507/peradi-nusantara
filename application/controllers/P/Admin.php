@@ -1033,6 +1033,7 @@ class Admin extends CI_Controller {
 		if($idOrderPayment){
 			$payment = $this->M->getWhere('order_payment',['id_order_payment'=>trim($idOrderPayment)]);
 			if($payment){
+				$add_history = $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Delete Order Untuk User ".$id_user." Berhasil");
 				$this->M->delete_to_db('order_payment','id_order_payment',$idOrderPayment);
 				$data = $this->session->set_flashdata('pesan', 'Berhasil hapus order !');
 				redirect('P/Admin/valid_order/'.trim($id_user).'/'.trim($payment['id_order_booking']),$data);

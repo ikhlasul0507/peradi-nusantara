@@ -58,12 +58,9 @@ class Welcome extends CI_Controller {
 	public function otp()
 	{
 		$curl = curl_init();
-		$message = "Halo,
-Selamat datang di Peradi Nusantara
-Silahkan Pilih Pertanyaan Berikut :";
-		$choices = 'Apa itu Peradi Nusantara ?,Layanan dan pelatihan apa Saja ?,Persyaratan nya apa saja ?,Harga nya berapa saja ?,Waktu dan Metode belajar nya seperti apa ?,Apakah disediakan Magang ?,Apakah bisa di ulang pembelajarannya ?,Bukan sarjana hukum apakah bisa ikut PKPA ?,Metode pembayaran nya apa saja ?,Pengajar nya siapa saja ?,Apa itu program Double Profesi ?,Bagaimana jika UPA tidak lulus ?';
+
 		curl_setopt_array($curl, array(
-		  CURLOPT_URL => 'https://api.fonnte.com/send',
+		  CURLOPT_URL => 'https://api.fonnte.com/device',
 		  CURLOPT_RETURNTRANSFER => true,
 		  CURLOPT_ENCODING => '',
 		  CURLOPT_MAXREDIRS => 10,
@@ -71,11 +68,8 @@ Silahkan Pilih Pertanyaan Berikut :";
 		  CURLOPT_FOLLOWLOCATION => true,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => 'POST',
-		  CURLOPT_POSTFIELDS => array('target' => '082280524264',
-		  	'message' => $message,
-'choices' => $choices,'select' => 'single','pollname' => 'pollku'),
 		  CURLOPT_HTTPHEADER => array(
-		    'Authorization: UxptNbkURakM+D++6#sa'
+		    'Authorization: V+HAMmJQocwuU_VxQmjk'
 		  ),
 		));
 
