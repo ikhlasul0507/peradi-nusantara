@@ -947,7 +947,7 @@ class Admin extends CI_Controller {
 
 						$user = $this->M->getWhere('user',['id_user'=>trim($orderBook['id_user'])]);
 
-                        $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Add Payment Order ".$getListKelas['nama_kelas']." Berhasil Untuk = ".$user['nama_lengkap']);
+                        $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Add Payment Order ".$getListKelas['nama_kelas']." Berhasil Untuk = ".$user['nama_lengkap']."Nominal ".$orderPayment['nominal_payment']);
 						$data_send_notif = [
 							'handphone' => trim($user['handphone']),
 							'namalengkap' => trim($user['nama_lengkap']),
