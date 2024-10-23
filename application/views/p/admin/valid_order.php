@@ -59,7 +59,7 @@
                             foreach ($tahapBayar as $t) { ?>
                                 <?php if($value['angkatan_kelas'] == ""){ ?>
                                 Angkatan-(<?=$t;?>) : 
-                                <?php if($value['angkatan'] == ""){ ?>
+                                <?php if($value['status_order'] == "N"){ ?>
                                 <select name="angkatan_<?=str_replace(' ', '', $t);?>" required>
                                     <option value="" disabled selected>--Pilih Angkatan--</option>
                                    <?php for ($i=$startAngkatan; $i <= $endAngkatan; $i++) { ?>
