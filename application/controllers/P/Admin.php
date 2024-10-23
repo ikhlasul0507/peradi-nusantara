@@ -202,6 +202,10 @@ class Admin extends CI_Controller {
 		$this->load->view('p/temp/footer');
 	}
 
+	public function report()
+	{
+		$this->report_peserta();
+	}
 	public function report_peserta()
 	{
 		$nama_lengkap = trim($this->input->post('nama_lengkap'));
@@ -241,8 +245,51 @@ class Admin extends CI_Controller {
 		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
 		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
 		$data['list_pic'] = explode(",",$this->M->getParameter('@picRegister'));
-		$this->load->view('p/temp/header',$data);
-		$this->load->view('p/admin/report_peserta', $data);
+		$this->load->view('p/report/header',$data);
+		$this->load->view('p/report/report_peserta', $data);
+		$this->load->view('p/temp/footer');
+	}
+	public function report_kta_peserta()
+	{
+		$nama_lengkap = trim($this->input->post('nama_lengkap'));
+		$reference = trim($this->input->post('reference'));
+		$pic = trim($this->input->post('pic'));
+		$angkatan = trim($this->input->post('angkatan'));
+		$id_master_kelas = trim($this->input->post('id_master_kelas'));
+		$status_sertifikat = trim($this->input->post('status_sertifikat'));
+		$status_lunas = trim($this->input->post('status_lunas'));
+		$time_history = trim($this->input->post('time_history'));
+		if($nama_lengkap != "" || 
+			$id_master_kelas != "" || 
+			$status_sertifikat != "" || 
+			$time_history != "" ||
+			$reference != "" ||
+			$pic != "" ||
+			$angkatan != "" || 	
+			$status_lunas != ""){
+
+			$data['list_report'] = $this->M->get_report($nama_lengkap,$time_history,$id_master_kelas,$status_sertifikat,$status_lunas, $reference, $pic, $angkatan);
+		}else{
+			$data['list_report'] = [];
+		}
+		$data['list_master_kelas'] = $this->M->getAllData('master_kelas');
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+
+		$data['nama_lengkap'] = $nama_lengkap;
+		$data['reference'] = $reference;
+		$data['pic'] = $pic;
+		$data['angkatan'] = $angkatan;
+		$data['id_master_kelas'] = $id_master_kelas;
+		$data['status_sertifikat'] = $status_sertifikat;
+		$data['status_lunas'] = $status_lunas;
+		$data['time_history'] = $time_history;
+		$data['allowImportDataPeserta'] = $this->M->getParameter('@allowImportDataPeserta');
+		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
+		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
+		$data['list_pic'] = explode(",",$this->M->getParameter('@picRegister'));
+		$this->load->view('p/report/header',$data);
+		$this->load->view('p/report/report_kta_peserta', $data);
 		$this->load->view('p/temp/footer');
 	}
 	
@@ -559,6 +606,8 @@ class Admin extends CI_Controller {
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$data['list_pic'] = explode(",",$this->M->getParameter('@picRegister'));
+		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
+		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/valid_order',$data);
 		$this->load->view('p/temp/footer');
@@ -874,10 +923,23 @@ class Admin extends CI_Controller {
 		$idOrder = trim($this->input->post('id_order_booking'));
 		$metode_bayar = trim($this->input->post('metode_bayar'));
 		$pic = trim($this->input->post('pic'));
-
+		$nama_kelas = trim($this->input->post('nama_kelas'));
+		$arrnama_kelas = explode(",", $nama_kelas);
+		$list_angakatan = "";
+        foreach ($arrnama_kelas as $t) {
+		    $angkatan = trim($this->input->post('angkatan_'.str_replace(' ', '', $t)));
+		    if ($angkatan) {
+		        $list_angakatan .= $angkatan . "~";
+		    }
+		}
 		$data = $this->M->getWhere('order_booking',['id_user'=>trim($id_user),'id_order_booking' =>trim($idOrder)]);
 		if($data){
-			$update = $this->M->update_to_db('order_booking',['status_order'=>'L', 'metode_bayar' => $metode_bayar],'id_order_booking',$idOrder);
+			$data_update = [
+				'metode_bayar' => $metode_bayar,
+				'status_order' => 'L',
+				'angkatan_kelas' => $list_angakatan
+			];
+			$update = $this->M->update_to_db('order_booking',$data_update,'id_order_booking',$idOrder);
 			$this->M->update_to_db('user',['pic'=>$pic],'id_user',$id_user);
 			if($update){
 				$user = $this->M->getWhere('user',['id_user'=>trim($id_user)]);

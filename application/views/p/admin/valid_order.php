@@ -17,6 +17,7 @@
                     <h6 class="m-0 font-weight-bold text-primary"><button class="btn btn-danger" disabled><?= $list_kelas_data['nama_kelas'];?></button></h6>
                 </div>
                 <form action="<?= base_url('P/Admin/process_valid_order')?>" method="post">
+                    <input type="hidden" name="nama_kelas" value="<?= $list_kelas_data['nama_kelas'];?>">
                     <div class="card-body">
                         <div class="text-center">
                             <a href="<?= base_url('assets/p/img/'.$value['foto_ktp']);?>" target="blank">
@@ -28,6 +29,7 @@
                             Waktu Order :  <?= $value['time_history'];?><br>
                             Nama :  <?= $value['nama_lengkap'];?><br>
                             Handphone :  <?= $value['handphone'];?><br>
+                            Status Peserta :  <?= $value['is_new_user'] == "Y" ? "Peserta Baru" : "Pindahan";?><br>
                             Metode Pembayaran : <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button>
                             <?php if($value['status_order'] == 'N'){ ?>
                                 <select name="metode_bayar" required>
@@ -50,8 +52,31 @@
                                     <?php } ?>
                                 </select>
                             <?php }?>
-                            <br>
-                            Angkatan :  <?= $value['angkatan'];?><br>
+                            <hr>
+                            <?php 
+                            $tahapBayar = explode(",", $list_kelas_data['nama_kelas']);
+                            $idx = 0;
+                            foreach ($tahapBayar as $t) { ?>
+                                <?php if($value['angkatan_kelas'] == ""){ ?>
+                                Angkatan-(<?=$t;?>) : 
+                                <?php if($value['angkatan'] == ""){ ?>
+                                <select name="angkatan_<?=str_replace(' ', '', $t);?>" required>
+                                    <option value="" disabled selected>--Pilih Angkatan--</option>
+                                   <?php for ($i=$startAngkatan; $i <= $endAngkatan; $i++) { ?>
+                                        <option value="<?= 'angkatan-'.$i;?>"><?= 'Angkatan-'.$i;?></option>
+                                    <?php } ?>
+                                </select>
+                                <?php }else{
+                                    echo $value['angkatan'];
+                                } ?>
+                                <?php }else{ 
+                                    echo "(".$t.") : ";
+                                    $arrAngkatan = explode("~", $value['angkatan_kelas']);
+                                    echo ucfirst($arrAngkatan[$idx]);
+                                }
+                                ?>
+                            </br>
+                            <?php $idx++;} ?>
                         </p>
                         <?php if($value['status_order'] == 'N'){ ?>
                             <!-- <a  class="btn btn-sm btn-warning" href="<?= base_url('P/Admin/process_valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>">Validasi Order</a> -->

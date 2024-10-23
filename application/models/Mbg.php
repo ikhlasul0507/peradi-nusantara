@@ -243,12 +243,14 @@ class Mbg extends CI_Model {
 					  ob.status_order,
 					  ob.list_kelas,
 					  ob.status_certificate,
+					  ob.angkatan_kelas,
 					  us.nama_lengkap,
   					us.handphone,
   					us.reference,
 					  us.pic,
 					  us.angkatan,
-					  us.foto_ktp
+					  us.foto_ktp,
+					  us.is_new_user
 					FROM
 					  (SELECT
 					    *
@@ -262,7 +264,8 @@ class Mbg extends CI_Model {
 					    reference,
 						  pic,
 						  angkatan,
-						  foto_ktp
+						  foto_ktp,
+						  is_new_user
 					  FROM
 					    user) us
 					  WHERE ob.id_user = us.id_user
@@ -440,6 +443,50 @@ class Mbg extends CI_Model {
 
 		return $this->db->query($query)->result_array();
 	}
+
+	function get_report_kta($nama_peserta, $pic, $angkatan)
+	{
+			$query = "SELECT
+								  us.nik,
+								  us.email,
+								  us.nama_lengkap,
+								  us.handphone,
+								  us.usia,
+								  us.asal_kampus,
+								  us.pic,
+								  us.angkatan,
+								  us.foto_ktp,
+								  ac.number_certificate
+								  
+								FROM
+								  (SELECT
+								    id_user, number_certificate
+								  FROM
+								    approve_cetificate
+								  WHERE id_master_kelas = '1') AS ac,
+								  (SELECT
+								    *
+								  FROM
+								    USER) us
+								WHERE ac.id_user = us.id_user AND us.user_level > 3
+								";
+
+			if($nama_peserta != ""){
+				$query = $query . " AND us.nama_lengkap LIKE '%$nama_peserta%'";
+			}
+
+			if($pic != ""){
+				$query = $query . " AND us.pic LIKE '%$pic%'";
+			}
+
+			if($angkatan != ""){
+				$query = $query . " AND us.angkatan LIKE '%$angkatan%'";
+			}
+
+			$query = $query . " ORDER BY CAST(ac.number_certificate AS UNSIGNED) DESC";
+
+			return $this->db->query($query)->result_array();
+		}
 
 	function show_cart($id_user)
 	{

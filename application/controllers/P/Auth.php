@@ -77,13 +77,14 @@ class Auth extends CI_Controller {
 							'semester' => trim($this->input->post('semester')),
 							'reference' => trim($this->input->post('reference')),
 							'pic' => trim($this->input->post('pic')),
-							'angkatan' => trim($this->input->post('angkatan')),
+							'angkatan' => '',
 							'latar_belakang' => trim($this->input->post('latar_belakang')),
 							'password' => trim($this->input->post('password')),
 							'password_hash' => password_hash(trim($this->input->post('password')), PASSWORD_DEFAULT),
 							'is_active' => 'Y',
 							'user_level' => 4,
-							'foto_ktp' => $uploadKTP['upload_data']['file_name']
+							'foto_ktp' => $uploadKTP['upload_data']['file_name'],
+							'is_new_user' => trim($this->input->post('is_new_user'))
 						];
 						$add_db = $this->M->add_to_db('user', $data_register);
 						if($add_db){

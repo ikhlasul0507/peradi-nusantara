@@ -59,6 +59,11 @@
                                     <br>
                                     <small>System Info</small>
                                 </a>
+                                <a href="<?= base_url('P/Admin/report');?>" class="btn btn-danger btn-lg mt-3 ml-3">
+                                    <i class="fa fa-book" aria-hidden="true" style="font-size:48px;"></i>
+                                    <br>
+                                    <small>Report Data</small>
+                                </a>
 
                                 <?php if($lock != true){ ?>
                                 <a href="<?= base_url('P/Admin/call_center');?>" class="btn btn-danger btn-lg mt-3 ml-3">

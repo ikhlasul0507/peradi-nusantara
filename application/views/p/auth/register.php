@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="file" required name="file_ktp"
-                                        placeholder="Upload KTP" accept="image/*" onchange="validateImageFile(event)">
+                                        placeholder="Upload KTP"  accept="image/*,application/pdf" onchange="validateImageFile(event)">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -97,11 +97,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <select class="form-control" required name="angkatan">
-                                            <option value="" disabled selected>--Pilih Angkatan--</option>
-                                            <?php for ($i= $startAngkatan; $i <= $endAngkatan; $i++) {?>
-                                                <option value="Angkatan Ke - <?=$i;?>">Angkatan Ke - <?=$i;?></option>
-                                            <?php } ?>
+                                    <select class="form-control" required name="is_new_user">
+                                        <option value="" disabled selected>--Status Peserta--</option>
+                                        <option value="Y">Peserta Baru</option>
+                                        <option value="N">Pindahan</option>
                                     </select>
                                 </div>
                                 <div class="form-group row">
@@ -122,7 +121,7 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control"
-                                            required name="password" placeholder="Password" onkeyup="validatePassword(event)">
+                                            required name="password" placeholder="Password">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Daftar</button>
                             </form>

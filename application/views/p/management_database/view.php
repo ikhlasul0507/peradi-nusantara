@@ -1,28 +1,33 @@
-<div class="ml-3" style="overflow-y: scroll; height: 700px; width: 100%; font-size: 12px;color: black">
+<div class="ml-3" >
     <h4>View : <?= $table; ?></h4>
 
     <a class="badge badge-danger" href="<?= site_url('P/Admin/management_database'); ?>">Back to Tables</a>
     <a class="badge badge-primary" href="<?= site_url('P/Admin/create/' . $table); ?>">Add New Record</a>
     <?php if($records != null){ ?>
-    <table border="1" >
-        <tr>
-            <?php foreach (array_keys($records[0]) as $field): ?>
-                <th><?= $field; ?></th>
-            <?php endforeach; ?>
-            <th>Actions</th>
-        </tr>
-        <?php foreach ($records as $record): ?>
+    <div class="table-responsive" style="font-size: 10px;
+            color: black ; 
+            max-height: calc(80vh - 120px);
+                overflow-y: auto;">
+        <table border="1" style="overflow-y: scroll; height: 700px; width: 100%; font-size: 12px;color: black">
             <tr>
-                <?php foreach ($record as $value): ?>
-                    <td><?= $value; ?></td>
+                <?php foreach (array_keys($records[0]) as $field): ?>
+                    <th><?= $field; ?></th>
                 <?php endforeach; ?>
-                <td>
-                    <a class="badge badge-warning" href="<?= site_url('P/Admin/edit/' . $table . '/' . $record['id_'.$table]); ?>">Edit</a>
-                    <a class="badge badge-dark" href="<?= site_url('P/Admin/delete/' . $table . '/' . $record['id_'.$table]); ?>" onclick="return confirm('Are you sure?');">Delete</a>
-                </td>
+                <th>Actions</th>
             </tr>
-        <?php endforeach; ?>
-    </table>
+            <?php foreach ($records as $record): ?>
+                <tr>
+                    <?php foreach ($record as $value): ?>
+                        <td><?= $value; ?></td>
+                    <?php endforeach; ?>
+                    <td>
+                        <a class="badge badge-warning" href="<?= site_url('P/Admin/edit/' . $table . '/' . $record['id_'.$table]); ?>">Edit</a>
+                        <a class="badge badge-dark" href="<?= site_url('P/Admin/delete/' . $table . '/' . $record['id_'.$table]); ?>" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
     <div>
         <?= $links; // Pagination links ?>
     </div>

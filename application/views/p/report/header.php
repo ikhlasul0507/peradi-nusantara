@@ -200,158 +200,37 @@
                 $master_product = "";
                 $parameter = "";
                 $report_peserta = "";
-                $report_pembayaran = "";
+                $report_kta_peserta = "";
                 $master = "";
                 $process = "";
 
                 $segment2 = $this->uri->segment(3);
-                if($segment2 == ""){
-                    $kelasBelajar = 'active';
-                }else if($segment2 == "MyClass"){
-                     $MyClass = "active";
-                }else if($segment2 == "OrderanClass"){
-                     $OrderanClass = "active";
-                }else if($segment2 == "daftarorderan"){
-                     $daftarorderan = "active";
-                }else if($segment2 == "DoneClass"){
-                     $DoneClass = "active";
-                }else if($segment2 == "Sertifikat"){
-                     $Sertifikat = "active";
-                }else if($segment2 == "report_peserta"){
+                if($segment2 == "report_peserta"){
                      $report_peserta = "active";
-                }else if($segment2 == "master_product"){
-                     $master = "active";
-                }else if($segment2 == "master_user_peserta"){
-                     $master = "active";
-                }else if($segment2 == "master_user_admin"){
-                     $master = "active";
-                }else if($segment2 == "master_user_owner"){
-                     $master = "active";
-                }else if($segment2 == "master_user_developer"){
-                     $master = "active";
-                }else if($segment2 == "parameter"){
-                     $master = "active";
-                }else if($segment2 == "report_pembayaran"){
-                     $report_pembayaran = "active";
-                }else if($segment2 == "DoneSertifikat"){
-                     $DoneSertifikat = "active";
+                }else if($segment2 == "report_kta_peserta"){
+                     $report_kta_peserta = "active";
                 }
             ?>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item <?=$kelasBelajar;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin');?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Kelas Belajar</span></a>
-            </li>
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item <?=$MyClass;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/MyClass');?>">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Kelas Ku</span></a>
-            </li>
-            <!-- Nav Item - Dashboard -->
-            <?php if($this->session->userdata('user_level') < 4){ ?>
-            <li class="nav-item <?=$OrderanClass;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/OrderanClass');?>">
-                <i class="fas fa-fw fa-book"></i>
-                <span>Orderan Kelas</span></a>
-            </li>
-            <li class="nav-item <?=$daftarorderan;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/daftarorderan');?>">
-                <i class="fas fa-fw fa-book"></i>
-                <span>Belum Lunas</span></a>
-            </li>
-            <li class="nav-item <?=$DoneClass;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/DoneClass');?>">
-                <i class="fas fa-fw fa-book"></i>
-                <span>Lunas</span></a>
-            </li>
-            <?php if($this->session->userdata('user_level') <= 2){ ?>
-            <li class="nav-item <?=$Sertifikat;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/Sertifikat');?>">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Approve Sertifikat</span></a>
-            </li>
-            <?php } ?>
-            <?php if($this->session->userdata('user_level') <= 3){ ?>
-            <li class="nav-item <?=$DoneSertifikat;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/DoneSertifikat');?>">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Sudah Approve</span></a>
-            </li>
-            <li class="nav-item <?=$parameter;?>">
-                 <a class="nav-link" href="<?= base_url('P/Admin/management_database');?>">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Manajemen Database</span></a>
-            </li>
-            <?php }?>
-            <!-- Divider -->
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Addons
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item <?=$master;?>">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Master Data</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="<?= base_url('P/Admin/master_product');?>">Data Pelatihan</a>
-                        <a class="collapse-item" href="<?= base_url('P/Admin/master_user_peserta/4');?>">Data Peserta</a>
-                         <?php if($this->session->userdata('user_level') < 3){ ?>
-                            <a class="collapse-item" href="<?= base_url('P/Admin/master_user_admin/3');?>">Data Admin</a>
-                            <?php if($this->session->userdata('user_level') <= 2){ ?>
-                            <a class="collapse-item" href="<?= base_url('P/Admin/master_user_owner/2');?>">Data Owner</a>
-                            <?php if($this->session->userdata('user_level') <= 1){ ?>
-                            <a class="collapse-item" href="<?= base_url('P/Admin/master_user_developer/1');?>">Data Developer</a>
-                        <?php }}} ?>
-                    </div>
-                </div>
-            </li>
-             <!-- Nav Item - Pages Collapse Menu -->
-
-            <?php if($this->session->userdata('user_level') <= 1){ ?>
-            <li class="nav-item <?=$process;?>">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Process Apps</span>
-                </a>
-                <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="<?= base_url('P/Admin/log_activity');?>">Log Activity</a>
-                            <a class="collapse-item" href="<?= base_url('P/Admin/parameter');?>">Parameter</a>
-                            <a class="collapse-item" href="<?= base_url('P/Admin/management_database');?>">Manajemen Database</a>
-                            <a class="collapse-item" target="_blank" href="<?= base_url('P/Migrate');?>">Restructure Database</a>
-                            <a class="collapse-item" target="_blank" href="<?= base_url('P/Scheduler');?>">Start Scheduler</a>
-                    </div>
-                </div>
-            </li>
-            <?php }?>
-          <!--   <li class="nav-item <?=$report_peserta;?>">
+            <li class="nav-item <?=$report_peserta;?>">
                 <a class="nav-link" href="<?= base_url('P/Admin/report_peserta');?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Detail  Peserta</span></a>
-            </li> -->
+            </li>
+            <li class="nav-item <?=$report_kta_peserta;?>">
+                <a class="nav-link" href="<?= base_url('P/Admin/report_kta_peserta');?>">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Detail  KTA Peserta</span></a>
+            </li>
             <!-- <li class="nav-item <?=$report_pembayaran;?>">
                 <a class="nav-link" href="<?= base_url('P/Payment/report_pembayaran');?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Detail  Pembayaran</span></a>
             </li> -->
-            <?php } ?>
-
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

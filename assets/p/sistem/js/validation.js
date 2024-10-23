@@ -88,23 +88,26 @@ function validateEmailKeypress(event) {
 function validateImageFile(event) {
     var fileInput = event.target;
     var file = fileInput.files[0]; // Get the selected file
-    var maxSize = 5 * 1024 * 1024; //5mb
+    var maxSize = 5 * 1024 * 1024; // 5MB
+
     if (file) {
         var fileType = file.type; // Get the MIME type of the file
         var fileSize = file.size;
-        // Allowed image types
-        var allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
+        // Allowed image types and PDF
+        var allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
         if (allowedTypes.includes(fileType) && fileSize <= maxSize) {
             // File is valid
             return true;
         } else {
-            alert("Please unggah file gambar maksimal 5MB !");
+            alert("Please upload an image or PDF file, maximum size 5MB!");
             // Clear the file input
             fileInput.value = "";
+            return false;
         }
     }
 }
+
+
 
 function validatePhoneNumber(input) {
     var value = input.value;
