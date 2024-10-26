@@ -201,6 +201,7 @@
                 });
                 location.reload();
             }
+            location.reload();
           }             
         });
     }
