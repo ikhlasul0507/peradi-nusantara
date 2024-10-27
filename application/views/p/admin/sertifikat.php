@@ -95,22 +95,22 @@
                         <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
                             <label>PARALEGAL</label>
                             <input type="text" class="form-control" required id="jadwal_paralegal"
-                                placeholder="Jadwal PKPA">
+                                placeholder="Jadwal PARALEGAL">
                         </div>
                         <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
                             <label>UPA</label>
                             <input type="text" class="form-control" required id="jadwal_upa"
-                                placeholder="Jadwal PKPA">
+                                placeholder="Jadwal UPA">
                         </div>
                         <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
                             <label>BREVET A & B</label>
                             <input type="text" class="form-control" required id="jadwal_brevet"
-                                placeholder="Jadwal PKPA">
+                                placeholder="Jadwal BREVET A & B">
                         </div>
                         <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
                             <label>CPT</label>
                             <input type="text" class="form-control" required id="jadwal_cpt"
-                                placeholder="Jadwal PKPA">
+                                placeholder="Jadwal CPT">
                         </div>
                 </div>
                 <div class="modal-footer">

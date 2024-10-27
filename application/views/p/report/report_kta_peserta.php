@@ -19,10 +19,6 @@
                             placeholder="Nama Peserta" value="<?= $nama_lengkap;?>">
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-0">
-                        <input type="text" class="form-control" name="reference"
-                            placeholder="Referensi" value="<?= $reference;?>">
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
                         <input type="text" class="form-control" name="pic"
                             placeholder="PIC" value="<?= $pic;?>">
                     </div>
@@ -34,35 +30,12 @@
                                 <?php } ?>
                         </select>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                        <input type="date" class="form-control" name="time_history"
-                            placeholder="Waktu Order" value="<?= $time_history;?>">
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                        <select class="form-control" name="id_master_kelas" value="<?= $id_master_kelas;?>">
-                            <option value="" selected class="placeholder">--Pilih Kelas--</option>
-                            <?php foreach ($list_master_kelas as $lms) { ?>
-                            <?php if($id_master_kelas == $lms['id_master_kelas']){ ?>
-                                <option selected value="<?= $lms['id_master_kelas'];?>"><?= $lms['nama_kelas'];?></option>
-                            <?php }else{ ?>
-                                <option value="<?= $lms['id_master_kelas'];?>"><?= $lms['nama_kelas'];?></option>
-                            <?php }} ?>
-                        </select>
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                        <select class="form-control" name="status_sertifikat" value="<?= $status_sertifikat;?>">
-                            <option value="" selected class="placeholder">--Status Sertifikat--</option>
-                            <option value="A" <?=$status_sertifikat=='A'?'selected':''?>>Telah Terbit</option>
-                            <option value="P" <?=$status_sertifikat=='P'?'selected':''?>>Belum Terbit</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                        <select class="form-control" name="status_lunas" value="<?= $status_lunas;?>">
-                            <option value="" selected class="placeholder">--Status Pembayaran--</option>
-                            <option value="D" <?=$status_lunas=='D'?'selected':''?>>Lunas</option>
-                            <option value="L" <?=$status_lunas=='L'?'selected':''?>>Belum Lunas</option>
+                     <div class="col-sm-3 mb-3 mb-sm-0">
+                        <select class="form-control" required name="angkatan">
+                                <option value="" disabled selected>--Jenis KTA--</option>
+                                    <option value="kta">PAJAK</option>
+                                    <option value="paralegal">PARALEGAL</option>
+                                    <option value="advokat">ADVOKAT</option>
                         </select>
                     </div>
                 </div>

@@ -268,7 +268,7 @@ class Admin extends CI_Controller {
 			$angkatan != "" || 	
 			$status_lunas != ""){
 
-			$data['list_report'] = $this->M->get_report($nama_lengkap,$time_history,$id_master_kelas,$status_sertifikat,$status_lunas, $reference, $pic, $angkatan);
+			$data['list_report'] = $this->M->get_report_kta($nama_lengkap,$pic, $angkatan);
 		}else{
 			$data['list_report'] = [];
 		}
@@ -1235,9 +1235,10 @@ class Admin extends CI_Controller {
                 $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
                 $getListKelas = $this->db->query($query)->row_array();
 			// 		$master_kelas = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($orderB['id_master_kelas'])]);
+                
+				$user = $this->M->getWhere('user',['id_user'=>trim($orderB['id_user'])]);
                 $add_history = $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Approve Kelas ".$getListKelas['nama_kelas']. "Atas Nama ".$user['nama_lengkap']);
 
-				$user = $this->M->getWhere('user',['id_user'=>trim($orderB['id_user'])]);
 				$data_send_notif = [
 					'handphone' => trim($user['handphone']),
 					'namalengkap' => trim($user['nama_lengkap']),
