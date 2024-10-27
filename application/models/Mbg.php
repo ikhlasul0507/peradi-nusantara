@@ -467,7 +467,7 @@ class Mbg extends CI_Model {
 								  (SELECT
 								    *
 								  FROM
-								    USER) us
+								    user) us
 								WHERE ac.id_user = us.id_user AND us.user_level > 3
 								";
 
