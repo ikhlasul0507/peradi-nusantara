@@ -252,23 +252,14 @@ class Admin extends CI_Controller {
 	public function report_kta_peserta()
 	{
 		$nama_lengkap = trim($this->input->post('nama_lengkap'));
-		$reference = trim($this->input->post('reference'));
 		$pic = trim($this->input->post('pic'));
 		$angkatan = trim($this->input->post('angkatan'));
-		$id_master_kelas = trim($this->input->post('id_master_kelas'));
-		$status_sertifikat = trim($this->input->post('status_sertifikat'));
-		$status_lunas = trim($this->input->post('status_lunas'));
-		$time_history = trim($this->input->post('time_history'));
-		if($nama_lengkap != "" || 
-			$id_master_kelas != "" || 
-			$status_sertifikat != "" || 
-			$time_history != "" ||
-			$reference != "" ||
+		$jenis_kta = trim($this->input->post('jenis_kta'));
+		if($nama_lengkap != "" ||
 			$pic != "" ||
 			$angkatan != "" || 	
-			$status_lunas != ""){
-
-			$data['list_report'] = $this->M->get_report_kta($nama_lengkap,$pic, $angkatan);
+			$jenis_kta != ""){
+			$data['list_report'] = $this->M->get_report_kta($nama_lengkap,$pic, $angkatan,$jenis_kta);
 		}else{
 			$data['list_report'] = [];
 		}
@@ -277,13 +268,8 @@ class Admin extends CI_Controller {
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 
 		$data['nama_lengkap'] = $nama_lengkap;
-		$data['reference'] = $reference;
 		$data['pic'] = $pic;
 		$data['angkatan'] = $angkatan;
-		$data['id_master_kelas'] = $id_master_kelas;
-		$data['status_sertifikat'] = $status_sertifikat;
-		$data['status_lunas'] = $status_lunas;
-		$data['time_history'] = $time_history;
 		$data['allowImportDataPeserta'] = $this->M->getParameter('@allowImportDataPeserta');
 		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
 		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
@@ -1235,7 +1221,7 @@ class Admin extends CI_Controller {
                 $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
                 $getListKelas = $this->db->query($query)->row_array();
 			// 		$master_kelas = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($orderB['id_master_kelas'])]);
-                
+
 				$user = $this->M->getWhere('user',['id_user'=>trim($orderB['id_user'])]);
                 $add_history = $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Approve Kelas ".$getListKelas['nama_kelas']. "Atas Nama ".$user['nama_lengkap']);
 

@@ -444,7 +444,7 @@ class Mbg extends CI_Model {
 		return $this->db->query($query)->result_array();
 	}
 
-	function get_report_kta($nama_peserta, $pic, $angkatan)
+	function get_report_kta($nama_peserta, $pic, $angkatan, $jenis_kta)
 	{
 			$query = "SELECT
 								  us.nik,
@@ -463,7 +463,7 @@ class Mbg extends CI_Model {
 								    id_user, number_certificate
 								  FROM
 								    approve_cetificate
-								  WHERE id_master_kelas = '1') AS ac,
+								  WHERE id_master_kelas = '$jenis_kta') AS ac,
 								  (SELECT
 								    *
 								  FROM

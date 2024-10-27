@@ -11,7 +11,7 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div id="filterData" class="collapse mt-4 container-fluid" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <form class="user" method="post" action="<?= base_url('P/Admin/report_peserta')?>">
+            <form class="user" method="post" action="<?= base_url('P/Admin/report_kta_peserta')?>">
                 <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
                 <div class="form-group row">
                     <div class="col-sm-3 mb-3 mb-sm-0">
@@ -31,11 +31,11 @@
                         </select>
                     </div>
                      <div class="col-sm-3 mb-3 mb-sm-0">
-                        <select class="form-control" required name="angkatan">
+                        <select class="form-control" required name="jenis_kta">
                                 <option value="" disabled selected>--Jenis KTA--</option>
-                                    <option value="kta">PAJAK</option>
-                                    <option value="paralegal">PARALEGAL</option>
-                                    <option value="advokat">ADVOKAT</option>
+                                    <option value="4">PAJAK</option>
+                                    <option value="2">PARALEGAL</option>
+                                    <option value="1">ADVOKAT</option>
                         </select>
                     </div>
                 </div>
@@ -61,13 +61,6 @@
                 <i class="fas fa-fw fa-search"></i>
                 <span>Filter Data</span>
             </a>
-            <?php if ($allowImportDataPeserta == "Y"): ?>
-            <a class="btn btn-dark" href="#" data-toggle="collapse" data-target="#importData"
-                aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-download fa-sm text-white-50"></i>
-                <span>Import Data</span>
-            </a>
-            <?php endif ?>
 
             <div class="dropdown no-arrow">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -90,196 +83,34 @@
                 <table class="" border="1px" id="tableData" cellpadding="0px" cellspacing="0">
                     <thead>
                         <tr style="background-color: silver">
-                            <th>Waktu Order</th>
-                            <th>ID Order</th>
                             <th>NIK</th>
                             <th>Email</th>
                             <th>Nama</th>
                             <th>Handphone</th>
                             <th>Usia</th>
                             <th>Asal Kampus</th>
-                            <th>Referensi - PIC</th>
+                            <th>PIC</th>
                             <th>Angkatan</th>
-                            <th>Nama Kelas</th>
-                            <!-- <th style="white-space: nowrap; ">Deskrispsi Kelas</th> -->
-                            <th>Metode Bayar</th>
-                            <!-- <th>Link WA</th> -->
-                            <th>ID Virtual Account</th>
-                            <th>Tanggal Bayar</th>
-                            <th>Urutan Bayar</th>
-                            <th>Jumlah Bayar</th>
-                            <th>Status Bayar</th>
-                            <th>Status Sertifikat</th>
+                            <th>NO KTA</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php 
-                        $arrayNIK = [];
-                        $arrayEmail = [];
-                        $arrayNama = [];
-                        $arrayHP = [];
-                        $arrayUsia = [];
-                        $arrayAsalKampus = [];
-                        $arrayAngkatan = [];
-                        $arrayIDOrder = [];
-                        $arrayNamaKelas = [];
-                        $arrayReferensi = [];
-                        $arrayPIC = [];
-
-                        $tempNik = "";
-                        $tempEmail = "";
-                        $tempNama = "";
-                        $tempHP = "";
-                        $tempUsia = "";  
-                        $tempAsalKampus = "";
-                        $tempAngkatan = "";
-                        $tempIDOrder = "";
-                        $tempNamaKelas = "";
-                        $tempReferensi = "";
-                        $tempPIC = "";
-                        $totalPeserta = 0;
-                        $totalNominalPayment = 0;
                         foreach ($list_report as $lr) { 
-                            $totalNominalPayment = $totalNominalPayment + $lr['nominal_payment'];
-                            if(in_array($lr['id_user'].$lr['reference'], $arrayReferensi)){
-                                $tempReferensi = "-";
-                            }else{
-                                $tempReferensi = $lr['id_user'].$lr['reference'];
-                                $totalPeserta++;
-                                array_push($arrayReferensi, $lr['id_user'].$lr['reference']);
-                            }
-
-                            if(in_array($lr['id_user'].$lr['pic'], $arrayPIC)){
-                                $tempPIC = "-";
-                            }else{
-                                $tempPIC = $lr['id_user'].$lr['pic'];
-
-                                array_push($arrayPIC, $lr['id_user'].$lr['pic']);
-                            }
-
-
-                            if(in_array($lr['id_user'].'-'.$lr['nama_kelas'], $arrayNamaKelas)){
-                                $tempNamaKelas = "-";
-                            }else{
-                                $tempNamaKelas = $lr['id_user'].'-'.$lr['nama_kelas'];
-
-                                array_push($arrayNamaKelas, $lr['id_user'].'-'.$lr['nama_kelas']);
-                            }
-
-
-                            if(in_array('OB-'.$lr['id_order_booking'], $arrayIDOrder)){
-                                $tempIDOrder = "-";
-                            }else{
-                                $tempIDOrder = 'OB-'.$lr['id_order_booking'];
-
-                                array_push($arrayIDOrder, 'OB-'.$lr['id_order_booking']);
-                            }
-
-                            if(in_array($lr['nik'], $arrayNIK)){
-                                $tempNik = "-";
-                            }else{
-                                $tempNik = $lr['nik'];
-
-                                array_push($arrayNIK, $lr['nik']);
-                            }
-
-                            if(in_array($lr['email'], $arrayEmail)){
-                                $tempEmail = "-";
-                            }else{
-                                $tempEmail = $lr['email'];
-
-                                array_push($arrayEmail, $lr['email']);
-                            }
-
-                            if(in_array($lr['nama_lengkap'], $arrayNama)){
-                                $tempNama = "-";
-                            }else{
-                                $tempNama = $lr['nama_lengkap'];
-
-                                array_push($arrayNama, $lr['nama_lengkap']);
-                            }
-
-
-                            if(in_array($lr['handphone'], $arrayHP)){
-                                $tempHP = "-";
-                            }else{
-                                $tempHP = $lr['handphone'];
-
-                                array_push($arrayHP, $lr['handphone']);
-                            }
-
-                            if(in_array($lr['usia'], $arrayUsia)){
-                                $tempUsia = "-";
-                            }else{
-                                $tempUsia = $lr['usia'];
-
-                                array_push($arrayUsia, $lr['usia']);
-                            }
-                            $lr['semester'] = $lr['semester'] == 1 ? "Sudah Lulus Dari - ".$lr['asal_kampus'] : "Belum Lulus Dari - ".$lr['asal_kampus'];
-                            if(in_array($lr['semester'], $arrayAsalKampus)){
-                                $tempAsalKampus = "-";
-                            }else{
-                                $tempAsalKampus = $lr['semester'];
-
-                                array_push($arrayAsalKampus, $lr['semester']);
-                            }
-
-                            if(in_array($lr['id_user'].'-'.$lr['angkatan'], $arrayAngkatan)){
-                                $tempAngkatan = "-";
-                            }else{
-                                $tempAngkatan = $lr['id_user'].'-'.$lr['angkatan'];
-
-                                array_push($arrayAngkatan, $lr['id_user'].'-'.$lr['angkatan']);
-                            }
                         ?>
                         <tr>
-                            <td><?= $lr['time_history'];?></td>
-                            <td><?= $tempIDOrder;?></td>
-                            <td><?= $tempNik;?></td>
-                            <td><?= $tempEmail;?></td>
-                            <td><?= $tempNama;?></td>
-                            <td><?= $tempHP;?></td>
-                            <td><?= $tempUsia;?></td>
-                            <td><?= $tempAsalKampus;?></td>
-                            <td><?= $tempReferensi.'-'.$tempPIC;?></td>
-                            <td><?= $tempAngkatan;?></td>
-                            <td><?= $tempNamaKelas;?></td>
-                            <!-- <td><?= $tempReferensi;?></td> -->
-                            <td><?= $lr['metode_bayar'];?></td>
-                            <!-- <td><?= $tempPIC;?></td> -->
-                            <td><?= $lr['id_virtual_account'];?></td>
-                            <td><?= $lr['date_payment'];?></td>
-                            <td><?= $lr['sequence_payment'];?></td>
-                            <td><?= 'Rp. '.number_format($lr['nominal_payment'], 2);?></td>
-                            <td><?= $lr['status_payment'] == "D" ? "Lunas" : "Belum Lunas";?></td>
-                            <td><?= $lr['status_certificate'] == "P" ? "Belum Terbit" : "Telah Terbit";?></td>
+                            <td><?= $lr['nik'];?></td>
+                            <td><?= $lr['email'];?></td>
+                            <td><?= $lr['nama_lengkap'];?></td>  
+                            <td><?= $lr['handphone'];?></td>
+                            <td><?= $lr['usia'];?></td>
+                            <td><?= $lr['asal_kampus'];?></td>
+                            <td><?= $lr['pic'];?></td>
+                            <td><?= $lr['angkatan'];?></td>
+                            <td><h4><?= $lr['number_certificate'];?></h4></td>
                         </tr>
                         <?php } ?>
-                        <tfoot>
-                            <tr style="background-color: silver">
-                                <th colspan="2">Total Data</th>
-                                <!-- <th></th> -->
-                                <th><?= $totalPeserta; ?></th>
-                                <th></th>
-                                <th><?= $totalPeserta; ?></th>
-                                <th><?= $totalPeserta; ?></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <!-- <th><?= $tempReferensi;?></th> -->
-                                <th></th>
-                                <!-- <th><?= $tempPIC;?></th> -->
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th><?= 'Rp. '.number_format($totalNominalPayment, 2);?></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
                     </tbody>
                 </table>
             </div>
