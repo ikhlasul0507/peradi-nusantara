@@ -51,6 +51,10 @@ class Notification extends CI_Controller {
 			if ($transaction === 'settlement' && $statusCode === '200'){
 				echo json_encode($this->updateVirtualAccount($order_id_va, $result));
 			}
+			if ($transaction === 'pending' && $statusCode === '201'){
+				$this->M->update_to_db('order_payment',['status_payment' => 'G'],'id_virtual_account',$order_id_va);  
+			}
+
 		}
 		// if ($transaction == 'capture') {
 		//   // For credit card transaction, we need to check whether transaction is challenge by FDS or not

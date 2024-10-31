@@ -77,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <?php if($get_payment['status_payment'] == "P"){ ?>
+            <?php if($get_payment['status_payment'] == "P" || $get_payment['status_payment'] == "G"){ ?>
                 <button id="pay-button" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-credit-card text-white-50"></i> Bayar Sekarang</button>
             <?php }else{ ?>
                 <button disabled class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-credit-card text-white-50"></i> Order Telah dibayar !</button>

@@ -151,14 +151,12 @@
                                 <a class="btn btn-danger btn-circle" onclick="confirmDeleteData('<?= base_url('P/Admin/delete_order_payment/'.$value['id_user'].'/'.$op['id_order_payment']);?>')">
                                     <i class="fas fa-trash"></i>
                                 </a>
-
-
                                 <?php } ?>
+                                <?php  if($op['status_payment'] == 'G'){
+                                    echo '<button class="badge badge-warning" disabled>Sudah Generate</button>';
+                                }?>
 
-                               <!--  <a class="btn btn-primary btn-circle" target="blank" href="<?= base_url('P/Payment/getDetailTransaction/'.$op['id_virtual_account']);?>">
-                                    <i class="fas fa-paper-plane"></i>
-                                </a> -->
-                                
+                              
                             </td>
                         </tr>
                         <?php } ?>
