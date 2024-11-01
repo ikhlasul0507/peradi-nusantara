@@ -594,7 +594,9 @@ class Mbg extends CI_Model {
 							      ON us.id_user = ob.id_user
 							    INNER JOIN order_payment AS ap
 							      ON ob.id_order_booking = ap.id_order_booking GROUP BY ob.id_order_booking) AS op
-							  ON hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone WHERE hc.is_deleted='$isDeleted' ";
+							  ON (hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone
+    								OR hc.customer_phone COLLATE utf8mb4_general_ci = CONCAT('62', SUBSTRING(op.handphone, 2))) 
+							  WHERE hc.is_deleted='$isDeleted' ";
 		 if($id_user != null){
 		 			$query = $query . " AND hc.id_user='$id_user'";
 		 }
@@ -695,7 +697,8 @@ class Mbg extends CI_Model {
 							        ON us.id_user = ob.id_user
 							      INNER JOIN order_payment AS ap
 							        ON ob.id_order_booking = ap.id_order_booking GROUP BY ob.id_order_booking) AS op
-							    ON hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone";
+							    ON (hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone
+    								OR hc.customer_phone COLLATE utf8mb4_general_ci = CONCAT('62', SUBSTRING(op.handphone, 2))) ";
 		 if($id_user != null && $type_group == null){
 		 			$query = $query . " WHERE hc.id_user='$id_user'";
 		 }else if($id_user == null && $type_group != null){
