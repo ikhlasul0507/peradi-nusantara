@@ -168,31 +168,26 @@ Langkah-langkah :
 		}
 	}
 
-	public function generatePdf()
+	public function generateKTAPajak()
     {
     	error_reporting(0); 
         // Load the Pdf library
-        $image1 = "./assets/p/sertifikat/sertifikat.png";
 
         // Create a new PDF instance
-        $pdf = new FPDF('l', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf = new FPDF('P', 'mm', [86, 136]); 
         $pdf->AddPage();
-
-        // Set font
-        $pdf->SetFont('Arial', 'B', 36);
-
-        $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
-        // Add a cell
-        $pdf->Cell(290, 150, 'Ikhlasul Amal, S.Kom', 0, 1, 'C'); //margin left
-        // Specify the folder where you want to save the file
-        $outputDir = './assets/p/document/';
-        // Set the file name
-        $fileName = 'hello_world 2.pdf';
-        // Output the PDF to the browser
-        // $pdf->Output('F', $outputDir.$fileName);
-
-        //forcedownload
-        // $pdf->Output('D', 'report.pdf');
+        $pdf->SetFont('Arial', 'B', 15);
+        $imageKTA = "./assets/p/kta/foto.jpg";
+        $image1 = "./assets/p/kta/kta_pajak_1.jpg";
+        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
+        $pdf->Image($imageKTA,23,44,40,50);
+        $pdf->Ln(84);
+        $pdf->SetTextColor(5, 43, 130);
+        $pdf->SetDrawColor(255, 255, 255);
+        $pdf->Cell(38, 10, 'Ikhlasul Amal, S.Kom', 0, 1); //margin left
+        $pdf->AddPage();
+        $image1 = "./assets/p/kta/kta_pajak_2.jpg";
+        $pdf->Image($image1,0,0,86,136);
         $pdf->Output();
         echo "PDF has been saved to " . $outputDir . $fileName;
     }

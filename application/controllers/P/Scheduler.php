@@ -36,7 +36,6 @@ class Scheduler extends CI_Controller
 	public function startScheduler()
 	{
 
-
 		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler...'];
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 		
@@ -51,6 +50,8 @@ class Scheduler extends CI_Controller
 		$this->checkDatePaymentEveryMonthCS();
 		//setUnpaidPayment
 		$this->setUnpaidPaymentCS();
+		//engineSendNotifPayment
+		$this->engineSendNotifPayment();
 	}
 
 	public function setUnpaidPayment()
@@ -130,5 +131,43 @@ class Scheduler extends CI_Controller
         // Force download the file
         // force_download($db_name, $backup);
         echo "Jalankan Scheduler Backup Database </br>";
+    }
+
+    public function engineSendNotifPayment()
+    {
+    	$query = $this->M->getAllPaymentSendNotif();
+		$totalSegeraBayar = 0;
+		$totalLewatBayar = 0;
+    	if($query){
+    		foreach ($query as $key => $value) {
+
+    			$data_send_notif = [
+					'handphone' => trim($value['handphone']),
+					'namalengkap' => trim($value['nama_lengkap']),
+					'namaKelas' => trim($value['nama_kelas']),
+					'metodeBayar' => trim($value['metode_bayar']),
+					'nominal_payment' => number_format(trim($value['nominal_payment']), 2),
+					'date_payment' => trim($value['date_payment']),
+					'url_virtual_account' => trim(base_url('P/Payment/virtual_account/'.$value['id_virtual_account']))
+				];
+
+    			if($value['date_payment'] <= date('Y-m-d')){
+    				//lewat tanggal bayar
+    				$this->service->send_whatsapp($data_send_notif, 'generate_payment');
+    				$totalLewatBayar++;
+    			}else{
+    				//segera bayar
+    				$this->service->send_whatsapp($data_send_notif, 'generate_payment_yesterday');
+    				$totalSegeraBayar++;
+    			}
+    		}
+    	}
+    	$msg = "Jalankan Send Notif Payment 
+
+    	- Total Lewat Bayar = ".$totalLewatBayar."
+    	- Total Segera Bayar = ".$totalSegeraBayar;
+
+    	$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> $msg];
+		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
     }
 }

@@ -722,4 +722,35 @@ class Mbg extends CI_Model {
 			return $this->db->query($query)->result_array();
 	}
 
+	function getAllPaymentSendNotif()
+	{	
+			$query= "SELECT 
+							    op.*,
+							    ob.list_kelas,
+							    us.nama_lengkap,
+							    us.handphone,
+							    GROUP_CONCAT(DISTINCT mk.nama_kelas ORDER BY mk.nama_kelas SEPARATOR ', ') AS nama_kelas,
+							    ob.metode_bayar
+							FROM 
+							    order_payment op
+							INNER JOIN 
+							    order_booking ob ON op.id_order_booking = ob.id_order_booking
+							INNER JOIN 
+							    user us ON ob.id_user = us.id_user
+							LEFT JOIN 
+							    master_kelas mk ON FIND_IN_SET(mk.id_master_kelas, REPLACE(ob.list_kelas, '~', ',')) > 0
+							WHERE 
+							    op.status_payment = 'P' 
+							    AND (
+							        op.date_payment BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 3 DAY)
+							        OR op.date_payment <= CURDATE()
+							    )
+							GROUP BY 
+							    op.id_order_payment  -- Assuming each payment has a unique ID
+							ORDER BY 
+							    op.date_payment DESC;
+							";
+			return $this->db->query($query)->result_array();
+	}
+
 }

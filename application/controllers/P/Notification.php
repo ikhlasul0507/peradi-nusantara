@@ -136,6 +136,10 @@ class Notification extends CI_Controller {
 	                        $getListKelas = $this->db->query($query)->row_array();
 	                        $namaKelas = trim($getListKelas['nama_kelas']);
 							$user = $this->M->getWhere('user',['id_user'=>trim($orderBook['id_user'])]);
+							$url = "";
+							if($oP['sequence_payment'] == 1){
+								$url = trim($getListKelas['link_group_wa']);
+							}
 							$data_send_notif = [
 								'handphone' => trim($user['handphone']),
 								'namalengkap' => trim($user['nama_lengkap']),
@@ -144,7 +148,7 @@ class Notification extends CI_Controller {
 								'nominal_payment' => number_format(trim($orderPayment['nominal_payment']),2),
 								'date_payment' => trim($orderPayment['date_payment']),
 								'url_login' => trim(base_url('P/Admin')),
-								'link_wa'=> trim($getListKelas['link_group_wa']),
+								'link_wa'=> trim($url),
 							];
 							$this->service->send_whatsapp($data_send_notif, 'done_payment');
 						}

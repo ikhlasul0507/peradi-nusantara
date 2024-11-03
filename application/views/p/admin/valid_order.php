@@ -7,6 +7,9 @@
         <?php if (strpos($list_kelas_data['is_sumpah'], "Y") !== false) {?>
             <a href="<?= base_url('P/Admin/uploadBerkasSumpah/'.$value['id_user'].'/'.$value['id_order_booking']);?>" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Upload Berkas Sumpah</a>
         <?php } ?>
+        <?php if($this->session->userdata('user_level') <= 3 && $value['status_certificate'] == 'A'){ ?>
+               <a href="<?= base_url('P/Admin/add_master_product');?>" data-toggle="modal" data-target="#modalKTA" class="d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i class="fas fa-book fa-sm text-white-50"></i> Terbitkan KTA</a>  
+        <?php } ?>
     </div>
 
     <!-- Content Row -->
@@ -175,6 +178,70 @@
 
 </div>
 
+
+<div class="modal fade" id="modalKTA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form class="user" action="<?= base_url('P/Admin/process_add_kta')?>" method="post">
+                     <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Terbitkan KTA</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <input type="hidden" name="id_user" value="<?= $value['id_user']; ?>">
+                            <input type="hidden" name="id_order_booking" value="<?= $value['id_order_booking']; ?>">
+                            <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
+                                 <select class="form-control" required name="jenis_kta">
+                                        <option value="" disabled selected>--Jenis KTA--</option>
+                                        <option value="4">PAJAK</option>
+                                        <option value="2">PARALEGAL</option>
+                                        <option value="1">ADVOKAT</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
+                                <input type="text" class="form-control" required name="nama_kta"
+                                    placeholder="Nama Lengkap">
+                            </div>
+                            <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
+                                <label>Berlaku s/d KTA</label>
+                                <input type="date" min="<?php echo date('Y-m-d'); ?>" class="form-control" required name="berlaku_kta"
+                                    placeholder="Date Payment">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+     <script>
+        const rupiahInput = document.getElementById('rupiah');
+
+        rupiahInput.addEventListener('keyup', function(e) {
+            // Format number to Rupiah
+            let value = this.value.replace(/[^,\d]/g, '').toString();
+            let split = value.split(',');
+            let sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+            this.value = 'Rp ' + rupiah;
+        });
+    </script>
+            
 
 <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">

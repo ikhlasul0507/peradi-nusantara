@@ -631,6 +631,7 @@ class Admin extends CI_Controller {
 		$this->load->view('p/admin/open_class',$data);
 		$this->load->view('p/temp/footer');
 	}
+
 	
 	public function process_add_master_product()
 	{
@@ -717,6 +718,7 @@ class Admin extends CI_Controller {
 	public function process_edit_user_profile()
 	{
 		$fileNameFoto = trim($this->input->post('foto_ktp_lama'));
+		$fileNameFotoKta = trim($this->input->post('foto_kta_lama'));
 
 		if(isset($_FILES['foto_ktp']) && $_FILES['foto_ktp']['error'] === UPLOAD_ERR_OK){
 			if(trim($this->input->post('foto_ktp_lama')) != ''){
@@ -726,12 +728,21 @@ class Admin extends CI_Controller {
 			$fileNameFoto = $upload['upload_data']['file_name'];
 		}
 
+		if(isset($_FILES['foto_kta']) && $_FILES['foto_kta']['error'] === UPLOAD_ERR_OK){
+			if(trim($this->input->post('foto_kta_lama')) != ''){
+				$delete_foto = $this->service->delete_photo('img',trim($this->input->post('foto_kta_lama')));
+			}
+			$upload = $this->service->do_upload('img','foto_kta');
+			$fileNameFotoKta = $upload['upload_data']['file_name'];
+		}
+
 		$data_send_db = [
 			'nama_lengkap' => trim($this->input->post('nama_lengkap')),
 			'nik' => trim($this->input->post('nik')),
 			'email' => trim($this->input->post('email')),
 			'handphone' => trim($this->input->post('handphone')),
-			'foto_ktp' => trim($fileNameFoto)
+			'foto_ktp' => trim($fileNameFoto),
+			'foto_kta' => trim($fileNameFotoKta)
 		];
 		$add_db = $this->M->update_to_db('user', $data_send_db, 'id_user', trim($this->session->userdata('id_user')));
 		if($add_db){
@@ -961,6 +972,37 @@ class Admin extends CI_Controller {
 			$data = $this->session->set_flashdata('pesan', 'User dan Order tidak ditemukan !');
 			redirect('P/Admin/valid_order/'.$id_user.'/'.$idOrder,$data);
 		}
+	}
+
+
+	public function process_add_kta()
+	{
+		$dataOB = $this->M->getWhere('order_booking',['id_order_booking'=>trim($this->input->post('id_order_booking'))]);
+		if($dataOB){
+			if(strpos($dataOB['list_kelas'], strtoupper(trim($this->input->post('jenis_kta')))) !== false){
+				//ada
+				$dataKTA = $this->M->getWhere('kta',['jenis_kta'=>trim($this->input->post('jenis_kta'))]);
+				if(!$dataKTA){
+					//boleh add
+					$dataSendDB = [
+						'id_order_booking' => trim($this->input->post('id_order_booking')),
+						'jenis_kta' => trim($this->input->post('jenis_kta')),
+						'nama_kta' => trim($this->input->post('nama_kta')),
+						'berlaku_kta' => trim($this->input->post('berlaku_kta')),
+						'nomor_kta' => 0000
+					];
+					$add_db = $this->M->add_to_db('kta', $dataSendDB);
+					if($add_db){
+						$data = $this->session->set_flashdata('pesan', 'KTA Berhasil Di terbitkan !');
+					}
+				}else{
+					$data = $this->session->set_flashdata('pesan', 'KTA Telah Terbit !');
+				}
+			}else{
+				$data = $this->session->set_flashdata('pesan', 'Kelas Tidak Tersedia !');
+			}
+		}
+		redirect('P/Admin/valid_order/'.trim($this->input->post('id_user')).'/'.trim($this->input->post('id_order_booking')),$data);
 	}
 
 	public function process_add_order_payment()

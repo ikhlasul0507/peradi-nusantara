@@ -344,6 +344,24 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
+		//=================================================================================================
+		//quick true is msg from chatbot, false from users
+		$title = "Table structure for table `kta`";
+		$query = "CREATE TABLE IF NOT EXISTS `kta` (
+				  `id_kta` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `id_order_booking` int(11) NOT NULL,
+				  `jenis_kta` char(1) NOT NULL,
+				  `nama_kta` varchar(50) NOT NULL,
+				  `berlaku_kta` varchar(50) NOT NULL,
+				  `nomor_kta` int(5) NOT NULL,
+				  PRIMARY KEY (`id_kta`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
 	}
 
 
@@ -774,6 +792,23 @@ class Migrate extends CI_Controller
 		}
 		//=================================================================================================
 		$column = "foto_ktp";
+		$table_name = "user";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column VARCHAR(150)";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$column = "foto_kta";
 		$table_name = "user";
 		$title = "Add Column " . $column . " to table " . $table_name;
 		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";

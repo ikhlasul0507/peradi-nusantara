@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 git status
 git add -- . ':!application/config/database.php'
-git commit -m "Update Manajemen Database Parameter"
+git commit -m "Update Scheduler Notif Payment And Send Link Group Only First Payment"
 git push origin master
 
 Contoh
