@@ -1050,11 +1050,11 @@ class Admin extends CI_Controller {
 						if(trim($this->input->post('sequence_payment')) == 1){
 							$this->service->send_whatsapp($data_send_notif, 'generate_payment');
 						}else{
-							$this->service->send_whatsapp($data_send_notif, 'generate_payment',trim($orderPayment['date_payment']));
-							if(trim($this->input->post('sequence_payment')) > 1){
-								//function generate jatuh tempo
-								$this->generateNotifJatuhTempo($data_send_notif, trim($orderPayment['date_payment']));
-							}
+							// $this->service->send_whatsapp($data_send_notif, 'generate_payment',trim($orderPayment['date_payment']));
+							// if(trim($this->input->post('sequence_payment')) > 1){
+							// 	//function generate jatuh tempo
+							// 	$this->generateNotifJatuhTempo($data_send_notif, trim($orderPayment['date_payment']));
+							// }
 						}
 					}
 				}
