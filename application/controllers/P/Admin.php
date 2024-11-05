@@ -594,6 +594,7 @@ class Admin extends CI_Controller {
 		$data['list_pic'] = explode(",",$this->M->getParameter('@picRegister'));
 		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
 		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
+		$data['list_kta'] = $this->M->getWhereList('kta',['id_order_booking'=>trim($idOrder)]);
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/valid_order',$data);
 		$this->load->view('p/temp/footer');
@@ -981,7 +982,7 @@ class Admin extends CI_Controller {
 		if($dataOB){
 			if(strpos($dataOB['list_kelas'], strtoupper(trim($this->input->post('jenis_kta')))) !== false){
 				//ada
-				$dataKTA = $this->M->getWhere('kta',['jenis_kta'=>trim($this->input->post('jenis_kta'))]);
+				$dataKTA = $this->M->getWhere('kta',['jenis_kta'=>trim($this->input->post('jenis_kta')),'id_order_booking'=>trim($this->input->post('id_order_booking'))]);
 				if(!$dataKTA){
 					//boleh add
 					$dataSendDB = [
@@ -1795,5 +1796,75 @@ class Admin extends CI_Controller {
 			// redirect('P/Admin/report_peserta/');
         }
     }
+
+    public function generateKTA($id_kta)
+    {
+    	error_reporting(0); 
+        // Load the Pdf library
+        if($id_kta){
+        	$getKta = $this->M->getWhere('kta',['id_kta'=>trim($id_kta)]);
+        	$jenis_kta = $getKta['jenis_kta'];
+	    	if($jenis_kta == 4){
+	        	//Cetak KTA Pajak
+		        $pdf = new FPDF('P', 'mm', [86, 136]); 
+		        $pdf->AddPage();
+		        $pdf->SetFont('Arial', 'B', 15);
+		        $imageKTA = "./assets/p/kta/foto.jpg";
+		        $image1 = "./assets/p/kta/kta_pajak_1.jpg";
+		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
+		        $pdf->Image($imageKTA,23,44,40,50);
+		        $pdf->SetTextColor(5, 43, 130);
+		        $pdf->SetDrawColor(255, 255, 255);
+		        // Nama
+			    $pdf->SetXY(11,95); 
+		        $pdf->Cell(38, 10, $getKta['nama_kta'], 0, 1,'L'); //margin left
+		        $pdf->SetXY(46,115);
+		        $pdf->SetFont('Arial', 'B', 10);
+		        $pdf->Cell(35, 0, $getKta['berlaku_kta'], 0, 1,'L'); //margin left
+		        $pdf->AddPage();
+		        $image1 = "./assets/p/kta/kta_pajak_2.jpg";
+		        $pdf->Image($image1,0,0,86,136);
+		        $pdf->Output();
+	    	}else if($jenis_kta == 2){
+	    		//Cetak KTA Paralegal
+		        $pdf = new FPDF('P', 'mm', [86, 136]); 
+		        $pdf->AddPage();
+		        $pdf->SetFont('Arial', 'B', 15);
+		        $imageKTA = "./assets/p/kta/foto.jpg";
+		        $image1 = "./assets/p/kta/kta_advokat_1.jpg";
+		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
+		        $pdf->Image($imageKTA,23,44,40,50);
+		        $pdf->Ln(84);
+		        $pdf->SetTextColor(5, 43, 130);
+		        $pdf->SetDrawColor(255, 255, 255);
+		        $pdf->Cell(38, 10, $getKta['nama_kta'], 0, 1); //margin left
+		        $pdf->AddPage();
+		        $image1 = "./assets/p/kta/kta_advokat_2.jpg";
+		        $pdf->Image($image1,0,0,86,136);
+		        $pdf->Output();
+	    	}else if($jenis_kta == 1){
+	    		//Cetak KTA Advokat
+	    		$pdf = new FPDF('P', 'mm', [86, 136]); 
+		        $pdf->AddPage();
+		        $pdf->SetFont('Arial', 'B', 15);
+		        $imageKTA = "./assets/p/kta/foto.jpg";
+		        $image1 = "./assets/p/kta/kta_advokat_1.jpg";
+		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
+		        $pdf->Image($imageKTA,23,44,40,50);
+		        $pdf->Ln(84);
+		        $pdf->SetTextColor(5, 43, 130);
+		        $pdf->SetDrawColor(255, 255, 255);
+		        $pdf->Cell(38, 10, $getKta['nama_kta'], 0, 1); //margin left
+		        $pdf->AddPage();
+		        $image1 = "./assets/p/kta/kta_advokat_2.jpg";
+		        $pdf->Image($image1,0,0,86,136);
+		        $pdf->Output();
+
+	    	}
+	        echo "PDF has been saved to " . $outputDir . $fileName;
+    	}
+    }
+
+
 
 }

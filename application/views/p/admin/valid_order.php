@@ -80,6 +80,26 @@
                                 ?>
                             </br>
                             <?php $idx++;} ?>
+                            <hr>
+                            <?php if($this->session->userdata('user_level') <= 3 && $value['status_certificate'] == 'A'){ 
+                                foreach ($list_kta as $lk) {
+                                switch ($lk['jenis_kta']) {
+                                    case 1:
+                                        $txt = "Cetak KTA Advokat";
+                                        break;
+                                    case 2:
+                                        $txt = "Cetak KTA Paralegal";
+                                        break;
+                                    case 4:
+                                        $txt = "Cetak KTA Pajak";
+                                        break;
+                                    default:
+                                        // code...
+                                        break;
+                                }
+                                ?>
+                                <a  class="btn btn-sm btn-danger" target="blank" href="<?= base_url('P/Admin/generateKTA/'.$lk['id_kta']);?>"><?= $txt; ?></a>
+                            <?php }}?>
                         </p>
                         <?php if($value['status_order'] == 'N'){ ?>
                             <!-- <a  class="btn btn-sm btn-warning" href="<?= base_url('P/Admin/process_valid_order/'.$value['id_user'].'/'.$value['id_order_booking']);?>">Validasi Order</a> -->

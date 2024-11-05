@@ -402,5 +402,9 @@ Start : '.$start.'
         	return array('error' => 'Photo not found.','code'=> 401);
         }
     }
-
+    public function formatDate($date) {
+	    setlocale(LC_TIME, 'id_ID'); // Set the locale to Indonesian
+	    $timestamp = strtotime($date);
+	    return strftime("%d %B %Y", $timestamp);
+	}
 }
