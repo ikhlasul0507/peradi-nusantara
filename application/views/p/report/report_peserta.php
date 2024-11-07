@@ -27,7 +27,7 @@
                             placeholder="PIC" value="<?= $pic;?>">
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-0">
-                        <select class="form-control" required name="angkatan">
+                        <select class="form-control" name="angkatan">
                                 <option value="<?= $angkatan; ?>" disabled selected>--Pilih Angkatan--</option>
                                 <?php for ($i= $startAngkatan; $i <= $endAngkatan; $i++) {?>
                                     <option value="Angkatan Ke - <?=$i;?>">Angkatan Ke - <?=$i;?></option>
