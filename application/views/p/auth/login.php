@@ -27,6 +27,7 @@
         }
     </style>
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body class="bg-gradient-primary">
@@ -53,7 +54,7 @@
                                    <input type="password" class="form-control"
                                             required name="password" placeholder="Password">
                                 </div>
-                                
+                                 <div class="g-recaptcha  mb-3" data-sitekey="6Le5ctkZAAAAANJ_rSzM42eypnAZjqfpGGTVE3LP"></div>
                                 <button type="submit" class="btn btn-primary">Masuk</button>
                             </form>
                             <hr>

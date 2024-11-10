@@ -118,58 +118,79 @@ class Auth extends CI_Controller {
 
 	public function process_login()
 	{
-		$isLogin = false;
-			$user = $this->M->getWhere('user',['handphone'=>trim($this->input->post('handphone'))]);
-			if($user){
-				if($user['user_level'] == 1){
-					$isLogin = true;
-				}else{
-					if($this->M->getParameter('@lockLoginForEveryOne') == 'N'){
+		$recaptchaResponse = trim($this->input->post('g-recaptcha-response'));
+        $secret='6Le5ctkZAAAAADjfn6DswRC--OAnyiMMrkOITdx_'; // ini adalah Secret key yang didapat dari google, silahkan disesuaikan
+        $credential = array(
+              'secret' => $secret,
+              'response' => $this->input->post('g-recaptcha-response')
+          );
+        $verify = curl_init();
+        curl_setopt($verify, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+        curl_setopt($verify, CURLOPT_POST, true);
+        curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($credential));
+        curl_setopt($verify, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($verify);
+
+        $status= json_decode($response, true);
+
+        if($status['success']){
+			$isLogin = false;
+				$user = $this->M->getWhere('user',['handphone'=>trim($this->input->post('handphone'))]);
+				if($user){
+					if($user['user_level'] == 1){
 						$isLogin = true;
 					}else{
-						$data = $this->session->set_flashdata('pesan', 'Tidak bisa Login\nWhatsapp dan Virtual Account tidak terhubung !');
-						redirect('P/Auth/login',$data);
-					}
-				}
-			}else{
-				$data = $this->session->set_flashdata('pesan', 'Akun belum terdaftar !');
-				redirect('P/Auth/login',$data);
-			}
-		
-
-		if($isLogin){
-			if(password_verify(trim($this->input->post('password')),$user['password_hash'])){
-				if($user['is_active'] == 'Y'){
-					if($this->M->getParameter('@sendNotifWaLogin') == 'Y'){
-						$data_send_notif = [
-							'handphone' => trim($user['handphone']),
-							'namalengkap' => trim($user['nama_lengkap']),
-							'url_login' => trim(base_url('P/Auth/login'))
-						];
-						$this->service->send_whatsapp($data_send_notif, 'login');
-					}
-					$add_history = $this->M->add_log_history($user['nama_lengkap'],"Login Akun");
-					$data_session = [
-						'id_user' =>trim($user['id_user']),
-						'nama_lengkap' =>trim($user['nama_lengkap']),
-						'handphone' =>trim($this->input->post('handphone')),
-						'user_level' =>trim($user['user_level']),
-					];
-					$this->session->set_userdata($data_session);
-	        		$data = $this->session->set_flashdata('pesan', 'Selamat Anda Berhasil Login !');
-	        		if(trim($user['user_level']) <= 3){
-	        			redirect('P/Admin/main',$data);
-	        		}else{
-						redirect('P/Admin',$data);
+						if($this->M->getParameter('@lockLoginForEveryOne') == 'N'){
+							$isLogin = true;
+						}else{
+							$data = $this->session->set_flashdata('pesan', 'Tidak bisa Login\nWhatsapp dan Virtual Account tidak terhubung !');
+							redirect('P/Auth/login',$data);
+						}
 					}
 				}else{
-					$data = $this->session->set_flashdata('pesan', 'Akun tidak aktif sementara !');
+					$data = $this->session->set_flashdata('pesan', 'Akun belum terdaftar !');
 					redirect('P/Auth/login',$data);
 				}
-			}else{
-				$data = $this->session->set_flashdata('pesan', 'Password salah !');
-				redirect('P/Auth/login',$data);
+			
+
+			if($isLogin){
+				if(password_verify(trim($this->input->post('password')),$user['password_hash'])){
+					if($user['is_active'] == 'Y'){
+						if($this->M->getParameter('@sendNotifWaLogin') == 'Y'){
+							$data_send_notif = [
+								'handphone' => trim($user['handphone']),
+								'namalengkap' => trim($user['nama_lengkap']),
+								'url_login' => trim(base_url('P/Auth/login'))
+							];
+							$this->service->send_whatsapp($data_send_notif, 'login');
+						}
+						$add_history = $this->M->add_log_history($user['nama_lengkap'],"Login Akun");
+						$data_session = [
+							'id_user' =>trim($user['id_user']),
+							'nama_lengkap' =>trim($user['nama_lengkap']),
+							'handphone' =>trim($this->input->post('handphone')),
+							'user_level' =>trim($user['user_level']),
+						];
+						$this->session->set_userdata($data_session);
+		        		$data = $this->session->set_flashdata('pesan', 'Selamat Anda Berhasil Login !');
+		        		if(trim($user['user_level']) <= 3){
+		        			redirect('P/Admin/main',$data);
+		        		}else{
+							redirect('P/Admin',$data);
+						}
+					}else{
+						$data = $this->session->set_flashdata('pesan', 'Akun tidak aktif sementara !');
+						redirect('P/Auth/login',$data);
+					}
+				}else{
+					$data = $this->session->set_flashdata('pesan', 'Password salah !');
+					redirect('P/Auth/login',$data);
+				}
 			}
+		}else{
+			$data = $this->session->set_flashdata('pesan', 'Silahkan Aktivasi Captcha !');
+					redirect('P/Auth/login',$data);
 		}
 		
 	}
