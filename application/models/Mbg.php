@@ -757,7 +757,7 @@ class Mbg extends CI_Model {
 	{
 			return $this->db->query("DELETE FROM order_payment
 			WHERE status_payment = 'G' 
-			  AND date_payment < DATE_SUB(NOW(), INTERVAL 2 DAY);
+			  AND time_history < DATE_SUB(NOW(), INTERVAL 2 DAY);
 			");
 	}
 
