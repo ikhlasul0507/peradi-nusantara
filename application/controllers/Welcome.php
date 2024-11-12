@@ -39,6 +39,87 @@ class Welcome extends CI_Controller {
 		echo $result;
     }
 
+    public function sendEmailWithAttachment() {
+        // Set email configurations
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'smtp.example.com';  // SMTP server
+        $config['smtp_port'] = 587;                // SMTP port
+        $config['smtp_user'] = 'your-email@example.com';  // Your email
+        $config['smtp_pass'] = 'your-password';           // Your password
+        $config['mailtype'] = 'html';
+        $config['charset'] = 'utf-8';
+        $config['wordwrap'] = TRUE;
+        $config['newline'] = "\r\n";  // For some servers
+
+        $this->email->initialize($config);
+
+        // Set up email content
+        $this->email->from('your-email@example.com', 'Your Name');
+        $this->email->to('recipient@example.com');
+        $this->email->subject('Email with Attachment');
+        $this->email->message('Please find the attached document.');
+
+        // File to be attached
+        $filePath = '/path/to/your/file.pdf';  // Path to file on your server
+
+        // Attach file
+        $this->email->attach($filePath);
+
+        // Send email and check if it was successful
+        if ($this->email->send()) {
+            echo 'Email sent successfully with attachment.';
+        } else {
+            // Show error message in case of failure
+            show_error($this->email->print_debugger());
+        }
+    }
+
+    public function removeBG()
+    {
+
+		// Your Remove.bg API key
+		$apiKey = 'kwc1EuNi1vCsbrJWoLKbXtYo';
+
+		// The path to the input image file
+		$imagePath = './assets/p/kta/IJ88XtF9W8hrGDWjqr1f.jpg';
+
+		// The URL for Remove.bg API
+		$url = 'https://api.remove.bg/v1.0/removebg';
+
+		// Prepare cURL request with image file
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		    'X-Api-Key: ' . $apiKey,
+		));
+
+		// Attach image to request
+		curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+		    'image_file' => new CURLFile($imagePath),
+		    'size' => 'auto', // Option: 'auto', 'full' (choose 'auto' for most cases)
+		));
+
+		// Execute the request
+		$response = curl_exec($ch);
+
+		// Check for errors
+		if (curl_errno($ch)) {
+		    echo 'Error:' . curl_error($ch);
+		} else {
+		    // Save the result
+		    $fileName = 'awiyhehqw12896368'.'.png';
+		    $outputFile = './assets/p/kta/'.$fileName;
+		    file_put_contents($outputFile, $response);
+		    echo "Background removed successfully! Saved as $outputFile";
+		}
+
+		// Close the cURL session
+		curl_close($ch);
+
+    }
+
     public function cekNotifPaymentNoSumpah()
     {
     	if('Y' == 'Y' && 

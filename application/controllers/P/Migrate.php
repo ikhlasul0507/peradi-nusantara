@@ -429,7 +429,8 @@ class Migrate extends CI_Controller
 					(46, '@lockLoginForEveryOneCS', 'N', 'O'),
 					(47, '@linkGroupWaSosilisasi', '-', 'T'),
 					(48, '@sendNotifAutoChatbotFromSystem', 'Y', 'O'),
-					(49, '@recordChatWaOfficial', 'Y', 'O')
+					(49, '@recordChatWaOfficial', 'Y', 'O'),
+					(50, '@apiKeyRemoveBG', 'kwc1EuNi1vCsbrJWoLKbXtYo', 'T')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";

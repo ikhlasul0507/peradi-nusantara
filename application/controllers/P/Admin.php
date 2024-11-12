@@ -720,7 +720,7 @@ class Admin extends CI_Controller {
 	{
 		$fileNameFoto = trim($this->input->post('foto_ktp_lama'));
 		$fileNameFotoKta = trim($this->input->post('foto_kta_lama'));
-
+	
 		if(isset($_FILES['foto_ktp']) && $_FILES['foto_ktp']['error'] === UPLOAD_ERR_OK){
 			if(trim($this->input->post('foto_ktp_lama')) != ''){
 				$delete_foto = $this->service->delete_photo('img',trim($this->input->post('foto_ktp_lama')));
@@ -731,10 +731,17 @@ class Admin extends CI_Controller {
 
 		if(isset($_FILES['foto_kta']) && $_FILES['foto_kta']['error'] === UPLOAD_ERR_OK){
 			if(trim($this->input->post('foto_kta_lama')) != ''){
-				$delete_foto = $this->service->delete_photo('img',trim($this->input->post('foto_kta_lama')));
+				$delete_foto = $this->service->delete_photo('kta',trim($this->input->post('foto_kta_lama')));
 			}
-			$upload = $this->service->do_upload('img','foto_kta');
+			$upload = $this->service->do_upload('kta','foto_kta');
 			$fileNameFotoKta = $upload['upload_data']['file_name'];
+		}
+		if($fileNameFotoKta){
+			$removeBGKTA = $this->service->removeBG($this->M->getParameter('@apiKeyRemoveBG'),$fileNameFotoKta);
+			if($removeBGKTA != ""){
+				$delete_foto = $this->service->delete_photo('kta',$fileNameFotoKta);
+				$fileNameFotoKta = $removeBGKTA;
+			}
 		}
 
 		$data_send_db = [
@@ -980,24 +987,35 @@ class Admin extends CI_Controller {
 	{
 		$dataOB = $this->M->getWhere('order_booking',['id_order_booking'=>trim($this->input->post('id_order_booking'))]);
 		if($dataOB){
-			if(strpos($dataOB['list_kelas'], strtoupper(trim($this->input->post('jenis_kta')))) !== false){
-				//ada
-				$dataKTA = $this->M->getWhere('kta',['jenis_kta'=>trim($this->input->post('jenis_kta')),'id_order_booking'=>trim($this->input->post('id_order_booking'))]);
-				if(!$dataKTA){
-					//boleh add
-					$dataSendDB = [
-						'id_order_booking' => trim($this->input->post('id_order_booking')),
-						'jenis_kta' => trim($this->input->post('jenis_kta')),
-						'nama_kta' => trim($this->input->post('nama_kta')),
-						'berlaku_kta' => trim($this->input->post('berlaku_kta')),
-						'nomor_kta' => 0000
-					];
-					$add_db = $this->M->add_to_db('kta', $dataSendDB);
-					if($add_db){
-						$data = $this->session->set_flashdata('pesan', 'KTA Berhasil Di terbitkan !');
+			if(strpos($dataOB['list_kelas'], strtoupper(trim($this->input->post('jenis_kta')))) !== false){ 
+				$dataUser = $this->M->getWhere('user',['id_user'=>trim($dataOB['id_user'])]);
+				if($dataUser['foto_kta'] != null){
+					//ada
+					$dataKTA = $this->M->getWhere('kta',['jenis_kta'=>trim($this->input->post('jenis_kta')),'id_order_booking'=>trim($this->input->post('id_order_booking'))]);
+					if(!$dataKTA){
+						//boleh add
+						$data_where = [
+							'id_order_booking' => trim($this->input->post('id_order_booking')),
+							'id_user'=>trim($dataOB['id_user']),
+							'id_master_kelas' => trim($this->input->post('jenis_kta')),
+						];
+						$dataNOKTA = $this->M->getWhere('approve_cetificate',$data_where);
+						$dataSendDB = [
+							'id_order_booking' => trim($this->input->post('id_order_booking')),
+							'jenis_kta' => trim($this->input->post('jenis_kta')),
+							'nama_kta' => trim($this->input->post('nama_kta')),
+							'berlaku_kta' => trim($this->input->post('berlaku_kta')),
+							'nomor_kta' => $dataNOKTA['number_certificate']
+						];
+						$add_db = $this->M->add_to_db('kta', $dataSendDB);
+						if($add_db){
+							$data = $this->session->set_flashdata('pesan', 'KTA Berhasil Di terbitkan !');
+						}
+					}else{
+						$data = $this->session->set_flashdata('pesan', 'KTA Telah Terbit !');
 					}
 				}else{
-					$data = $this->session->set_flashdata('pesan', 'KTA Telah Terbit !');
+					$data = $this->session->set_flashdata('pesan', 'Harap Upload Foto Customer Pada Profile Customer !');
 				}
 			}else{
 				$data = $this->session->set_flashdata('pesan', 'Kelas Tidak Tersedia !');
@@ -1802,65 +1820,91 @@ class Admin extends CI_Controller {
     	error_reporting(0); 
         // Load the Pdf library
         if($id_kta){
+        	$user = $this->M->getWhere('user',['id_user'=>trim($this->session->userdata('id_user'))]);
+
         	$getKta = $this->M->getWhere('kta',['id_kta'=>trim($id_kta)]);
         	$jenis_kta = $getKta['jenis_kta'];
+        	$titleName = "KTA_";
 	    	if($jenis_kta == 4){
 	        	//Cetak KTA Pajak
-		        $pdf = new FPDF('P', 'mm', [86, 136]); 
+		        $pdf = new FPDF('P', 'mm', [86, 136],true, 'UTF-8', false); 
 		        $pdf->AddPage();
 		        $pdf->SetFont('Arial', 'B', 15);
-		        $imageKTA = "./assets/p/kta/foto.jpg";
+		        $imageKTA = "./assets/p/kta/".$user['foto_kta'];
 		        $image1 = "./assets/p/kta/kta_pajak_1.jpg";
 		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
-		        $pdf->Image($imageKTA,23,44,40,50);
+		        $pdf->Image($imageKTA,18,34,50,60);
 		        $pdf->SetTextColor(5, 43, 130);
 		        $pdf->SetDrawColor(255, 255, 255);
 		        // Nama
 			    $pdf->SetXY(11,95); 
-		        $pdf->Cell(38, 10, $getKta['nama_kta'], 0, 1,'L'); //margin left
-		        $pdf->SetXY(46,115);
+		        $pdf->Cell(38, 10, $getKta['nama_kta'], 0, 0,'L'); //margin left
+
 		        $pdf->SetFont('Arial', 'B', 10);
-		        $pdf->Cell(35, 0, $getKta['berlaku_kta'], 0, 1,'L'); //margin left
+		        $pdf->SetXY(45, $pdf->GetPageHeight() - 5);
+		        $pdf->Cell(10, -25, 'NIA :24.000'.$getKta['nomor_kta'], 0, 0, 'L');
+		        $pdf->SetXY(45, $pdf->GetPageHeight() - 5);
+		        $pdf->Cell(10, -17, 'Berlaku SD ' .$getKta['berlaku_kta'], 0, 0, 'L');
+		        
 		        $pdf->AddPage();
 		        $image1 = "./assets/p/kta/kta_pajak_2.jpg";
 		        $pdf->Image($image1,0,0,86,136);
-		        $pdf->Output();
+		        $titleName = $titleName.'Pajak_'.$getKta['nama_kta'];
 	    	}else if($jenis_kta == 2){
 	    		//Cetak KTA Paralegal
 		        $pdf = new FPDF('P', 'mm', [86, 136]); 
 		        $pdf->AddPage();
 		        $pdf->SetFont('Arial', 'B', 15);
-		        $imageKTA = "./assets/p/kta/foto.jpg";
+		        $imageKTA = "./assets/p/kta/".$user['foto_kta'];
 		        $image1 = "./assets/p/kta/kta_advokat_1.jpg";
 		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
-		        $pdf->Image($imageKTA,23,44,40,50);
-		        $pdf->Ln(84);
-		        $pdf->SetTextColor(5, 43, 130);
+		        $pdf->Image($imageKTA,25,35,40,45);
+		       // Nama
+			    $pdf->SetXY(2,81); 
+		        $pdf->SetTextColor(0, 0, 0);
 		        $pdf->SetDrawColor(255, 255, 255);
-		        $pdf->Cell(38, 10, $getKta['nama_kta'], 0, 1); //margin left
+		        $pdf->Cell(38, 10,$getKta['nama_kta'], 0, 1); //margin left
+		        $pdf->SetXY(2,89); 
+		        $pdf->SetFont('Arial', 'B', 10);
+		        $pdf->Cell(30, 10, 'Paralegal', 0, 1); //margin left
+
+		        $pdf->SetXY(10, $pdf->GetPageHeight() - 5);
+		        $pdf->Cell(10, -17, 'NIA :24.000'.$getKta['nomor_kta'], 0, 0, 'L');
+		        $pdf->SetXY(45, $pdf->GetPageHeight() - 5);
+		        $pdf->Cell(10, -17, 'Berlaku SD ' .$getKta['berlaku_kta'], 0, 0, 'L');
+
 		        $pdf->AddPage();
 		        $image1 = "./assets/p/kta/kta_advokat_2.jpg";
 		        $pdf->Image($image1,0,0,86,136);
-		        $pdf->Output();
+		        $titleName = $titleName.'Paralegal_'.$getKta['nama_kta'];
 	    	}else if($jenis_kta == 1){
 	    		//Cetak KTA Advokat
 	    		$pdf = new FPDF('P', 'mm', [86, 136]); 
 		        $pdf->AddPage();
 		        $pdf->SetFont('Arial', 'B', 15);
-		        $imageKTA = "./assets/p/kta/foto.jpg";
+		        $imageKTA = "./assets/p/kta/".$user['foto_kta'];
 		        $image1 = "./assets/p/kta/kta_advokat_1.jpg";
 		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
-		        $pdf->Image($imageKTA,23,44,40,50);
-		        $pdf->Ln(84);
-		        $pdf->SetTextColor(5, 43, 130);
+		        $pdf->Image($imageKTA,25,35,40,45);
+		       // Nama
+			    $pdf->SetXY(2,81); 
+		        $pdf->SetTextColor(0, 0, 0);
 		        $pdf->SetDrawColor(255, 255, 255);
-		        $pdf->Cell(38, 10, $getKta['nama_kta'], 0, 1); //margin left
+		        $pdf->Cell(38, 10, 'Adv. '.$getKta['nama_kta'], 0, 1); //margin left
+
+		        $pdf->SetFont('Arial', 'B', 10);
+		        $pdf->SetXY(10, $pdf->GetPageHeight() - 5);
+		        $pdf->Cell(10, -17, 'NIA :24.000'.$getKta['nomor_kta'], 0, 0, 'L');
+		        $pdf->SetXY(45, $pdf->GetPageHeight() - 5);
+		        $pdf->Cell(10, -17, 'Berlaku SD ' .$getKta['berlaku_kta'], 0, 0, 'L');
+
 		        $pdf->AddPage();
 		        $image1 = "./assets/p/kta/kta_advokat_2.jpg";
 		        $pdf->Image($image1,0,0,86,136);
-		        $pdf->Output();
-
+		        $titleName = $titleName.'Advokat_'.$getKta['nama_kta'];
 	    	}
+	    	//forcedownload
+	        $pdf->Output('D', $titleName.".pdf");
 	        echo "PDF has been saved to " . $outputDir . $fileName;
     	}
     }

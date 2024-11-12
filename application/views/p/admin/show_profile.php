@@ -54,9 +54,9 @@
                             placeholder="foto_kta" value="<?= $list_data['foto_kta'];?>">
                     </div>
                      <div class="col-sm-3 mb-3 mb-sm-0">
-                        <a href="<?= base_url('assets/p/img/'.$list_data['foto_kta']);?>" target="blank">
+                        <a href="<?= base_url('assets/p/kta/'.$list_data['foto_kta']);?>" target="blank">
                             <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem; height: 10rem"
-                            src="<?= base_url('assets/p/img/'.$list_data['foto_kta']);?>" alt="...">
+                            src="<?= base_url('assets/p/kta/'.$list_data['foto_kta']);?>" alt="...">
                         </a>
                     </div>
                 </div>

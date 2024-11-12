@@ -171,6 +171,7 @@ class Auth extends CI_Controller {
 							'nama_lengkap' =>trim($user['nama_lengkap']),
 							'handphone' =>trim($this->input->post('handphone')),
 							'user_level' =>trim($user['user_level']),
+							'foto_kta' => trim($user['foto_kta'])
 						];
 						$this->session->set_userdata($data_session);
 		        		$data = $this->session->set_flashdata('pesan', 'Selamat Anda Berhasil Login !');

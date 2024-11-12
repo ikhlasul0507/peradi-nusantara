@@ -407,4 +407,50 @@ Start : '.$start.'
 	    $timestamp = strtotime($date);
 	    return strftime("%d %B %Y", $timestamp);
 	}
+
+	public function removeBG($api_key, $image_name)
+    {
+    	$outputFile = "";
+		// Your Remove.bg API key
+		$apiKey = $api_key;
+
+		// The path to the input image file
+		$imagePath = './assets/p/kta/'.$image_name;
+
+
+		// The URL for Remove.bg API
+		$url = 'https://api.remove.bg/v1.0/removebg';
+
+		// Prepare cURL request with image file
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		    'X-Api-Key: ' . $apiKey,
+		));
+
+		// Attach image to request
+		curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+		    'image_file' => new CURLFile($imagePath),
+		    'size' => 'auto', // Option: 'auto', 'full' (choose 'auto' for most cases)
+		));
+
+		// Execute the request
+		$response = curl_exec($ch);
+
+		// Check for errors
+		if (curl_errno($ch)) {
+		    echo 'Error:' . curl_error($ch);
+		} else {
+		    // Save the result
+		    $fileName = $this->generateSecureRandomString(20).'.png';
+		    $outputFile = './assets/p/kta/'.$fileName;
+		    file_put_contents($outputFile, $response);
+		}
+
+		// Close the cURL session
+		curl_close($ch);
+		return $fileName;
+    }
 }

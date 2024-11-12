@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 git status
 git add -- . ':!application/config/database.php'
-git commit -m "Update Delete Requeired Angkatan Report"
+git commit -m "Update Google Captcha"
 git push origin master
 
 Contoh
