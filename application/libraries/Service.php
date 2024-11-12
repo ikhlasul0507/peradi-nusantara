@@ -467,14 +467,14 @@ Start : '.$start.'
 	    $config['wordwrap'] = TRUE;
 	    $config['newline'] = "\r\n"; // For compatibility
 
-	    $this->email->initialize($config);
+	    $this->CI->email->initialize($config);
 
 	    // Email content
 	    $emailAddress = 'wuisanlaw@gmail.com';
-	    $this->email->from('backupdatabase@peradinusantara.org', 'Peradi Nusantara');
-	    $this->email->to($emailAddress);
-	    $this->email->subject('Schedule Backup Database');
-	    $this->email->message(date('Y-m-d H:i:s').' - Backup Database ...');
+	    $this->CI->email->from('backupdatabase@peradinusantara.org', 'Peradi Nusantara');
+	    $this->CI->email->to($emailAddress);
+	    $this->CI->email->subject('Schedule Backup Database');
+	    $this->CI->email->message(date('Y-m-d H:i:s').' - Backup Database ...');
 
 	    // Locate latest .zip file
 	    $folderPath = FCPATH . 'backups'; // Use absolute path
@@ -500,14 +500,14 @@ Start : '.$start.'
 	        return;
 	    }
 
-	    $this->email->attach($latestFile);
+	    $this->CI->email->attach($latestFile);
 
 	    // Send email and check status
-	    if ($this->email->send()) {
+	    if ($this->CI->email->send()) {
 	        echo 'Email sent successfully with attachment.';
 	    } else {
 	        echo "Failed to send email. Error details:";
-	        echo $this->email->print_debugger(['headers']);
+	        echo $this->CI->email->print_debugger(['headers']);
 	    }
 	}
 }
