@@ -52,6 +52,8 @@ class Scheduler extends CI_Controller
 		$this->setUnpaidPaymentCS();
 		//engineSendNotifPayment
 		$this->engineSendNotifPayment();
+		//clearPaymentExpiredAfterGenerated
+		$this->clearPaymentExpiredAfterGenerated();
 	}
 
 	public function setUnpaidPayment()
@@ -173,4 +175,12 @@ class Scheduler extends CI_Controller
     	$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> $msg];
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
     }
+
+    public function clearPaymentExpiredAfterGenerated()
+	{
+		$this->M->clearPaymentExpiredAfterGenerated();
+		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler clearPaymentExpiredAfterGenerated'];
+		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+		echo "clearPaymentExpiredAfterGenerated</br>";
+	}
 }

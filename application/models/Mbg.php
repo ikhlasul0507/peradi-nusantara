@@ -18,7 +18,7 @@ class Mbg extends CI_Model {
 	function delete_to_db($table, $where, $valuewhere)
 	{
 		$this->db->where($where, $valuewhere);
-        $this->db->delete($table);
+    $this->db->delete($table);
 	}
 	function getWhere($table, $data)
 	{
@@ -751,6 +751,14 @@ class Mbg extends CI_Model {
 							    op.date_payment DESC;
 							";
 			return $this->db->query($query)->result_array();
+	}
+
+	function clearPaymentExpiredAfterGenerated()
+	{
+			return $this->db->query("DELETE FROM order_payment
+			WHERE status_payment = 'G' 
+			  AND date_payment < DATE_SUB(NOW(), INTERVAL 2 DAY);
+			");
 	}
 
 }
