@@ -10,6 +10,7 @@ class Service {
         $this->CI =& get_instance();
         // Load the upload library
         $this->CI->load->library('upload');
+        $this->CI->load->library('email');
     }
 
 	public function send_whatsapp($params, $type, $tanggalSend = "")
@@ -453,4 +454,60 @@ Start : '.$start.'
 		curl_close($ch);
 		return $fileName;
     }
+
+    public function sendEmailWithAttachment() {
+    	// Email configurations
+	    $config['protocol'] = 'smtp';
+	    $config['smtp_host'] = 'mail.peradinusantara.org';
+	    $config['smtp_port'] = 587;
+	    $config['smtp_user'] = 'backupdatabase@peradinusantara.org';
+	    $config['smtp_pass'] = 'V8N_;knY~?nZ';
+	    $config['mailtype'] = 'html';
+	    $config['charset'] = 'utf-8';
+	    $config['wordwrap'] = TRUE;
+	    $config['newline'] = "\r\n"; // For compatibility
+
+	    $this->email->initialize($config);
+
+	    // Email content
+	    $emailAddress = 'wuisanlaw@gmail.com';
+	    $this->email->from('backupdatabase@peradinusantara.org', 'Peradi Nusantara');
+	    $this->email->to($emailAddress);
+	    $this->email->subject('Schedule Backup Database');
+	    $this->email->message(date('Y-m-d H:i:s').' - Backup Database ...');
+
+	    // Locate latest .zip file
+	    $folderPath = FCPATH . 'backups'; // Use absolute path
+	    $zipFiles = glob($folderPath . '/*.zip');
+	    if (empty($zipFiles)) {
+	        echo "No .zip files found in the folder.";
+	        return;
+	    }
+
+	    $latestFile = null;
+	    $latestModifiedTime = 0;
+	    foreach ($zipFiles as $file) {
+	        $fileModifiedTime = filemtime($file);
+	        if ($fileModifiedTime > $latestModifiedTime) {
+	            $latestModifiedTime = $fileModifiedTime;
+	            $latestFile = $file;
+	        }
+	    }
+
+	    // Ensure file exists before attaching
+	    if (!file_exists($latestFile)) {
+	        echo "File does not exist: $latestFile";
+	        return;
+	    }
+
+	    $this->email->attach($latestFile);
+
+	    // Send email and check status
+	    if ($this->email->send()) {
+	        echo 'Email sent successfully with attachment.';
+	    } else {
+	        echo "Failed to send email. Error details:";
+	        echo $this->email->print_debugger(['headers']);
+	    }
+	}
 }

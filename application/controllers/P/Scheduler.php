@@ -127,7 +127,10 @@ class Scheduler extends CI_Controller
         write_file($save, $backup);
 
         $data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler Backup Database'];
+        //send wa
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+		//send email
+		$this->service->sendEmailWithAttachment();
         // Force download the file
         // force_download($db_name, $backup);
         echo "Jalankan Scheduler Backup Database </br>";

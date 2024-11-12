@@ -25,7 +25,7 @@ class Welcome extends CI_Controller {
         $this->load->dbutil();
         $this->load->helper('file');
         $this->load->helper('download');
-
+        $this->load->library('email');
         //duplicate database
         $this->load->model('Database_model');
     }
@@ -40,39 +40,61 @@ class Welcome extends CI_Controller {
     }
 
     public function sendEmailWithAttachment() {
-        // Set email configurations
-        $config['protocol'] = 'smtp';
-        $config['smtp_host'] = 'smtp.example.com';  // SMTP server
-        $config['smtp_port'] = 587;                // SMTP port
-        $config['smtp_user'] = 'your-email@example.com';  // Your email
-        $config['smtp_pass'] = 'your-password';           // Your password
-        $config['mailtype'] = 'html';
-        $config['charset'] = 'utf-8';
-        $config['wordwrap'] = TRUE;
-        $config['newline'] = "\r\n";  // For some servers
+    	// Email configurations
+	    $config['protocol'] = 'smtp';
+	    $config['smtp_host'] = 'mail.peradinusantara.org';
+	    $config['smtp_port'] = 587;
+	    $config['smtp_user'] = 'backupdatabase@peradinusantara.org';
+	    $config['smtp_pass'] = 'V8N_;knY~?nZ';
+	    $config['mailtype'] = 'html';
+	    $config['charset'] = 'utf-8';
+	    $config['wordwrap'] = TRUE;
+	    $config['newline'] = "\r\n"; // For compatibility
 
-        $this->email->initialize($config);
+	    $this->email->initialize($config);
 
-        // Set up email content
-        $this->email->from('your-email@example.com', 'Your Name');
-        $this->email->to('recipient@example.com');
-        $this->email->subject('Email with Attachment');
-        $this->email->message('Please find the attached document.');
+	    // Email content
+	    $emailAddress = 'wuisanlaw@gmail.com';
+	    $this->email->from('backupdatabase@peradinusantara.org', 'Peradi Nusantara');
+	    $this->email->to($emailAddress);
+	    $this->email->subject('Schedule Backup Database');
+	    $this->email->message(date('Y-m-d H:i:s').' - Backup Database ...');
 
-        // File to be attached
-        $filePath = '/path/to/your/file.pdf';  // Path to file on your server
+	    // Locate latest .zip file
+	    $folderPath = FCPATH . 'backups'; // Use absolute path
+	    $zipFiles = glob($folderPath . '/*.zip');
+	    if (empty($zipFiles)) {
+	        echo "No .zip files found in the folder.";
+	        return;
+	    }
 
-        // Attach file
-        $this->email->attach($filePath);
+	    $latestFile = null;
+	    $latestModifiedTime = 0;
+	    foreach ($zipFiles as $file) {
+	        $fileModifiedTime = filemtime($file);
+	        if ($fileModifiedTime > $latestModifiedTime) {
+	            $latestModifiedTime = $fileModifiedTime;
+	            $latestFile = $file;
+	        }
+	    }
 
-        // Send email and check if it was successful
-        if ($this->email->send()) {
-            echo 'Email sent successfully with attachment.';
-        } else {
-            // Show error message in case of failure
-            show_error($this->email->print_debugger());
-        }
-    }
+	    // Ensure file exists before attaching
+	    if (!file_exists($latestFile)) {
+	        echo "File does not exist: $latestFile";
+	        return;
+	    }
+
+	    $this->email->attach($latestFile);
+
+	    // Send email and check status
+	    if ($this->email->send()) {
+	        echo 'Email sent successfully with attachment.';
+	    } else {
+	        echo "Failed to send email. Error details:";
+	        echo $this->email->print_debugger(['headers']);
+	    }
+	}
+
 
     public function removeBG()
     {
