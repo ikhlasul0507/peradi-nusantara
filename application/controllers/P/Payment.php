@@ -564,6 +564,7 @@ class Payment extends CI_Controller {
 			echo "---> Nama Kelas : <b>".$getMK['nama_kelas'].'</b></br>';
 			echo "---> Status Order : ".($getOB['status_order'] == 'D' ? 'Sudah Lunas' : 'Belum Lunas').'</br>';
 			echo "---> Status Sertifikat : ".($getOB['status_certificate'] == 'A' ? 'Telah Terbit' : 'Belum Terbit').'</br>';
+			echo "---> Nomor KTA : <b>".$getOB['number_certificate'].'</b></br>';
 			echo "----------------------------------------------";
 		}else{
 			echo "Data Tidak Di Temukan";

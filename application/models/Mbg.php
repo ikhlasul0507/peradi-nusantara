@@ -527,6 +527,7 @@ class Mbg extends CI_Model {
 				  ob.id_order_booking,
 				  ob.status_order,
 				  ob.status_certificate,
+				  ob.number_certificate,
 				  us.email,
 				  us.nama_lengkap,
 				  us.handphone
