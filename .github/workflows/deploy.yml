@@ -11,6 +11,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        server: "ftp.peradinusantara.org"
+        server: sftp://202.10.43.3
         username: "app@app.peradinusantara.org"
         password: "k7!O-KC]jJVR"
+        debug: true
