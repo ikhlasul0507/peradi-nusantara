@@ -98,7 +98,7 @@
                                         break;
                                 }
                                 ?>
-                                <a  class="btn btn-sm btn-danger" target="blank" href="<?= base_url('P/Admin/generateKTA/'.$lk['id_kta']);?>"><?= $txt; ?></a>
+                                <a  class="btn btn-sm btn-danger" target="_blank" href="<?= base_url('P/Admin/generateKTA/'.$value['id_user'].'/'.$lk['id_kta']);?>"><?= $txt; ?></a>
                             <?php }}?>
                         </p>
                         <?php if($value['status_order'] == 'N'){ ?>

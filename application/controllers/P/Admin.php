@@ -1815,14 +1815,16 @@ class Admin extends CI_Controller {
         }
     }
 
-    public function generateKTA($id_kta)
+    public function generateKTA($id_user, $id_kta)
     {
     	error_reporting(0); 
         // Load the Pdf library
         if($id_kta){
-        	$user = $this->M->getWhere('user',['id_user'=>trim($this->session->userdata('id_user'))]);
-
+        	$user = $this->M->getWhere('user',['id_user'=>trim($id_user)]);
         	$getKta = $this->M->getWhere('kta',['id_kta'=>trim($id_kta)]);
+        	$ac = $this->M->getWhere('approve_cetificate',['id_order_booking'=>trim($getKta['id_order_booking']),'id_master_kelas' => $getKta['jenis_kta']]);
+        	$imgQRCode = "./assets/p/qrcode/".$ac['qr_code_name'];
+
         	$jenis_kta = $getKta['jenis_kta'];
         	$titleName = "KTA_";
 	    	if($jenis_kta == 4){
@@ -1832,8 +1834,12 @@ class Admin extends CI_Controller {
 		        $pdf->SetFont('Arial', 'B', 15);
 		        $imageKTA = "./assets/p/kta/".$user['foto_kta'];
 		        $image1 = "./assets/p/kta/kta_pajak_1.jpg";
+		        $imageBG = "./assets/p/kta/kta_pajak_bg.png";
 		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
-		        $pdf->Image($imageKTA,18,34,50,60);
+
+		        $pdf->Image($imageKTA,0,25,67,80);
+		        $pdf->Image($imageBG,0,83,86,53);
+		        $pdf->Image($imgQRCode,10,107.7,25,25);
 		        $pdf->SetTextColor(5, 43, 130);
 		        $pdf->SetDrawColor(255, 255, 255);
 		        // Nama
@@ -1857,20 +1863,23 @@ class Admin extends CI_Controller {
 		        $pdf->SetFont('Arial', 'B', 15);
 		        $imageKTA = "./assets/p/kta/".$user['foto_kta'];
 		        $image1 = "./assets/p/kta/kta_advokat_1.jpg";
+		        $imageBG = "./assets/p/kta/kta_advokat_bg.png";
 		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
-		        $pdf->Image($imageKTA,25,35,40,45);
+		        $pdf->Image($imageKTA,32,28,53,64);
+		        $pdf->Image($imageBG,0,80,86,53);
+		        $pdf->Image($imgQRCode,15,95,20,20);
 		       // Nama
 			    $pdf->SetXY(2,81); 
 		        $pdf->SetTextColor(0, 0, 0);
 		        $pdf->SetDrawColor(255, 255, 255);
 		        $pdf->Cell(38, 10,$getKta['nama_kta'], 0, 1); //margin left
-		        $pdf->SetXY(2,89); 
+		        $pdf->SetXY(2,86); 
 		        $pdf->SetFont('Arial', 'B', 10);
 		        $pdf->Cell(30, 10, 'Paralegal', 0, 1); //margin left
 
 		        $pdf->SetXY(10, $pdf->GetPageHeight() - 5);
-		        $pdf->Cell(10, -17, 'NIA :24.000'.$getKta['nomor_kta'], 0, 0, 'L');
-		        $pdf->SetXY(45, $pdf->GetPageHeight() - 5);
+		        $pdf->Cell(10, -25, 'NIA :24.000'.$getKta['nomor_kta'], 0, 0, 'L');
+		        $pdf->SetXY(10, $pdf->GetPageHeight() - 5);
 		        $pdf->Cell(10, -17, 'Berlaku SD ' .$getKta['berlaku_kta'], 0, 0, 'L');
 
 		        $pdf->AddPage();
@@ -1884,8 +1893,11 @@ class Admin extends CI_Controller {
 		        $pdf->SetFont('Arial', 'B', 15);
 		        $imageKTA = "./assets/p/kta/".$user['foto_kta'];
 		        $image1 = "./assets/p/kta/kta_advokat_1.jpg";
+		        $imageBG = "./assets/p/kta/kta_advokat_bg.png";
 		        $pdf->Image($image1,0,0,86,136);//margin left - margin top - size lebar, size tinggi
 		        $pdf->Image($imageKTA,25,35,40,45);
+		        $pdf->Image($imageBG,0,83,86,53);
+		        $pdf->Image($imgQRCode,15,93,20,20);
 		       // Nama
 			    $pdf->SetXY(2,81); 
 		        $pdf->SetTextColor(0, 0, 0);
@@ -1894,8 +1906,8 @@ class Admin extends CI_Controller {
 
 		        $pdf->SetFont('Arial', 'B', 10);
 		        $pdf->SetXY(10, $pdf->GetPageHeight() - 5);
-		        $pdf->Cell(10, -17, 'NIA :24.000'.$getKta['nomor_kta'], 0, 0, 'L');
-		        $pdf->SetXY(45, $pdf->GetPageHeight() - 5);
+		        $pdf->Cell(10, -27, 'NIA :24.000'.$getKta['nomor_kta'], 0, 0, 'L');
+		        $pdf->SetXY(10, $pdf->GetPageHeight() - 5);
 		        $pdf->Cell(10, -17, 'Berlaku SD ' .$getKta['berlaku_kta'], 0, 0, 'L');
 
 		        $pdf->AddPage();
@@ -1903,6 +1915,7 @@ class Admin extends CI_Controller {
 		        $pdf->Image($image1,0,0,86,136);
 		        $titleName = $titleName.'Advokat_'.$getKta['nama_kta'];
 	    	}
+	    	// $pdf->Output();
 	    	//forcedownload
 	        $pdf->Output('D', $titleName.".pdf");
 	        echo "PDF has been saved to " . $outputDir . $fileName;
