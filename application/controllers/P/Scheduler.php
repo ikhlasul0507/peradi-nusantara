@@ -42,6 +42,7 @@ class Scheduler extends CI_Controller
 		$db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
 		$this->backup_database($db_name);
 		echo "startScheduler :" .date('Y-m-d H:i:s')."</br>";
+		$this->M->add_log_history('System Peradi',"startScheduler :" .date('Y-m-d H:i:s'));
 		//checkDatePaymentEveryMonth
 		$this->checkDatePaymentEveryMonth();
 		//setUnpaidPayment

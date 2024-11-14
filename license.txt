@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 git status
 git add -- . ':!application/config/database.php'
-git commit -m "Update Backup Database To Email"
+git commit -m "Update startScheduler"
 git push origin master
 
 Contoh
