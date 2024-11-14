@@ -262,7 +262,7 @@
         });
     </script>
             
-
+<?php if($value['status_order'] == 'L'){ ?>
 <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -300,7 +300,7 @@
             </div>
         </div>
     </div>
-    
+    <?php } ?>
      <script>
         const rupiahInput = document.getElementById('rupiah');
 

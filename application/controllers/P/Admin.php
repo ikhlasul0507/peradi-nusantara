@@ -1026,6 +1026,10 @@ class Admin extends CI_Controller {
 
 	public function process_add_order_payment()
 	{
+		if($this->session->userdata('user_level') > 3){
+			redirect('P/Auth/process_logout');
+		}
+
 		$data = $this->M->getWhere('order_payment',['id_order_booking'=>trim($this->input->post('id_order_booking')),'sequence_payment' =>trim($this->input->post('sequence_payment')) ]);
 		if(!$data){
 			$id_virtual_account = $this->service->generateSecureRandomString(40);

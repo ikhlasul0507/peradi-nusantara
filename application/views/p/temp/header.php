@@ -272,12 +272,13 @@
                 <span>Lunas</span></a>
             </li>
             <?php if($this->session->userdata('user_level') <= 2){ ?>
+            <?php if($this->session->userdata('is_owner') == 'Y'){ ?>
             <li class="nav-item <?=$Sertifikat;?>">
                 <a class="nav-link" href="<?= base_url('P/Admin/Sertifikat');?>">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Approve Sertifikat</span></a>
             </li>
-            <?php } ?>
+            <?php }} ?>
             <?php if($this->session->userdata('user_level') <= 3){ ?>
             <li class="nav-item <?=$DoneSertifikat;?>">
                 <a class="nav-link" href="<?= base_url('P/Admin/DoneSertifikat');?>">
