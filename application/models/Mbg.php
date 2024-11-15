@@ -522,27 +522,32 @@ class Mbg extends CI_Model {
 	function getDetailQRCode($idUser, $idOrder)
 	{
 			$query= "SELECT
-				  ob.id_order_booking,
-				  ob.time_history,
-				  ob.id_order_booking,
-				  ob.status_order,
-				  ob.status_certificate,
-				  ob.number_certificate,
-				  us.email,
-				  us.nama_lengkap,
-				  us.handphone
-				FROM
-				  (SELECT
-				    *
-				  FROM
-				    order_booking) ob,
-				  (SELECT
-				    *
-				  FROM
-				    user) us
-				WHERE ob.id_user = us.id_user
+							  ob.id_order_booking,
+							  ob.time_history,
+							  ob.id_order_booking,
+							  ob.status_order,
+							  ob.status_certificate,
+							  us.email,
+							  us.nama_lengkap,
+							  us.handphone,
+							  ac.number_certificate
+							FROM
+							  (SELECT
+							    *
+							  FROM
+							    order_booking) ob,
+							  (SELECT
+							    *
+							  FROM
+							    approve_cetificate) ac,
+							  (SELECT
+							    *
+							  FROM
+							    USER) us
+							WHERE ob.id_user = us.id_user
+							  AND ob.id_order_booking = ac.id_order_booking
 				  AND ob.id_order_booking = '$idOrder'
-				  AND ob.id_user = '$idUser'";
+				  AND ob.id_user = '$idUser' GROUP BY ac.number_certificate";
 			return $this->db->query($query)->row_array();
 	}
 
