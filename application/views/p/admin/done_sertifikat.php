@@ -29,7 +29,10 @@
                             $inClause = implode(",", $array);
                             $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
                             $getListKelas = $this->db->query($query)->row_array();
-
+                            $labelNew = '';
+                            if($value['minutes_since'] < 2){
+                                $labelNew = '<span class="badge badge-warning">New</span>';
+                            }
                             ?>
                         <tr>
                             <td>
@@ -43,7 +46,7 @@
                                 <?php } ?>
                             </td>
                             <td>
-                                Waktu Order :  <?= $value['time_history'];?><br>
+                                Waktu Order :  <?= $value['time_history'].$labelNew;?><br>
                                 Nama :  <?= $value['nama_lengkap'];?><br>
                                 Handphone :  <?= $value['handphone'];?><br>
                             </td>

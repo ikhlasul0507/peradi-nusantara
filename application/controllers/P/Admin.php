@@ -1164,12 +1164,13 @@ class Admin extends CI_Controller {
 	{
 		$list_id_order = explode(",", $this->input->get('list_id_order'));
 		$dataJadwal = $this->input->get('dataJadwal')['data'];
-
+		$totalCustomer = 0;
+		$totalSertifikat = 0;
 		$check = false;
 		foreach ($list_id_order as $val) {
 			$update = $this->M->update_to_db('order_booking',['status_certificate'=>'A'],'id_order_booking',$val);
 			$orderB = $this->M->getWhere('order_booking',['id_order_booking'=>trim($val)]);
-
+			$totalCustomer++;
 			$incPKPAUPA = 0;
 			$isPKPA = false;
 			$isUPA= false;
@@ -1179,6 +1180,7 @@ class Admin extends CI_Controller {
 			$list_kelas = explode("~", $orderB['list_kelas']);
 			foreach ($list_kelas as $valIDKelas) {
 				if($valIDKelas != ""){
+					$totalSertifikat++;
 					$qrCodeName = $this->service->generateSecureRandomString(40);
 					$this->generateQRCODE($orderB['id_user'], $val, $valIDKelas, $qrCodeName);
 
@@ -1306,7 +1308,11 @@ class Admin extends CI_Controller {
 
 		}
 		if($check){
-			echo json_encode(['status_code' => 200, '$dataJadwal' => $dataJadwal]);
+			echo json_encode([
+				'status_code' => 200, 
+				'totalSertifikat' => $totalSertifikat,
+				'totalCustomer' => $totalCustomer
+			]);
 		}else{
 			echo json_encode(['status_code' => 400]);
 		}

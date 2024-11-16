@@ -53,10 +53,8 @@
     </div>
 
         <!-- Page level plugins -->
-    <script src="<?= base_url('assets/p/sistem/');?>vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="<?= base_url('assets/p/sistem/');?>js/demo/chart-area-demo.js"></script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/p/sistem/');?>vendor/jquery/jquery.min.js"></script>
@@ -131,6 +129,12 @@
                     $('#imagePreview1').hide();
                 }
             });
+        });
+
+        $('#dataTable').DataTable({
+            // Set the default number of rows shown
+            pageLength: 10, // Default rows shown
+            lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000], // Dropdown options for rows per page
         });
 
          function confirmDeleteData(url) {

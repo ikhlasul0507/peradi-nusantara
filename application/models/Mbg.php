@@ -202,6 +202,7 @@ class Mbg extends CI_Model {
 					  ob.id_user,
   					ob.id_master_kelas,
 					  ob.time_history,
+					  TIMESTAMPDIFF(MINUTE, ob.time_history, NOW()) AS minutes_since,
 					  ob.metode_bayar,
 					  ob.status_order,
 					  ob.status_certificate,

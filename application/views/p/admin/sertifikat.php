@@ -21,7 +21,7 @@
                             <th>Detail Orderan</th>
                             <th>Data</th>
                             <th>Status Orderan</th>
-                            <th><input type="checkbox" id="selectAll" onclick="toggleCheckboxes(this)"> Select All</th>
+                            <th><input type="checkbox" id="selectAll" style="width:20px; height:20px" onclick="toggleCheckboxes(this)"> Select All</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +47,7 @@
                                 <?php } ?>
                             </td>
                             <td>
+                               
                                 Waktu Order :  <?= $value['time_history'];?><br>
                                 Nama :  <?= $value['nama_lengkap'];?><br>
                                 Handphone :  <?= $value['handphone'];?><br>
@@ -64,7 +65,7 @@
                                 <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button>
                             </td>
                             <td>
-                                <input type="checkbox" class="item" name="item" value="<?= $value['id_order_booking'];?>">
+                                <input type="checkbox" class="item" name="item" value="<?= $value['id_order_booking'];?>" style="width:20px; height:20px" onclick="toggleCheckboxesOnly(this)">
                             </td>
                         </tr>
                         <?php } ?>
@@ -81,7 +82,8 @@
         <div class="modal-content">
             <form class="user" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Jadwal Pelatihan</h5>
+                    <!-- <h5 class="modal-title" id="exampleModalLabel">Jadwal Pelatihan</h5> -->
+                    <h5 class="modal-title" id="totalApprove">Total Approve : 0 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -125,10 +127,34 @@
     // Function to check or uncheck all checkboxes
     function toggleCheckboxes(source) {
         var checkboxes = document.querySelectorAll('.item');
+        var totalApprove = 0;
+
         for (var i = 0; i < checkboxes.length; i++) {
+            // Toggle the checkbox state
             checkboxes[i].checked = source.checked;
+
+            // Increment the count if the checkbox is checked
+            if (checkboxes[i].checked) {
+                totalApprove++;
+            }
         }
+        // Update the totalApprove count in the element with the correct syntax
+        document.getElementById('totalApprove').innerHTML = 'Total Approve: ' + totalApprove;
     }
+    function toggleCheckboxesOnly(source) {
+        var checkboxes = document.querySelectorAll('.item');
+        var totalApprove = 0;
+        for (var i = 0; i < checkboxes.length; i++) {
+             // Increment the count if the checkbox is checked
+            if (checkboxes[i].checked) {
+                totalApprove++;
+            }
+        }
+        // Update the totalApprove count in the element with the correct syntax
+        document.getElementById('totalApprove').innerHTML = 'Total Approve: ' + totalApprove;
+    }
+    
+
 
     // Function to get all selected checkboxes
     function getSelectedItems() {
@@ -194,14 +220,18 @@
           success: function(data){
             console.log(data);
             if(data.status_code == 200){
+                $("#loading").hide();
+                $(".loader").hide();
                 $(document).ready(function(){
-                  Swal.fire({
-                    title: "Approve berhasil",
-                  });
+                     Swal.fire({
+                        title: "Approve berhasil",
+                        text: "Total Customer: " + data.totalCustomer + ", Total Sertifikat: " + data.totalSertifikat,
+                     }).then(() => {
+                        // Reload the page after the alert is closed
+                        window.location.href = '<?php echo base_url('P/Admin/DoneSertifikat')?>';
+                     });
                 });
-                location.reload();
             }
-            location.reload();
           }             
         });
     }

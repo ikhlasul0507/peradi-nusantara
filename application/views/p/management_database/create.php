@@ -4,6 +4,8 @@
 
     <form method="POST">
          <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
+         <div style="max-height: calc(80vh - 120px);
+                overflow-y: auto;">
         <table>
             <?php foreach ($fields as $field): ?>
             <tr>
@@ -12,6 +14,7 @@
             </tr>
             <?php endforeach; ?>
         </table>
+    </div>
         <input type="submit" value="Create">
     </form>
 </div>
