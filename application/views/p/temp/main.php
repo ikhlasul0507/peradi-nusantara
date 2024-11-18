@@ -54,6 +54,7 @@
                             </div>
                             <hr style="height: 1px;color: white;background-color: white;">
                             <div class="form-group text-center">
+                                <?php if($this->session->userdata('is_digital_marketing') == 'N'){ ?>
                                 <a href="<?= base_url('P/Admin');?>" class="btn btn-danger btn-lg mt-3 ml-3">
                                     <i class="fa fa-home" aria-hidden="true" style="font-size:48px;"></i>
                                     <br>
@@ -64,7 +65,7 @@
                                     <br>
                                     <small>Report Data</small>
                                 </a>
-
+                                <?php } ?>
                                 <?php if($lock != true){ ?>
                                 <a href="<?= base_url('P/Admin/call_center');?>" class="btn btn-danger btn-lg mt-3 ml-3">
                                     <i class="fas fa-phone"style="font-size:48px;"></i>
