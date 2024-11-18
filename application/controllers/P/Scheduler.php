@@ -133,7 +133,9 @@ class Scheduler extends CI_Controller
         //send wa
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 		//send email
-		$this->service->sendEmailWithAttachment();
+		if($this->M->getParameter('@sendEmailBackupDatabase') == 'Y') {
+			$this->service->sendEmailWithAttachment();
+		}
         // Force download the file
         // force_download($db_name, $backup);
         echo "Jalankan Scheduler Backup Database </br>";
