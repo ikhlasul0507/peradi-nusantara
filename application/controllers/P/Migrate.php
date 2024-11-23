@@ -314,6 +314,30 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
+
+		//=================================================================================================
+		//quick true is msg from chatbot, false from users
+		$title = "Table structure for table `chat_whatsapp_temp`";
+		$query = "CREATE TABLE IF NOT EXISTS `chat_whatsapp_temp` (
+				  `id_chat_whatsapp_temp` int(11) NOT NULL AUTO_INCREMENT,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `quick` TINYINT(1), 
+				  `device` varchar(50) NOT NULL,
+				  `pesan` varchar(50) NOT NULL,
+				  `pengirim` text NULL,
+				  `member` varchar(50),
+				  `message` varchar(50) NOT NULL,
+				  `text` text NULL,
+				  `sender` varchar(50),
+				  `name` varchar(50),
+				  `type` varchar(20),
+				  PRIMARY KEY (`id_chat_whatsapp_temp`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
 		//=================================================================================================
 		//quick true is msg from chatbot, false from users
 		$title = "Table structure for table `logic_cs`";

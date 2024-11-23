@@ -30,6 +30,11 @@ class Welcome extends CI_Controller {
         $this->load->model('Database_model');
     }
 
+    public function replaceHP () {
+			$phone = "082280802808";
+			$updatedPhone = preg_replace("/^0822/", "62822", $phone);
+			echo $updatedPhone;
+    }
     public function duplicate() {
         
         $original_db = 'db_peradi'; 

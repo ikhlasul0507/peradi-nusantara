@@ -67,7 +67,7 @@ class Callcenter extends CI_Controller {
     		$send_db = [
     			'id_user' => $id_userWa,
     			'customer_name' => $namalengkap,
-    			'customer_phone' => $handphone,
+    			'customer_phone' => preg_replace("/^08/", "628",$handphone),
     			'notes_call' => "",
     			'last_call' => $formattedDate,
     			'status_call_center' => "N"
