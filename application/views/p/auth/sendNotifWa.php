@@ -170,8 +170,7 @@
                                             required 
                                             name="namalengkap" 
                                             id="namalengkap" 
-                                            placeholder="Nama lengkap" 
-                                            onkeypress="return isAlphaKey(event,'nama')">
+                                            placeholder="Nama lengkap">
                                 </div>
                                 <div class="form-group">
                                    <input type="tel" class="form-control"
