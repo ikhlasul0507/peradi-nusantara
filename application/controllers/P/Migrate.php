@@ -455,7 +455,8 @@ class Migrate extends CI_Controller
 					(48, '@sendNotifAutoChatbotFromSystem', 'Y', 'O'),
 					(49, '@recordChatWaOfficial', 'Y', 'O'),
 					(50, '@apiKeyRemoveBG', 'kwc1EuNi1vCsbrJWoLKbXtYo', 'T'),
-					(51, '@sendEmailBackupDatabase', 'Y', 'O')
+					(51, '@sendEmailBackupDatabase', 'Y', 'O'),
+					(52, '@recordChatWaTemp', 'Y', 'O')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";
