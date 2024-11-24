@@ -609,6 +609,9 @@ class Mbg extends CI_Model {
     								OR hc.customer_phone COLLATE utf8mb4_general_ci = CONCAT('62', SUBSTRING(op.handphone, 2))) 
 							  $queryWhere ";
 
+		 if($where == "id"){
+	   		$query = $query . " WHERE hc.id_history_call_center='$valuewhere'";
+	   }
 		 if($id_user != null){
 		 			$query = $query . " AND hc.id_user='$id_user'";
 		 }
@@ -617,11 +620,8 @@ class Mbg extends CI_Model {
 									  OR hc.customer_name LIKE '%$valuewhere%'
 									  OR hc.customer_phone LIKE '%$valuewhere%')";
 	   }
-	   if($where == "id"){
-	   		$query = $query . " AND hc.id_history_call_center='$valuewhere'";
-	   }
+	  
 	   $query = $query . " ORDER BY hc.priority DESC, hc.time_history DESC";
-
 		 return $this->db->query($query)->result_array();
 
 	}
