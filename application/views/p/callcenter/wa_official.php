@@ -134,7 +134,7 @@
                         <a href="<?= base_url('P/Admin/main');?>">
                             <i class="fas fa-sign-out-alt text-light fa-lg fa-fw mr-2"></i>
                         </a>
-                        <a href="#" id="showGroup"><i class="fa fa-book text-light mr-2 fa-lg"></i></a>
+                        <a href="<?= base_url('P/Callcenter/sync');?>" id="showGroup" class="text-light"><i class="fas fa-fw text-light fa-tachometer-alt"></i>Sync</a>
                         <h6 class="m-0 font-weight-bold text-light">Daftar Kontak
                         </h6>
                         <input type="date" value="<?= date('Y-m-d');?>" id="searchDate" class="form-control col-6" name="" minlength="20">

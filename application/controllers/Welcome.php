@@ -32,8 +32,25 @@ class Welcome extends CI_Controller {
 
     public function replaceHP () {
 			$phone = "082280802808";
-			$updatedPhone = preg_replace("/^0822/", "62822", $phone);
+			$updatedPhone = preg_replace("/^08/", "628", $phone);
 			echo $updatedPhone;
+			$pesan = "Halo Peradi Nusantara. Saya Ingin Bertanya nih.,";
+		if (
+            strpos($pesan, 'Halo') !== false || strpos($pesan, 'halo') !== false ||
+            strpos($pesan, 'Halo!') !== false || strpos($pesan, 'halo!') !== false ||
+            strpos($pesan, 'Halo,') !== false || strpos($pesan, 'halo,') !== false ||
+            strpos($pesan, 'hallo,') !== false || strpos($pesan, 'Hallo,') !== false ||
+            strpos($pesan, 'hello,') !== false || strpos($pesan, 'Hello,') !== false ||
+            strpos($pesan, 'hello!') !== false || strpos($pesan, 'Hello!') !== false ||
+            strpos($pesan, 'admin,') !== false || strpos($pesan, 'Admin,') !== false
+        ) {
+        	echo "masuk";
+		}else{
+			echo "tidak masuk";
+		}
+
+		$countPengirim = count("120363241565334981@g.us");
+		echo "countPengirim = " . $countPengirim;
     }
     public function duplicate() {
         
@@ -42,6 +59,7 @@ class Welcome extends CI_Controller {
 
         $result = $this->Database_model->duplicate_database($original_db, $new_db);
 		echo $result;
+
     }
 
     public function sendEmailWithAttachment() {

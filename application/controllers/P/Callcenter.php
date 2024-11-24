@@ -177,5 +177,8 @@ class Callcenter extends CI_Controller {
 	    return $choose_id_user; // Return selected user ID
 	}
 
-
+	public function sync()
+	{
+		redirect("P/Admin/call_center");
+	}
 }
