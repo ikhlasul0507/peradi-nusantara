@@ -456,7 +456,9 @@ class Migrate extends CI_Controller
 					(49, '@recordChatWaOfficial', 'Y', 'O'),
 					(50, '@apiKeyRemoveBG', 'kwc1EuNi1vCsbrJWoLKbXtYo', 'T'),
 					(51, '@sendEmailBackupDatabase', 'Y', 'O'),
-					(52, '@recordChatWaTemp', 'Y', 'O')
+					(52, '@recordChatWaTemp', 'Y', 'O'),
+					(53, '@intervalClearPaymentExpired', '2', 'T'),
+					(54, '@intervalClearWhatsappTemp', '7', 'T')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";

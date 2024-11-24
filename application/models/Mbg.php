@@ -760,12 +760,21 @@ class Mbg extends CI_Model {
 			return $this->db->query($query)->result_array();
 	}
 
-	function clearPaymentExpiredAfterGenerated()
+	function clearPaymentExpiredAfterGenerated($interval)
 	{
 			return $this->db->query("DELETE FROM order_payment
 			WHERE status_payment = 'G' 
-			  AND time_history < DATE_SUB(NOW(), INTERVAL 2 DAY);
+			  AND time_history < DATE_SUB(NOW(), INTERVAL $interval DAY)
 			");
+	}
+
+	function clearWhatsappTemp($interval)
+	{
+			return $this->db->query("DELETE
+			FROM
+			  chat_whatsapp_temp
+			WHERE time_history < DATE_SUB(NOW(),
+			  INTERVAL $interval DAY) ORDER BY time_history DESC");
 	}
 
 }

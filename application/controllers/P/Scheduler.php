@@ -55,6 +55,8 @@ class Scheduler extends CI_Controller
 		$this->engineSendNotifPayment();
 		//clearPaymentExpiredAfterGenerated
 		$this->clearPaymentExpiredAfterGenerated();
+		//clearWhatsappTemp
+		$this->clearWhatsappTemp();
 	}
 
 	public function setUnpaidPayment()
@@ -181,9 +183,21 @@ class Scheduler extends CI_Controller
 
     public function clearPaymentExpiredAfterGenerated()
 	{
-		$this->M->clearPaymentExpiredAfterGenerated();
+		$intervalClearPaymentExpired = (int)$this->M->getParameter('@intervalClearPaymentExpired');
+
+		$this->M->clearPaymentExpiredAfterGenerated($intervalClearPaymentExpired);
 		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler clearPaymentExpiredAfterGenerated'];
 		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 		echo "clearPaymentExpiredAfterGenerated</br>";
+	}
+
+	public function clearWhatsappTemp()
+	{
+		$intervalclearWhatsappTemp = (int)$this->M->getParameter('@intervalClearWhatsappTemp');
+
+		$this->M->clearWhatsappTemp($intervalclearWhatsappTemp);
+		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler clearWhatsappTemp'];
+		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+		echo "clearWhatsappTemp</br>";
 	}
 }
