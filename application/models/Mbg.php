@@ -721,7 +721,11 @@ class Mbg extends CI_Model {
 	   if($searchDate != null){
 		 			$query = $query . " AND DATE(hc.time_history) = '$searchDate'";
 		 }
-	   $query = $query . " ORDER BY hc.priority DESC, hc.time_history DESC";
+		  // Add GROUP BY clause to group by id_history_call_center
+    	$query = $query . " GROUP BY hc.id_history_call_center"; 
+
+    	// Add ORDER BY clause to order by priority and time
+    	$query = $query . " ORDER BY hc.priority DESC, hc.time_history DESC";
 
 		 return $this->db->query($query)->result_array();
 
