@@ -137,7 +137,7 @@
             z-index: 999; /* Ensure it's on top */
         }
     </style>
-    <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
+    <!-- <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script> -->
 </head>
 
 <body class="bg-default"> 
@@ -167,8 +167,8 @@
                                     <div class="status-indicator bg-success"></div>
                                 </div>
                                 <div class="font-weight-bold">
-                                    <div class="text-truncate text-primary" id="nameCustomer">Contoh Name</div>
-                                    <div class="small text-truncate">Contoh, Online 5m Ago</div>
+                                    <div class="text-truncate text-primary" id="nameCustomer">Loading...</div>
+                                    <div class="small text-truncate">Loading...</div>
                                 </div>
                             </a>
                         </div>
@@ -331,7 +331,7 @@
     
 </body>
 
-<script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script>
+<!-- <script src="<?= base_url('assets/p/sistem/');?>js/validation.js"></script> -->
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/p/sistem/');?>vendor/jquery/jquery.min.js"></script>
 <script src="<?= base_url('assets/p/sistem/');?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -654,7 +654,7 @@
         }
         value = localStorage.getItem('search');
         $.ajax({
-            url: "<?php echo base_url('P/Admin/get_data_call_center'); ?>", // AJAX URL to the controller function
+            url: "<?php echo base_url('P/Admin/get_data_call_center_first'); ?>", // AJAX URL to the controller function
             type: "GET",
             data: { query: value },
             dataType: "json", // Expect JSON data

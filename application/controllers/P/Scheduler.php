@@ -66,7 +66,7 @@ class Scheduler extends CI_Controller
 		if ($dayOfMonth == $datePayment){
 
 			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler donePaymentEveryMonth To N'];
-			$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+			// $this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'N'],'nama_parameter','@donePaymentEveryMonth');
 
@@ -80,7 +80,7 @@ class Scheduler extends CI_Controller
 		if ($dayOfMonth == $datePayment && $this->M->getParameter('@donePaymentEveryMonth') == 'N') {
 
 			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler Lock Login For EveryOne'];
-			$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+			// $this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'Y'],'nama_parameter','@lockLoginForEveryOne');
 			echo "lockLoginForEveryOne = Y </br>";
@@ -94,7 +94,7 @@ class Scheduler extends CI_Controller
 		if ($dayOfMonth == $datePayment){
 
 			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler donePaymentEveryMonth To N'];
-			$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+			// $this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'N'],'nama_parameter','@donePaymentCSEveryMonth');
 
@@ -108,7 +108,7 @@ class Scheduler extends CI_Controller
 		if ($dayOfMonth == $datePayment && $this->M->getParameter('@donePaymentCSEveryMonth') == 'N') {
 
 			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler Lock Login For EveryOne CS'];
-			$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+			// $this->service->send_whatsapp($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'Y'],'nama_parameter','@lockLoginForEveryOneCS');
 			echo "lockLoginForEveryOneCS = Y </br>";

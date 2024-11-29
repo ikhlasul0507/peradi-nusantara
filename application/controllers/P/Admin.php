@@ -103,6 +103,24 @@ class Admin extends CI_Controller {
         echo json_encode($data);
     }
 
+    public function get_data_call_center_first() {
+		$query = $this->input->get('query');
+		if($query != ""){
+			if($this->session->userdata('user_level') <= 2){
+        		$data =$this->M->getListHistoryCallFirst("query", $query);
+			}else{
+        		$data =$this->M->getListHistoryCallFirst("query", $query,$this->session->userdata('id_user'));
+			}
+    	}else{
+    		if($this->session->userdata('user_level') <= 2){
+				$data = $this->M->getListHistoryCallFirst();
+			}else{
+				$data = $this->M->getListHistoryCallFirst(null,null,$this->session->userdata('id_user'));
+			}
+    	}
+        echo json_encode($data);
+    }
+
     public function get_data_call_center_detail() 
     {
 		$query = $this->input->get('query');

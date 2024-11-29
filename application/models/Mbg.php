@@ -626,6 +626,71 @@ class Mbg extends CI_Model {
 
 	}
 
+	function getListHistoryCallFirst($where = null, $valuewhere = null, $id_user = null)
+	{
+		 $queryWhere = '';
+		 if($valuewhere === "showSampah"){
+		 		$queryWhere = "WHERE hc.is_deleted='Y'";
+		 }else if($valuewhere === ""){
+		 		$queryWhere = "WHERE hc.is_deleted='N'";
+		 }else if($where == "query" && $valuewhere !== "showSampah"){
+		 		$queryWhere = "WHERE (hc.is_deleted='Y' OR hc.is_deleted='N') ";
+		 }
+		 $query = "SELECT 
+								    hc.*, 
+								    op.id_virtual_account 
+								FROM 
+								    (SELECT 
+								         hc.*,
+								         TIMESTAMPDIFF(SECOND, hc.last_call, NOW()) AS seconds_since_last_call,
+								         TIMESTAMPDIFF(MINUTE, hc.last_call, NOW()) AS minutes_since_last_call,
+								         TIMESTAMPDIFF(HOUR, hc.last_call, NOW()) AS hours_since_last_call,
+								         us.nama_lengkap,
+								         us.foto_ktp
+								     FROM 
+								         history_call_center AS hc
+								     INNER JOIN 
+								         user AS us 
+								         ON hc.id_user = us.id_user
+								    ) AS hc
+								LEFT JOIN 
+								    (SELECT 
+								         us.id_user,
+								         us.handphone,
+								         MAX(ap.id_virtual_account) AS id_virtual_account
+								     FROM 
+								         user AS us
+								     INNER JOIN 
+								         order_booking AS ob 
+								         ON us.id_user = ob.id_user
+								     INNER JOIN 
+								         order_payment AS ap 
+								         ON ob.id_order_booking = ap.id_order_booking
+								     GROUP BY 
+								         us.id_user, us.handphone
+								    ) AS op 
+								ON 
+								    hc.customer_phone COLLATE utf8mb4_general_ci = op.handphone
+								    OR hc.customer_phone COLLATE utf8mb4_general_ci = CONCAT('62', SUBSTRING(op.handphone, 2))
+							  $queryWhere ";
+
+		 if($where == "id"){
+	   		$query = $query . " WHERE hc.id_history_call_center='$valuewhere'";
+	   }
+		 if($id_user != null){
+		 			$query = $query . " AND hc.id_user='$id_user'";
+		 }
+	   if($where == "query" && $valuewhere !== "showSampah"){
+	   		$query = $query . " AND (hc.nama_lengkap LIKE '%$valuewhere%'
+									  OR hc.customer_name LIKE '%$valuewhere%'
+									  OR hc.customer_phone LIKE '%$valuewhere%')";
+	   }
+	  
+	   $query = $query . " ORDER BY hc.priority DESC, hc.time_history DESC LIMIT 50";
+		 return $this->db->query($query)->result_array();
+
+	}
+
 	function getChatWhatsappOfficial($dateToday = null)
 	{	
 			$whereDate = "";
