@@ -44,13 +44,9 @@ class Scheduler extends CI_Controller
 		echo "startScheduler :" .date('Y-m-d H:i:s')."</br>";
 		$this->M->add_log_history('System Peradi',"startScheduler :" .date('Y-m-d H:i:s'));
 		//checkDatePaymentEveryMonth
-		$this->checkDatePaymentEveryMonth();
 		//setUnpaidPayment
-		$this->setUnpaidPayment();
 		//checkDatePaymentEveryMonthCS
-		$this->checkDatePaymentEveryMonthCS();
 		//setUnpaidPayment
-		$this->setUnpaidPaymentCS();
 		//engineSendNotifPayment
 		$this->engineSendNotifPayment();
 		//clearPaymentExpiredAfterGenerated
