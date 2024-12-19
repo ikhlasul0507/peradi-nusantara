@@ -18,6 +18,14 @@
             <div class="card shadow border-left-primary mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary"><button class="btn btn-danger" disabled><?= $list_kelas_data['nama_kelas'];?></button></h6>
+                    <?php if($this->session->userdata('user_level') <= 3){ 
+                        if($value['is_paid'] == 'N'){ ?>
+                            <img class="img-fluid" style="width: 10rem; height: 5rem"
+                                src="<?= base_url('assets/p/img/cap-unpaid.jpg');?>" alt="...">
+                        <?php }else{ ?>
+                            <img class="img-fluid" style="width: 10rem; height: 5rem"
+                                src="<?= base_url('assets/p/img/paid_order.jpg');?>" alt="...">
+                    <?php }} ?>
                 </div>
                 <form action="<?= base_url('P/Admin/process_valid_order')?>" method="post">
                     <input type="hidden" name="nama_kelas" value="<?= $list_kelas_data['nama_kelas'];?>">

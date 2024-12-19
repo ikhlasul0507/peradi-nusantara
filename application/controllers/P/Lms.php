@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Lms extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -40,9 +40,9 @@ class Admin extends CI_Controller {
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
-		$this->load->view('p/temp/header',$data);
+		$this->load->view('p/lms/header',$data);
 		$this->load->view('p/admin/product',$data);
-		$this->load->view('p/temp/footer');
+		$this->load->view('p/lms/footer');
 	}
 
 	public function main()
@@ -294,29 +294,6 @@ class Admin extends CI_Controller {
 		$data['list_pic'] = explode(",",$this->M->getParameter('@picRegister'));
 		$this->load->view('p/report/header',$data);
 		$this->load->view('p/report/report_kta_peserta', $data);
-		$this->load->view('p/temp/footer');
-	}
-
-	public function report_payment_order()
-	{
-		$datefrom = trim($this->input->post('datefrom'));
-		$datethru = trim($this->input->post('datethru'));
-		$nama_lengkap = trim($this->input->post('nama_lengkap'));
-		$status = trim($this->input->post('statusOB'));
-		if($datefrom != "" || $datethru != "" || $nama_lengkap != "" || $status != ""){
-			$data['list_report'] = $this->M->get_report_payment_order($datefrom,$datethru,$nama_lengkap, $status);
-		}else{
-			$data['list_report'] = [];
-		}
-		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
-		$data['previous_url'] = $this->input->server('HTTP_REFERER');
-
-		$data['datefrom'] = $datefrom;
-		$data['datethru'] = $datethru;
-		$data['nama_lengkap'] = $nama_lengkap;
-		$data['status'] = $status;
-		$this->load->view('p/report/header',$data);
-		$this->load->view('p/report/report_payment_order', $data);
 		$this->load->view('p/temp/footer');
 	}
 	
@@ -1352,29 +1329,6 @@ class Admin extends CI_Controller {
 			echo json_encode([
 				'status_code' => 200, 
 				'totalSertifikat' => $totalSertifikat,
-				'totalCustomer' => $totalCustomer
-			]);
-		}else{
-			echo json_encode(['status_code' => 400]);
-		}
-	}
-
-	public function changes_payment_order()
-	{
-		$list_id_order = explode(",", $this->input->get('list_id_order'));
-		$status = $this->input->get('dataJadwal')['data']['status'];
-
-		$totalCustomer = 0;
-		$totalSertifikat = 0;
-		$check = false;
-		foreach ($list_id_order as $val) {
-			$this->M->update_to_db('order_booking',['is_paid'=>$status],'id_order_booking',$val);
-			$totalCustomer++;
-			$check = true;
-		}
-		if($check){
-			echo json_encode([
-				'status_code' => 200,
 				'totalCustomer' => $totalCustomer
 			]);
 		}else{

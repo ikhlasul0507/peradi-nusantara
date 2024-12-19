@@ -401,42 +401,6 @@
                             </a>
                   
                         </li>
-                        <?php if($this->session->userdata('user_level') <= 1){ ?>
-                          <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw fa-fw text-gray-600"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center Peradi Nusantara
-                                </h6>
-                                <?php for ($i=0; $i < 5; $i++) {?>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
-                                    </button>
-                                    <div class="dropdown-list-image mr-3 ml-3">
-                                        <img class="rounded-circle" src="<?= base_url('assets/p/sistem/img/logo.png');?>"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Septa Muliyantika Agelia</div>
-                                        <div class="small text-gray-500">Ikhlasul Amal, Online 58m Ago</div>
-                                    </div>
-                                </a>
-                                <?php } ?>
-                           
-                                <a class="dropdown-item text-center text-light bg-primary" href="#">Read More Messages</a>
-                            </div>
-                        </li>
-                        <?php } ?>
 
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">

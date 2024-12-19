@@ -60,6 +60,11 @@
                                     <br>
                                     <small>System Info</small>
                                 </a>
+                                <a href="<?= base_url('P/Lms');?>" class="btn btn-danger btn-lg mt-3 ml-3">
+                                    <i class="fa fa-home" aria-hidden="true" style="font-size:48px;"></i>
+                                    <br>
+                                    <small>System LMS</small>
+                                </a>
                                 <a href="<?= base_url('P/Admin/report');?>" class="btn btn-danger btn-lg mt-3 ml-3">
                                     <i class="fa fa-book" aria-hidden="true" style="font-size:48px;"></i>
                                     <br>

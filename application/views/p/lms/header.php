@@ -201,7 +201,6 @@
                 $parameter = "";
                 $report_peserta = "";
                 $report_kta_peserta = "";
-                $report_payment_order = "";
                 $master = "";
                 $process = "";
 
@@ -210,9 +209,7 @@
                      $report_peserta = "active";
                 }else if($segment2 == "report_kta_peserta"){
                      $report_kta_peserta = "active";
-                }else if($segment2 == "report_payment_order"){
-                    $report_payment_order = "active";
-               }
+                }
             ?>
 
             <!-- Divider -->
@@ -229,14 +226,6 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Detail  KTA Peserta</span></a>
             </li>
-            <?php if($this->session->userdata('user_level') <= 2){ ?>
-            <?php if($this->session->userdata('is_owner') == 'Y'){ ?>
-            <li class="nav-item <?=$report_kta_peserta;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/report_payment_order');?>">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Detail  Payment Order</span></a>
-            </li>
-            <?php }} ?>
             <!-- <li class="nav-item <?=$report_pembayaran;?>">
                 <a class="nav-link" href="<?= base_url('P/Payment/report_pembayaran');?>">
                     <i class="fas fa-fw fa-book"></i>
@@ -290,8 +279,7 @@
                             </a>
                   
                         </li>
-                  
-
+                 
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"

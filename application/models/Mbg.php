@@ -245,6 +245,7 @@ class Mbg extends CI_Model {
 					  ob.list_kelas,
 					  ob.status_certificate,
 					  ob.angkatan_kelas,
+					  ob.is_paid,
 					  us.nama_lengkap,
   					us.handphone,
   					us.reference,
@@ -856,6 +857,48 @@ class Mbg extends CI_Model {
 			  chat_whatsapp_temp
 			WHERE time_history < DATE_SUB(NOW(),
 			  INTERVAL $interval DAY) ORDER BY time_history DESC");
+	}
+
+	function get_report_payment_order($datefrom, $datethru,$name_peserta, $status)
+	{
+		$query = "SELECT 
+						ob.id_order_booking, 
+						ob.id_user, 
+						ob.id_master_kelas, 
+						ob.time_history, 
+						ob.metode_bayar, 
+						ob.status_order, 
+						ob.status_certificate, 
+						ob.is_paid, 
+						us.nama_lengkap, 
+						us.handphone, 
+						us.reference, 
+						us.pic, 
+						REPLACE(REPLACE(ob.angkatan_kelas, 'angkatan', 'Angkatan'), '~', ',') AS angkatan_kelas,
+						ob.list_kelas, 
+						GROUP_CONCAT(DISTINCT mk.nama_kelas ORDER BY mk.nama_kelas SEPARATOR ', ') AS nama_kelas
+					FROM 
+						order_booking ob
+					LEFT JOIN 
+						master_kelas mk ON FIND_IN_SET(mk.id_master_kelas, REPLACE(ob.list_kelas, '~', ',')) > 0
+					JOIN 
+						user us ON ob.id_user = us.id_user
+					WHERE ob.time_history >= '$datefrom' 
+    						AND ob.time_history <= '$datethru'";
+
+					if($name_peserta != null){
+						$query = $query . " AND us.nama_lengkap LIKE '%$name_peserta%'";
+					}
+
+					if($status != null){
+						$query = $query . " AND ob.is_paid = '$status'";
+					}
+
+					$query = $query. " GROUP BY 
+						ob.id_order_booking, ob.id_user, ob.id_master_kelas, ob.time_history, ob.metode_bayar, 
+						ob.status_order, ob.status_certificate, ob.is_paid, us.nama_lengkap, us.handphone, 
+						us.reference, us.pic";
+		return $this->db->query($query)->result_array();
 	}
 
 }

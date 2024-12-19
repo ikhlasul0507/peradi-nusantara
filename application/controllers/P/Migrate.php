@@ -23,7 +23,7 @@ class Migrate extends CI_Controller
 	{
 		$this->writeLine();
 		echo "<b>..............Time Migrate " . date("d-m-Y h:m:s") . "</b></br>";
-		$this->setDBIncludeCharacter();
+	
 		$this->writeLine();
 		$this->addnewtable();
 		$this->writeLine();
@@ -33,6 +33,8 @@ class Migrate extends CI_Controller
 		$this->writeLine();
 		$this->insertDataTable();
 		$this->writeLine();
+		$this->setDBIncludeCharacter();
+		$this->updateDataTable();
 		echo "<h4>Congratulations your migrate successfully 100%</h4>";
 		$this->writeLine();
 		// redirect("L_a");
@@ -173,7 +175,7 @@ class Migrate extends CI_Controller
 		$title = "Table structure for table `order_booking`";
 		$query = "CREATE TABLE IF NOT EXISTS `order_booking` (
 				  `id_order_booking` int(11) NOT NULL AUTO_INCREMENT,
-				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  `time_history` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				  `id_user` int(11) NOT NULL,
 				  `id_master_kelas` int(11) NOT NULL,
 				  `metode_bayar` varchar(50) NOT NULL,
@@ -386,6 +388,25 @@ class Migrate extends CI_Controller
 		} else {
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
+
+		//=================================================================================================
+		$title = "Table structure for table `materi_kelas`";
+		$query = "CREATE TABLE IF NOT EXISTS `materi_kelas` (
+					  `id_materi_kelas` int(11) NOT NULL AUTO_INCREMENT,
+					  `id_master_kelas` varchar(128) NOT NULL,
+					  `angkatan` int(11) NOT NULL,
+					  `sequence` int(11) NOT NULL,
+					  `dokument_materi`varchar(128) NOT NULL,
+					  `dokument_video`varchar(128) NOT NULL,
+					  `link_zoom`varchar(128) NOT NULL,
+					  `status_materi_kelas` char(1) NOT NULL,
+					   PRIMARY KEY (id_materi_kelas)
+					) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
 	}
 
 
@@ -494,6 +515,21 @@ class Migrate extends CI_Controller
 			echo "||............[Migrate failed " . $title . "]</br>";
 		}
 	}
+
+	public function updateDataTable()
+	{
+
+		//=================================================================================================
+		$title = "Update data for table `order_booking`";
+		$query = "UPDATE order_booking SET angkatan_kelas = 'angkatan-10~' WHERE angkatan_kelas = ''";
+		if ($this->db->query($query)) {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		} else {
+			echo "||............[Migrate failed " . $title . "]</br>";
+		}
+	}
+	
+
 	public function alterTableIndex()
 	{
 		$column = "sender";
@@ -1048,6 +1084,42 @@ class Migrate extends CI_Controller
 		}
 		//=================================================================================================
 
+		//=================================================================================================
+		$column = "is_paid"; //hot, warm, could, closing
+		$table_name = "order_booking";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column char(1) DEFAULT 'N'";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+
+		//=================================================================================================
+		$column = "time_history";
+		$table_name = "order_booking";
+		$title = "Change Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			MODIFY $column TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
 
 	}
 
