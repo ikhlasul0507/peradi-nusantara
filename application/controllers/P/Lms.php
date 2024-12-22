@@ -35,16 +35,136 @@ class Lms extends CI_Controller {
 	}
 	public function index()
 	{	
-
-		$data['list_data'] = $this->M->getAllMasterWhereOneCondition('master_kelas','is_active','Y');
+		$data['list_data'] = $this->M->getAllDataMateriKelas();
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$this->load->view('p/lms/header',$data);
-		$this->load->view('p/admin/product',$data);
+		$this->load->view('p/lms/list_master_materi',$data);
 		$this->load->view('p/lms/footer');
 	}
 
+
+	
+	public function add_master_materi()
+	{
+		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
+		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$data['list_master_kelas'] = $this->M->getAllMasterWhereOneCondition('master_kelas','is_active','Y');
+		$this->load->view('p/lms/header',$data);
+		$this->load->view('p/lms/add_master_materi',$data);
+		$this->load->view('p/lms/footer');
+	}
+
+	public function process_add_master_materi()
+	{
+		$upload = $this->service->do_upload('file','dokument_materi');
+		if($upload['code'] == 200){
+			$data_db = [
+				'id_master_kelas' => trim($this->input->post('id_master_kelas')),
+				'angkatan' => trim($this->input->post('angkatan')),
+				'sequence' => 1,
+				'dokument_materi' => $upload['upload_data']['file_name'],
+				'dokument_video' => trim($this->input->post('dokument_video')),
+				'link_zoom' => trim($this->input->post('link_zoom')),
+				'date_field' => trim($this->input->post('date_field')),
+				'waktu' => trim($this->input->post('waktu')),
+				'status_materi_kelas' => 'A',
+			];
+			$add_db = $this->M->add_to_db('materi_kelas', $data_db);
+			if($add_db){
+				$this->M->add_log_history($this->session->userdata('nama_lengkap'),"process_add_materi_kelas");
+				$data = $this->session->set_flashdata('pesan', 'Berhasil tambah data !');
+				redirect('P/Lms/add_master_materi',$data);
+			}
+		}else{
+			$data = $this->session->set_flashdata('pesan', 'Upload foto gagal !');
+			redirect('P/Lms/add_master_materi',$data);
+		}
+	}
+
+	public function list_master_materi()
+	{
+		$data['list_data'] = $this->M->getAllDataMateriKelas();
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$this->load->view('p/lms/header',$data);
+		$this->load->view('p/lms/list_master_materi', $data);
+		$this->load->view('p/lms/footer');
+	}
+
+	public function delete_materi_kelas($id)
+	{
+		if($id){
+			$data = $this->M->getWhere('materi_kelas',['id_materi_kelas'=>trim($id)]);
+			if($data){
+				$delete_foto = $this->service->delete_photo('file',$data['dokument_materi']);
+				if($delete_foto['code'] == 200){
+					$this->M->add_log_history($this->session->userdata('nama_lengkap'),"delete_materi_kelas " .$data['id_materi_kelas']);
+					$this->M->delete_to_db('materi_kelas','id_materi_kelas',$id);
+					$data = $this->session->set_flashdata('pesan', 'Berhasil di hapus !');
+					redirect('P/Lms/list_master_materi',$data);
+				}else{
+					$data = $this->session->set_flashdata('pesan', 'Gagal di hapus !');
+					redirect('P/Lms/list_master_materi',$data);
+				}
+			}else{
+				$data = $this->session->set_flashdata('pesan', 'Gagal di hapus !');
+				redirect('P/Lms/list_master_materi',$data);
+			}
+		}else{
+			$data = $this->session->set_flashdata('pesan', 'Gagal di hapus !');
+			redirect('P/Lms/list_master_materi',$data);
+		}
+	}
+
+	public function edit_materi_kelas($id)
+	{
+		$data['startAngkatan'] = (int) $this->M->getParameter('@startNumberAngkatan');
+		$data['endAngkatan'] = (int) $this->M->getParameter('@endNumberAngkatan');
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$data['list_master_kelas'] = $this->M->getAllMasterWhereOneCondition('master_kelas','is_active','Y');
+		$data['value'] = $this->M->getWhere('materi_kelas',['id_materi_kelas'=>trim($id)]);
+		$this->load->view('p/lms/header',$data);
+		$this->load->view('p/lms/edit_master_materi',$data);
+		$this->load->view('p/lms/footer');
+	}
+
+	public function process_edit_master_materi()
+	{
+		$fileMateri = trim($this->input->post('dokument_materi_lama'));
+		if(isset($_FILES['dokument_materi']) && $_FILES['dokument_materi']['error'] === UPLOAD_ERR_OK){
+			if(trim($this->input->post('dokument_materi_lama')) != ''){
+				$delete_foto = $this->service->delete_photo('file',trim($this->input->post('dokument_materi_lama')));
+			}
+			$upload = $this->service->do_upload('file','dokument_materi');
+			$fileMateri = $upload['upload_data']['file_name'];
+		}
+		
+		$data_db = [
+			'id_master_kelas' => trim($this->input->post('id_master_kelas')),
+			'angkatan' => trim($this->input->post('angkatan')),
+			'sequence' => 1,
+			'dokument_materi' => $fileMateri,
+			'dokument_video' => trim($this->input->post('dokument_video')),
+			'link_zoom' => trim($this->input->post('link_zoom')),
+			'date_field' => trim($this->input->post('date_field')),
+			'waktu' => trim($this->input->post('waktu')),
+			'status_materi_kelas' => 'A',
+		];
+		$add_db = $this->M->update_to_db('materi_kelas', $data_db, 'id_materi_kelas', trim($this->input->post('id_materi_kelas')));
+		if($add_db){
+			$this->M->add_log_history($this->session->userdata('nama_lengkap'),"process_edit_materi_kelas");
+			$data = $this->session->set_flashdata('pesan', 'Berhasil edit data !');
+			redirect('P/Lms/list_master_materi',$data);
+		}
+
+	}
+
+	//end
 	public function main()
 	{	
 		$isLock = true;
@@ -546,14 +666,6 @@ class Lms extends CI_Controller {
 		$this->load->view('p/temp/footer');
 	}
 
-	public function add_master_product()
-	{
-		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
-		$data['previous_url'] = $this->input->server('HTTP_REFERER');
-		$this->load->view('p/temp/header',$data);
-		$this->load->view('p/admin/add_master_product');
-		$this->load->view('p/temp/footer');
-	}
 
 	public function detail_master_product($id)
 	{

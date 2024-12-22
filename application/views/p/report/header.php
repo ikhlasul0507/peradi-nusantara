@@ -21,6 +21,7 @@
     <link href="<?= base_url('assets/p/sistem/');?>css/sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= base_url('assets/p/sistem/');?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="<?= base_url('assets/sweetalert/');?>js/sweetalert2.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style type="text/css">
         
         .container-fluid {
@@ -202,6 +203,8 @@
                 $report_peserta = "";
                 $report_kta_peserta = "";
                 $report_payment_order = "";
+                $report_result_exam = "";
+                $process_exam = "";
                 $master = "";
                 $process = "";
 
@@ -212,7 +215,11 @@
                      $report_kta_peserta = "active";
                 }else if($segment2 == "report_payment_order"){
                     $report_payment_order = "active";
-               }
+                }else if($segment2 == "process_exam"){
+                    $process_exam = "active";
+                }else if($segment2 == "report_result_exam"){
+                    $report_result_exam = "active";
+                }
             ?>
 
             <!-- Divider -->
@@ -236,12 +243,18 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Detail  Payment Order</span></a>
             </li>
-            <?php }} ?>
-            <!-- <li class="nav-item <?=$report_pembayaran;?>">
-                <a class="nav-link" href="<?= base_url('P/Payment/report_pembayaran');?>">
+            <li class="nav-item <?=$report_result_exam;?>">
+                <a class="nav-link" href="<?= base_url('P/Admin/report_result_exam');?>">
                     <i class="fas fa-fw fa-book"></i>
-                    <span>Detail  Pembayaran</span></a>
-            </li> -->
+                    <span>Detail  Hasil Ujian</span></a>
+            </li>
+            <?php }} ?>
+            
+            <li class="nav-item <?=$process_exam;?>">
+                <a class="nav-link" href="<?= base_url('P/Admin/process_exam');?>">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Proses Ujian Peserta</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

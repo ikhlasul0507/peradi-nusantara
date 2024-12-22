@@ -66,6 +66,7 @@
                             <hr>
                             <?php 
                             $tahapBayar = explode(",", $list_kelas_data['nama_kelas']);
+                            $idmasterkelas = explode(",", $list_kelas_data['id_master_kelas']);
                             $idx = 0;
                             foreach ($tahapBayar as $t) { ?>
                                 <?php if($value['angkatan_kelas'] == ""){ ?>
@@ -83,9 +84,10 @@
                                 <?php }else{ 
                                     echo "(".$t.") : ";
                                     $arrAngkatan = explode("~", $value['angkatan_kelas']);
+                                    $angkaAng = explode("-", ucfirst($arrAngkatan[$idx]));
                                     echo ucfirst($arrAngkatan[$idx]);
-                                }
-                                ?>
+                                    echo '--<a href="'.base_url('P/Admin/bukaKelas/').$angkaAng[1].'/'.$idmasterkelas[$idx].'" class="badge badge-danger" >Buka Jadwal Kelas</a>';
+                                } ?>
                             </br>
                             <?php $idx++;} ?>
                             <hr>

@@ -319,6 +319,53 @@ class Admin extends CI_Controller {
 		$this->load->view('p/report/report_payment_order', $data);
 		$this->load->view('p/temp/footer');
 	}
+
+	public function report_result_exam()
+	{
+		$url = $this->M->getParameter('@urlAPIExam');
+		$getDataAPI = $this->service->getDataAPI($url.'API/getDataDatabaseJSON/list_all_answers');
+		$dataResult = [];
+		foreach ($getDataAPI as $key => $value) {
+			$dataFromDB = $this->M->get_report_process_exam(null,null,null, null, $value['id_user_master']);
+			if($dataFromDB){
+				$dataFromDB['score'] = $value['score'];
+				$dataFromDB['course_name'] = $value['course_name'];
+				array_push($dataResult, $dataFromDB);
+			}
+		}
+
+		$data['list_report'] = $dataResult;
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+
+		$this->load->view('p/report/header',$data);
+		$this->load->view('p/report/report_result_exam', $data);
+		$this->load->view('p/temp/footer');
+	}
+
+	public function process_exam()
+	{
+		$id_master_kelas = trim($this->input->post('id_master_kelas'));
+		$datefrom = trim($this->input->post('datefrom'));
+		$datethru = trim($this->input->post('datethru'));
+		$nama_lengkap = trim($this->input->post('nama_lengkap'));
+		if($datefrom != "" || $datethru != "" || $nama_lengkap != "" || $id_master_kelas != ""){
+			$data['list_report'] = $this->M->get_report_process_exam($datefrom,$datethru,$nama_lengkap, $id_master_kelas);
+		}else{
+			$data['list_report'] = [];
+		}
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$data['list_master_kelas'] = $this->M->getAllData('master_kelas');
+		$data['datefrom'] = $datefrom;
+		$data['datethru'] = $datethru;
+		$data['nama_lengkap'] = $nama_lengkap;
+		$data['id_master_kelas'] = $id_master_kelas;
+		$data['urlAPIExam'] = $this->M->getParameter('@urlAPIExam');
+		$this->load->view('p/report/header',$data);
+		$this->load->view('p/report/process_exam', $data);
+		$this->load->view('p/temp/footer');
+	}
 	
 	public function log_activity()
 	{
@@ -1382,6 +1429,59 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	public function process_sync_data_exam()
+	{
+		$list_id_users = explode(",", $this->input->get('list_id_users'));
+		$id_kelas = $this->input->get('id_kelas')['id_kelas'];
+		$packageincludes = [
+			'tryout' => [
+				[
+					'id' => $id_kelas,
+					'expired_date' => 123123213
+				]
+			],
+			'bimbel' => []
+		];
+		$totalCustomer = 0;
+		$totalSertifikat = 0;
+		$check = false;
+		$dataSend = [];
+		foreach ($list_id_users as $val) {
+			$user = $this->M->getWhere('user',['id_user'=>trim($val)]);
+			if ($user) {
+				$dataUs = [
+					'id_user_master' => $user['id_user'],
+					'username' => $user['email'],
+					'password' => $user['password'],
+					'email' => $user['email'],
+					'created_on' => microtime(true),
+					'last_login' => 0,
+					'active' => 1,
+					'first_name' => "New",
+					'last_name' => "User",
+					'company' => "Public",
+					'phone' => $user['handphone'],
+					'list_packages' => json_encode($packageincludes)
+				];
+				array_push($dataSend, $dataUs);
+				$totalCustomer++;
+				$check = true;
+			}
+			
+		}
+		if($check){
+			$url = $this->M->getParameter('@urlAPIExam');
+			$dataJSONSEND = [
+				'status_code' => 200,
+				'totalCustomer' => $totalCustomer,
+				'value' => $dataSend
+			];
+			$sendData = $this->service->sendDataAPIPOST($url.'User/sendDataListNewUser', $dataJSONSEND);
+		}else{
+			echo json_encode(['status_code' => 400]);
+		}
+	}
+
 	
 
 	public function process_add_master_user($level)
@@ -1996,6 +2096,13 @@ class Admin extends CI_Controller {
     	}
     }
 
-
+	public function bukaKelas($angkatan, $id_master_kelas){
+		$data['list_data'] = $this->M->getAllDataMateriKelas($id_master_kelas, $angkatan);
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$this->load->view('p/temp/header',$data);
+		$this->load->view('p/admin/list_master_materi', $data);
+		$this->load->view('p/temp/footer');
+	}
 
 }

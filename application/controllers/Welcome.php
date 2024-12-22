@@ -584,5 +584,71 @@ Langkah-langkah :
         // Force download the file
         // force_download($db_name, $backup);
     }
+
+	public function sendTokenWaMekari()
+	{
+		$curl = curl_init();
+
+		curl_setopt_array($curl, [
+		CURLOPT_URL => "https://service-chat.qontak.com/oauth/token",
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => "",
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 30,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "POST",
+		CURLOPT_POSTFIELDS => json_encode([
+			'username' => '<based_on_admin>',
+			'password' => '<based_on_admin>',
+			'grant_type' => 'password',
+			'client_id' => '<client_id>',
+			'client_secret' => '<client_secret>'
+		]),
+		CURLOPT_HTTPHEADER => [
+			"Content-Type: application/json"
+		],
+		]);
+
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+
+		curl_close($curl);
+
+		if ($err) {
+		echo "cURL Error #:" . $err;
+		} else {
+		echo $response;
+		}
+	}
+
+	public function sendMessageMekari()
+	{
+
+		$curl = curl_init();
+
+		curl_setopt_array($curl, [
+		CURLOPT_URL => "https://service-chat.qontak.com/api/open/v1/templates/whatsapp",
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => "",
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 30,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "GET",
+		CURLOPT_HTTPHEADER => [
+			"Authorization: Bearer pf0HwcbtzWKkRYeL8PHQAFTtA6oixUzQTr7Ddw6Igck"
+		],
+		]);
+
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+
+		curl_close($curl);
+
+		if ($err) {
+		echo "cURL Error #:" . $err;
+		} else {
+		echo $response;
+		}
+	}
 }
 

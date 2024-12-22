@@ -517,7 +517,7 @@ class Mbg extends CI_Model {
 		    return $value !== '';
 		});
 		$inClause = implode(",", $array);
-		$query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(is_sumpah) AS is_sumpah  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
+		$query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , GROUP_CONCAT(id_master_kelas)AS id_master_kelas , foto_kelas, GROUP_CONCAT(is_sumpah) AS is_sumpah  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
 		return $this->db->query($query)->row_array();
 	}
 
@@ -898,6 +898,66 @@ class Mbg extends CI_Model {
 						ob.id_order_booking, ob.id_user, ob.id_master_kelas, ob.time_history, ob.metode_bayar, 
 						ob.status_order, ob.status_certificate, ob.is_paid, us.nama_lengkap, us.handphone, 
 						us.reference, us.pic";
+		return $this->db->query($query)->result_array();
+	}
+
+	function get_report_process_exam($datefrom, $datethru,$name_peserta, $id_master_kelas, $id_user = null)
+	{
+		$query = "SELECT 
+						ob.id_order_booking, 
+						ob.id_user, 
+						ob.id_master_kelas, 
+						ob.time_history, 
+						ob.metode_bayar, 
+						ob.status_order, 
+						ob.status_certificate, 
+						ob.is_paid, 
+						us.nama_lengkap, 
+						us.handphone, 
+						us.reference, 
+						us.pic, 
+						REPLACE(REPLACE(ob.angkatan_kelas, 'angkatan', 'Angkatan'), '~', ',') AS angkatan_kelas,
+						ob.list_kelas, 
+						GROUP_CONCAT(DISTINCT mk.nama_kelas ORDER BY mk.nama_kelas SEPARATOR ', ') AS nama_kelas
+					FROM 
+						order_booking ob
+					LEFT JOIN 
+						master_kelas mk ON FIND_IN_SET(mk.id_master_kelas, REPLACE(ob.list_kelas, '~', ',')) > 0
+					JOIN 
+						user us ON ob.id_user = us.id_user";
+					if($datefrom != null && $datethru != null){
+						$query = $query . " WHERE ob.time_history >= '$datefrom' 
+    						AND ob.time_history <= '$datethru'";
+					}
+
+					if($name_peserta != null){
+						$query = $query . " AND us.nama_lengkap LIKE '%$name_peserta%'";
+					}
+
+					if($id_master_kelas != null){
+						$query = $query . " AND ob.list_kelas LIKE '%~$id_master_kelas~%'";
+					}
+
+					if($id_user != null){
+						$query = $query . " WHERE ob.id_user = '$id_user'";
+					}
+
+					$query = $query. " GROUP BY 
+						ob.id_order_booking, ob.id_user, ob.id_master_kelas, ob.time_history, ob.metode_bayar, 
+						ob.status_order, ob.status_certificate, ob.is_paid, us.nama_lengkap, us.handphone, 
+						us.reference, us.pic";
+		return $this->db->query($query)->result_array();
+	}
+
+	function getAllDataMateriKelas($id_master_kelas = null, $angkatan = null){
+		$query= "SELECT * FROM `materi_kelas` mk INNER JOIN master_kelas ms ON mk.id_master_kelas = ms.id_master_kelas";
+		if($id_master_kelas != null){
+			$query = $query . " AND mk.id_master_kelas = '$id_master_kelas'";
+		}
+		if($angkatan != null){
+			$query = $query . " AND mk.angkatan = '$angkatan'";
+		}
+		$query = $query . " ORDER BY date_field ASC, waktu ASC";
 		return $this->db->query($query)->result_array();
 	}
 

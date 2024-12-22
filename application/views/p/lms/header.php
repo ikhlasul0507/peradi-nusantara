@@ -217,14 +217,14 @@
 
 
             <li class="nav-item <?=$report_peserta;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/report_peserta');?>">
+                <a class="nav-link" href="<?= base_url('P/Lms/add_master_materi');?>">
                     <i class="fas fa-fw fa-book"></i>
-                    <span>Detail  Peserta</span></a>
+                    <span>Tambah Materi</span></a>
             </li>
             <li class="nav-item <?=$report_kta_peserta;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/report_kta_peserta');?>">
+                <a class="nav-link" href="<?= base_url('P/Lms/list_master_materi');?>">
                     <i class="fas fa-fw fa-book"></i>
-                    <span>Detail  KTA Peserta</span></a>
+                    <span>Daftar Materi</span></a>
             </li>
             <!-- <li class="nav-item <?=$report_pembayaran;?>">
                 <a class="nav-link" href="<?= base_url('P/Payment/report_pembayaran');?>">

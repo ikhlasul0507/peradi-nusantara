@@ -369,7 +369,7 @@ Start : '.$start.'
 
 	public function do_upload($url, $filename) {
         $config['upload_path'] = './assets/p/'.$url;
-        $config['allowed_types'] = 'gif|jpg|jpeg|png';
+        $config['allowed_types'] = 'gif|jpg|jpeg|png|pdf|docx|pptx';
         $config['max_size'] = 10048; // 2MB
         $config['max_width'] = 10048;
         $config['max_height'] = 10048;
@@ -502,7 +502,7 @@ Start : '.$start.'
 
 	    $this->CI->email->attach($latestFile);
 
-	    // Send email and check status
+	    // Send email and check status 	
 	    if ($this->CI->email->send()) {
 	        echo 'Email sent successfully with attachment.';
 	    } else {
@@ -510,4 +510,65 @@ Start : '.$start.'
 	        echo $this->CI->email->print_debugger(['headers']);
 	    }
 	}
+
+	public function sendDataAPIPOST($url,$data)
+	{
+		// Convert the data to JSON
+		$json_data = json_encode($data);
+
+		// Initialize cURL session
+		$ch = curl_init($url);
+
+		// Set the cURL options
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response as a string
+		curl_setopt($ch, CURLOPT_POST, true); // Set the request method to POST
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data); // Attach the JSON data
+		curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			'Content-Type: application/json', // Set content type to JSON
+			'Content-Length: ' . strlen($json_data) // Set the length of the data
+		]);
+
+		// Execute the cURL request and capture the response
+		$response = curl_exec($ch);
+
+		// Check for errors
+		if ($response === false) {
+			echo "cURL Error: " . curl_error($ch);
+		} else {
+			echo $response;
+		}
+
+		// Close the cURL session
+		curl_close($ch);
+	}
+
+	public function getDataAPI($url)
+	{
+		$ch = curl_init();
+
+		// Define the API endpoint
+		$api_url = $url;
+
+		// Set the cURL options
+		curl_setopt($ch, CURLOPT_URL, $api_url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		// Execute the request and store the response
+		$response = curl_exec($ch);
+
+		// Check if the request was successful
+		if ($response === FALSE) {
+			die('Error occurred while fetching data: ' . curl_error($ch));
+		}
+
+		// Decode the JSON response into a PHP array
+		$data = json_decode($response, true);
+
+		// Close the cURL session
+		curl_close($ch);
+
+		// Return the data instead of echoing it
+		return $data;
+	}
+
 }

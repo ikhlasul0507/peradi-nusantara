@@ -28,6 +28,54 @@
                         Nama :  <?= $value['nama_lengkap'];?><br>
                         Handphone :  <?= $value['handphone'];?><br>
                         Metode Pembayaran : <button class="badge badge-primary" disabled><?= $value['metode_bayar'];?></button>
+                        <?php if($value['status_order'] == 'N'){ ?>
+                            <select name="metode_bayar" required>
+                                <option value="" disabled selected>--Pilih Metode--</option>
+                                <?php 
+                                $tahapBayar = explode(",", "Lunas, Bertahap, Cicilan");
+                                foreach ($tahapBayar as $t) { ?>
+                                <option value="<?= $t; ?>"><?= $t; ?></option>
+                                <?php } ?>
+                            </select>
+                        <?php }?>
+                        <br>
+                        Referensi :  <?= $value['reference'];?><br>
+                        PIC :  <?= $value['pic'];?>
+                        <?php if($value['status_order'] == 'N'){ ?>
+                            <select name="pic" required>
+                                <option value="" disabled selected>--Pilih PIC--</option>
+                                <?php foreach ($list_pic as $pic) { ?>
+                                    <option value="<?=$pic;?>"><?=$pic;?></option>
+                                <?php } ?>
+                            </select>
+                        <?php }?>
+                        <hr>
+                        <?php 
+                        $tahapBayar = explode(",", $list_kelas_data['nama_kelas']);
+                        $idmasterkelas = explode(",", $list_kelas_data['id_master_kelas']);
+                        $idx = 0;
+                        foreach ($tahapBayar as $t) { ?>
+                            <?php if($value['angkatan_kelas'] == ""){ ?>
+                            Angkatan-(<?=$t;?>) : 
+                            <?php if($value['status_order'] == "N"){ ?>
+                            <select name="angkatan_<?=str_replace(' ', '', $t);?>" required>
+                                <option value="" disabled selected>--Pilih Angkatan--</option>
+                                <?php for ($i=$startAngkatan; $i <= $endAngkatan; $i++) { ?>
+                                    <option value="<?= 'angkatan-'.$i;?>"><?= 'Angkatan-'.$i;?></option>
+                                <?php } ?>
+                            </select>
+                            <?php }else{
+                                echo $value['angkatan'];
+                            } ?>
+                            <?php }else{ 
+                                echo "(".$t.") : ";
+                                $arrAngkatan = explode("~", $value['angkatan_kelas']);
+                                $angkaAng = explode("-", ucfirst($arrAngkatan[$idx]));
+                                echo ucfirst($arrAngkatan[$idx]);
+                                echo '--<a href="'.base_url('P/Admin/bukaKelas/').$angkaAng[1].'/'.$idmasterkelas[$idx].'" class="badge badge-danger" >Buka Jadwal Kelas</a>';
+                            } ?>
+                        </br>
+                        <?php $idx++;} ?>
                     </p>
                     <?php if($value['status_order'] == 'N'){ ?>
                         
