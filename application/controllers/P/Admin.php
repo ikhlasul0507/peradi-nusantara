@@ -323,7 +323,7 @@ class Admin extends CI_Controller {
 	public function report_result_exam()
 	{
 		$url = $this->M->getParameter('@urlAPIExam');
-		$getDataAPI = $this->service->getDataAPI($url.'API/getDataDatabaseJSON/list_all_answers');
+		$getDataAPI = $this->service->getDataAPI($url.'Api/getDataDatabaseJSON/list_all_answers');
 		$dataResult = [];
 		foreach ($getDataAPI as $key => $value) {
 			$dataFromDB = $this->M->get_report_process_exam(null,null,null, null, $value['id_user_master']);
