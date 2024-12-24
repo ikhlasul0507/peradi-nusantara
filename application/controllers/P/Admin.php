@@ -1510,8 +1510,8 @@ class Admin extends CI_Controller {
 		
 		foreach ($list_id_users as $val) {
 			$user = $this->M->getWhere('user', ['id_user' => trim($val)]);
-			
-			if ($user && !empty($user['foto_ktp'])) {
+			$getOB = $this->M->getWhere('order_booking', ['id_user' => trim($val)]);
+			if ($user && !empty($user['foto_ktp']) && !$getOB) {
 				$data_register = [
 					'nama_lengkap' => trim($user['nama_lengkap']),
 					'nik' => trim($user['nik']),
@@ -1535,9 +1535,9 @@ class Admin extends CI_Controller {
 
 				array_push($dataSend, $data_register);
 				$totalCustomer++;
-				$check = true;
 
 			}
+			$check = true;
 		}
 
 		// Return result
