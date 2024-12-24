@@ -624,31 +624,49 @@ Langkah-langkah :
 	public function sendMessageMekari()
 	{
 
-		$curl = curl_init();
+		// API URL (replace with Mekari's actual API endpoint)
+		$apiUrl = 'https://service-chat.qontak.com/api/open/v1/send-whatsapp';  // This URL might change based on the actual API endpoint.
 
-		curl_setopt_array($curl, [
-		CURLOPT_URL => "https://service-chat.qontak.com/api/open/v1/templates/whatsapp",
-		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_ENCODING => "",
-		CURLOPT_MAXREDIRS => 10,
-		CURLOPT_TIMEOUT => 30,
-		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		CURLOPT_CUSTOMREQUEST => "GET",
-		CURLOPT_HTTPHEADER => [
-			"Authorization: Bearer pf0HwcbtzWKkRYeL8PHQAFTtA6oixUzQTr7Ddw6Igck"
-		],
-		]);
+		// Your API credentials
+		$apiKey = 'lIQtzhDvZsTDl-1dOoyVZBO39ggV1u67Swv7L8Y13ag';  // Replace with your actual Mekari API key.
 
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
+		// The contact number of the recipient (including country code, no +)
+		$recipientPhone = '6282280524264'; // Example: '628123456789'
 
-		curl_close($curl);
+		// The message you want to send
+		$message = 'Hello, this is a test message from my API!';
 
-		if ($err) {
-		echo "cURL Error #:" . $err;
+		// Create the data to be sent in the request
+		$data = array(
+			'to' => $recipientPhone,
+			'message' => $message
+		);
+
+		// Initialize cURL session
+		$ch = curl_init($apiUrl);
+
+		// Set cURL options
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'Authorization: Bearer ' . $apiKey,  // Authorization header
+			'Content-Type: application/json'      // Content type
+		));
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+		// Execute the cURL request and capture the response
+		$response = curl_exec($ch);
+
+		// Check for errors
+		if (curl_errno($ch)) {
+			echo 'Error:' . curl_error($ch);
 		} else {
-		echo $response;
+			// Print the response from the API
+			echo 'Response: ' . $response;
 		}
+
+		// Close the cURL session
+		curl_close($ch);
 	}
 }
 

@@ -46,6 +46,11 @@ class Mbg extends CI_Model {
 	{
 		return $this->db->query("SELECT * FROM $table where $where='$valuewhere'")->result_array();
 	}
+
+	function getAllMasterWhereOneConditionLIKE($table, $where, $valuewhere)
+	{
+		return $this->db->query("SELECT * FROM $table where $where LIKE '%$valuewhere%'")->result_array();
+	}
 	function checkUserExist($nik, $handphone)
 	{
 		return $this->db->query("SELECT * FROM user WHERE (nik='$nik' OR handphone = '$handphone')")->num_rows();

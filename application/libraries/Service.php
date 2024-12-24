@@ -571,4 +571,41 @@ Start : '.$start.'
 		return $data;
 	}
 
+	public function sendDataWithFileAPIPOST($url, $data_register, $filePath, $typeFile, $nameFile, $nameField)
+	{
+		// Add file to the data array
+		$file = new CURLFile($filePath, $typeFile, $nameFile);
+		$data_register[$nameField] = $file;
+
+		echo json_encode($data_register);die;
+		// Initialize cURL session
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_register);
+
+		// Set headers
+		curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			'Content-Type: application/json',
+		]);
+
+		// Execute cURL request
+		$response = curl_exec($ch);
+
+		// Check for errors
+		if ($response === false) {
+			echo "cURL Error: " . curl_error($ch);
+		} else {
+			// Decode response
+			$data = json_decode($response, true);
+		}
+
+		// Close cURL session
+		curl_close($ch);
+
+		return $data;
+	}
+
+
 }

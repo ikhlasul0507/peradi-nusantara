@@ -256,6 +256,12 @@
                     <span>Proses Ujian Peserta</span></a>
             </li>
 
+            <li class="nav-item <?=$process_exam;?>">
+                <a class="nav-link" href="<?= base_url('P/Admin/process_peradi_pajak');?>">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Proses Peradi Pajak</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

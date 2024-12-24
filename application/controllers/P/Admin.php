@@ -366,6 +366,23 @@ class Admin extends CI_Controller {
 		$this->load->view('p/report/process_exam', $data);
 		$this->load->view('p/temp/footer');
 	}
+
+	public function process_peradi_pajak()
+	{
+		$nama_lengkap = trim($this->input->post('nama_lengkap'));
+		if($nama_lengkap != ""){
+			$data['list_report'] = $this->M->getAllMasterWhereOneConditionLIKE('user', 'nama_lengkap', $nama_lengkap);
+		}else{
+			$data['list_report'] = $this->M->getAllMasterWhereOneCondition('user', 'user_level', 4);
+		}
+		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
+		$data['previous_url'] = $this->input->server('HTTP_REFERER');
+		$data['nama_lengkap'] = $nama_lengkap;
+		$data['urlAPIExam'] = $this->M->getParameter('@urlAPIExam');
+		$this->load->view('p/report/header',$data);
+		$this->load->view('p/report/process_peradi_pajak', $data);
+		$this->load->view('p/temp/footer');
+	}
 	
 	public function log_activity()
 	{
@@ -1481,6 +1498,62 @@ class Admin extends CI_Controller {
 			echo json_encode(['status_code' => 400]);
 		}
 	}
+
+	public function process_sync_data_peradi_pajak()
+	{
+		$list_id_users = explode(",", $this->input->get('list_id_users'));
+		$totalCustomer = 0;
+		$check = false;
+		$dataSend = [];
+		$url = $this->M->getParameter('@urlAPIPeradiPajak');
+		
+		
+		foreach ($list_id_users as $val) {
+			$user = $this->M->getWhere('user', ['id_user' => trim($val)]);
+			
+			if ($user && !empty($user['foto_ktp'])) {
+				$data_register = [
+					'nama_lengkap' => trim($user['nama_lengkap']),
+					'nik' => trim($user['nik']),
+					'email' => trim($user['email']),
+					'handphone' => trim($user['handphone']),
+					'usia' => trim($user['usia']),
+					'asal_kampus' => trim($user['asal_kampus']),
+					'semester' => trim($user['semester']),
+					'reference' => trim($user['reference']),
+					'pic' => trim($user['pic']),
+					'angkatan' => '',
+					'latar_belakang' => trim($user['latar_belakang']),
+					'password' => trim($user['password']),
+					'password_hash' => trim($user['password_hash']),
+					'is_active' => trim($user['is_active']),
+					'user_level' => trim($user['user_level']),
+					'is_new_user' => trim($user['is_new_user']),
+					'id_user_master' => trim($user['id_user']),
+					'foto_ktp' => trim($user['foto_ktp']),
+				];
+
+				array_push($dataSend, $data_register);
+				$totalCustomer++;
+				$check = true;
+
+			}
+		}
+
+		// Return result
+		if ($check) {
+			$dataJSONSEND = [
+				'status_code' => 200,
+				'totalCustomer' => $totalCustomer,
+				'value' => $dataSend
+			];
+
+			$sendData = $this->service->sendDataAPIPOST($url.'P/Notification/registerUserFromAPI', $dataJSONSEND);
+		} else {
+			echo json_encode(['status_code' => 400,'result' => $dataSend]);
+		}
+	}
+
 
 	
 

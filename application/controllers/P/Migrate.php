@@ -483,7 +483,8 @@ class Migrate extends CI_Controller
 					(52, '@recordChatWaTemp', 'Y', 'O'),
 					(53, '@intervalClearPaymentExpired', '2', 'T'),
 					(54, '@intervalClearWhatsappTemp', '7', 'T'),
-					(55, '@urlAPIExam', 'http://localhost/apk-course/', 'T')
+					(55, '@urlAPIExam', 'http://localhost/apk-course/', 'T'),
+					(56, '@urlAPIPeradiPajak', 'http://localhost/peradi-pajak/', 'T')
 					";
 		if ($this->db->query($query)) {
 			echo "||............[Migrate successfully " . $title . "]</br>";
