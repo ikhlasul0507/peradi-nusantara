@@ -1535,6 +1535,7 @@ class Admin extends CI_Controller {
 
 				array_push($dataSend, $data_register);
 				$totalCustomer++;
+				$this->M->delete_to_db('user','id_user',trim($val));
 
 			}
 			$check = true;
