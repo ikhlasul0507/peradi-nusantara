@@ -243,11 +243,6 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Detail  Payment Order</span></a>
             </li>
-            <li class="nav-item <?=$report_result_exam;?>">
-                <a class="nav-link" href="<?= base_url('P/Admin/report_result_exam');?>">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Detail  Hasil Ujian</span></a>
-            </li>
             <?php }} ?>
             
             <li class="nav-item <?=$process_exam;?>">
@@ -255,7 +250,12 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Proses Ujian Peserta</span></a>
             </li>
-
+            
+            <li class="nav-item <?=$report_result_exam;?>">
+                <a class="nav-link" href="<?= base_url('P/Admin/report_result_exam');?>">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Detail  Hasil Ujian</span></a>
+            </li>
             <li class="nav-item <?=$process_exam;?>">
                 <a class="nav-link" href="<?= base_url('P/Admin/process_peradi_pajak');?>">
                     <i class="fas fa-fw fa-book"></i>

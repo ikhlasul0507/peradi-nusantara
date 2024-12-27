@@ -28,6 +28,65 @@ class Welcome extends CI_Controller {
         $this->load->library('email');
         //duplicate database
         $this->load->model('Database_model');
+		$this->load->library('notification_service');
+    }
+
+	// Example method to send bulk notifications
+    public function send_bulk_notifications() {
+        // Example phone numbers and channel integration ID
+        $phone_numbers = [
+            '+6282280524264'
+        ];
+		$channel_integrations = $this->notification_service->get_channel_integrations();
+        if ($channel_integrations && isset($channel_integrations->data[0])) {
+            $channel_integration_id = $channel_integrations->data[0]->id; // Use the first integration's ID
+        } else {
+            echo "No channel integrations found.";
+            return;
+        }
+
+        // Call the send_bulk_notification method
+        $response = $this->notification_service->send_bulk_notification($phone_numbers, $channel_integration_id);
+
+        // Output the response or handle it as needed
+        echo $response;
+    }
+
+	public function get_whatsapp_broadcast_log($id)
+	{
+		$channel_integrations = $this->notification_service->get_whatsapp_broadcast_log($id);
+		echo $channel_integrations;die;
+	}
+
+	public function sendWaMekari() {
+        $to_number = '628151654015';
+        $to_name = 'Burhanudin Hakim';
+
+        // Get available channel integrations
+        $channel_integrations = $this->notification_service->get_channel_integrations();
+        if ($channel_integrations && isset($channel_integrations->data[0])) {
+            $channel_integration_id = $channel_integrations->data[0]->id; // Use the first integration's ID
+        } else {
+            echo "No channel integrations found.";
+            return;
+        }
+        // Get available message templates
+        $message_templates = $this->notification_service->get_message_templates();
+        if ($message_templates && isset($message_templates->data[0])) {
+            $message_template_id = $message_templates->data[0]->id; // Use the first template's ID
+        } else {
+            echo "No message templates found.";
+            return;
+        }
+		$message_template_id = "e0530866-c87e-4cd5-a498-4f4d3125dba5";
+		$phone_numbers = [
+            $to_number
+        ];
+		$response = $this->notification_service->send_bulk_notification($phone_numbers, $channel_integration_id);
+        // Send the notification
+        $response = $this->notification_service->send_notification($to_number, $to_name, $message_template_id, $channel_integration_id);
+
+        echo $response;
     }
 
     public function replaceHP () {
