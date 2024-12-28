@@ -143,6 +143,7 @@ class Notification extends CI_Controller {
 							$data_send_notif = [
 								'handphone' => trim($user['handphone']),
 								'namalengkap' => trim($user['nama_lengkap']),
+								'email' => trim($user['email']),
 								'namaKelas' => trim($getListKelas['nama_kelas']),
 								'metodeBayar' => trim($orderBook['metode_bayar']),
 								'nominal_payment' => number_format(trim($orderPayment['nominal_payment']),2),
@@ -150,7 +151,7 @@ class Notification extends CI_Controller {
 								'url_login' => trim(base_url('P/Admin')),
 								'link_wa'=> trim($url),
 							];
-							$this->service->send_whatsapp($data_send_notif, 'done_payment');
+							$this->service->sendEmailWithText($data_send_notif, 'done_payment','Pembayaran Berhasil');
 						}
 	    		}
 	    		$getCount = $this->M->get_count_order_payment_status($id_order);
@@ -158,11 +159,12 @@ class Notification extends CI_Controller {
 	    			if($this->M->getParameter('@sendNotifCompletePayment') == 'Y'){
 		    			$data_send_notif = [
 							'handphone' => trim($user['handphone']),
+							'email' => trim($user['email']),
 							'namalengkap' => trim($user['nama_lengkap']),
 							'namaKelas' => trim($namaKelas),
 							'url_invoice' => trim(base_url('P/Payment/createInvoice/'.$id_order))
 						];
-						$this->service->send_whatsapp($data_send_notif, 'complete_payment');
+						$this->service->sendEmailWithText($data_send_notif, 'complete_payment','Pembayaran Berhasil');
 					}
 	    			$this->M->update_to_db('order_booking',['status_order' => 'D'],'id_order_booking',$id_order);   
 	    		}

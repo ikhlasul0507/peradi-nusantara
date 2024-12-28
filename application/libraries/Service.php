@@ -112,7 +112,7 @@ Selamat Datang, '.$name.',
 
 Silahkan  
 Lakukan Reset Password
-Akses link berikut : '.$url.'
+Akses link berikut : <a href="' .$url . '">Reset Password</a>
 
 Terima Kasih
 
@@ -520,14 +520,13 @@ Start : '.$start.'
 		$config['smtp_pass'] = 'OYtiet{.1$s0';
 		$config['mailtype'] = 'html'; // Set email type to HTML (can be 'text' for plain text)
 		$config['charset'] = 'utf-8';
-		$config['wordwrap'] = TRUE;
-		$config['newline'] = "\r\n"; // For compatibility
+		// $config['wordwrap'] = TRUE;
+		// $config['newline'] = "\r\n"; // For compatibility
 	
 		// Initialize email library with config
 		$this->CI->email->initialize($config);
 	
-		$textMessage = "Selamat Datang, hai\n\nSilahkan Login\nLakukan pembelian paket belajar\nAkses link berikut : hjttpadiohsaild\n\nTerima Kasih\n\n-Peradi Nusantara-";
-		$textMessage = nl2br($textMessage);
+
 		// Set email content using variables
 		$this->CI->email->from('noreply@peradinusantara.org', 'Peradi Nusantara');
 		$this->CI->email->to($params['email']);  // Use the provided recipient email address
@@ -536,10 +535,10 @@ Start : '.$start.'
 	
 		// Send email and check status
 		if ($this->CI->email->send()) {
-			echo 'Email sent successfully.';
+			// echo 'Email sent successfully.';
 		} else {
-			echo "Failed to send email. Error details:";
-			echo $this->CI->email->print_debugger(['headers']);
+			// echo "Failed to send email. Error details:";
+			// echo $this->CI->email->print_debugger(['headers']);
 		}
 	}
 	

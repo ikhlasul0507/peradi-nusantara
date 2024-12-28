@@ -94,9 +94,10 @@ class Auth extends CI_Controller {
 									$data_send_notif = [
 										'handphone' => trim($this->input->post('handphone')),
 										'namalengkap' => trim($this->input->post('namalengkap')),
+										'email' => trim($this->input->post('email')),
 										'url_login' => trim(base_url('P/Auth/login'))
 									];
-									$this->service->send_whatsapp($data_send_notif, 'new_register');
+									$this->service->sendEmailWithText($data_send_notif, 'new_register','Registrasi Berhasil');
 								}
 							}
 							$data = $this->session->set_flashdata('pesan', 'Akun berhasil terdaftar !');
@@ -160,16 +161,18 @@ class Auth extends CI_Controller {
 						if($this->M->getParameter('@sendNotifWaLogin') == 'Y'){
 							$data_send_notif = [
 								'handphone' => trim($user['handphone']),
+								'email' => trim($user['email']),
 								'namalengkap' => trim($user['nama_lengkap']),
 								'url_login' => trim(base_url('P/Auth/login'))
 							];
-							$this->service->send_whatsapp($data_send_notif, 'login');
+							$this->service->sendEmailWithText($data_send_notif, 'login','Login Berhasil');
 						}
 						$add_history = $this->M->add_log_history($user['nama_lengkap'],"Login Akun");
 						$data_session = [
 							'id_user' =>trim($user['id_user']),
 							'nama_lengkap' =>trim($user['nama_lengkap']),
 							'handphone' =>trim($this->input->post('handphone')),
+							'email' =>trim($user['email']),
 							'user_level' =>trim($user['user_level']),
 							'foto_kta' => trim($user['foto_kta']),
 							'is_owner' => trim($user['is_owner']),
@@ -222,7 +225,7 @@ class Auth extends CI_Controller {
 						'namalengkap' => trim($user['nama_lengkap']), 
 						'handphone' => trim($user['handphone']),
 						'email' => trim($user['email']),
-						'url_forget' => trim(base_url('P/Auth/forget_password/'.$uuid))
+						'url_forget' => base_url('P/Auth/forget_password/'.$uuid)
 					];
 					$this->service->sendEmailWithText($data_send_notif, 'forget_password','Lupa Password');
 				}

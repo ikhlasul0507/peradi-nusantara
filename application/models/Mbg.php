@@ -823,6 +823,7 @@ class Mbg extends CI_Model {
 							    ob.list_kelas,
 							    us.nama_lengkap,
 							    us.handphone,
+								us.email,
 							    GROUP_CONCAT(DISTINCT mk.nama_kelas ORDER BY mk.nama_kelas SEPARATOR ', ') AS nama_kelas,
 							    ob.metode_bayar
 							FROM 

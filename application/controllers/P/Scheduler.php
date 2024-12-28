@@ -36,8 +36,8 @@ class Scheduler extends CI_Controller
 	public function startScheduler()
 	{
 
-		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler...'];
-		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> 'Jalankan Scheduler...'];
+		$this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
 		
 		$db_name = 'backup-on-' . date('Y-m-d-H-i-s') . '.zip';
 		$this->backup_database($db_name);
@@ -61,8 +61,8 @@ class Scheduler extends CI_Controller
 		$dayOfMonth = date('j');
 		if ($dayOfMonth == $datePayment){
 
-			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler donePaymentEveryMonth To N'];
-			// $this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> 'Jalankan Scheduler donePaymentEveryMonth To N'];
+			// $this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'N'],'nama_parameter','@donePaymentEveryMonth');
 
@@ -75,8 +75,8 @@ class Scheduler extends CI_Controller
 		$dayOfMonth = date('j');
 		if ($dayOfMonth == $datePayment && $this->M->getParameter('@donePaymentEveryMonth') == 'N') {
 
-			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler Lock Login For EveryOne'];
-			// $this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> 'Jalankan Scheduler Lock Login For EveryOne'];
+			// $this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'Y'],'nama_parameter','@lockLoginForEveryOne');
 			echo "lockLoginForEveryOne = Y </br>";
@@ -89,8 +89,8 @@ class Scheduler extends CI_Controller
 		$dayOfMonth = date('j');
 		if ($dayOfMonth == $datePayment){
 
-			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler donePaymentEveryMonth To N'];
-			// $this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> 'Jalankan Scheduler donePaymentEveryMonth To N'];
+			// $this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'N'],'nama_parameter','@donePaymentCSEveryMonth');
 
@@ -103,8 +103,8 @@ class Scheduler extends CI_Controller
 		$dayOfMonth = date('j');
 		if ($dayOfMonth == $datePayment && $this->M->getParameter('@donePaymentCSEveryMonth') == 'N') {
 
-			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler Lock Login For EveryOne CS'];
-			// $this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+			$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> 'Jalankan Scheduler Lock Login For EveryOne CS'];
+			// $this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
 
 			$lockDB = $this->M->update_to_db('parameter',['value_parameter'=> 'Y'],'nama_parameter','@lockLoginForEveryOneCS');
 			echo "lockLoginForEveryOneCS = Y </br>";
@@ -127,9 +127,9 @@ class Scheduler extends CI_Controller
         // Write the file to your server's backup directory
         write_file($save, $backup);
 
-        $data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler Backup Database'];
+        $data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> 'Jalankan Scheduler Backup Database'];
         //send wa
-		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+		$this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
 		//send email
 		if($this->M->getParameter('@sendEmailBackupDatabase') == 'Y') {
 			$this->service->sendEmailWithAttachment();
@@ -149,6 +149,7 @@ class Scheduler extends CI_Controller
 
     			$data_send_notif = [
 					'handphone' => trim($value['handphone']),
+					'email' => trim($value['email']),
 					'namalengkap' => trim($value['nama_lengkap']),
 					'namaKelas' => trim($value['nama_kelas']),
 					'metodeBayar' => trim($value['metode_bayar']),
@@ -159,11 +160,11 @@ class Scheduler extends CI_Controller
 
     			if($value['date_payment'] <= date('Y-m-d')){
     				//lewat tanggal bayar
-    				$this->service->send_whatsapp($data_send_notif, 'generate_payment');
+    				$this->service->sendEmailWithText($data_send_notif, 'generate_payment','Tagihan Pembayaran');
     				$totalLewatBayar++;
     			}else{
     				//segera bayar
-    				$this->service->send_whatsapp($data_send_notif, 'generate_payment_yesterday');
+    				$this->service->sendEmailWithText($data_send_notif, 'generate_payment_yesterday', 'Tagihan Pembayaran');
     				$totalSegeraBayar++;
     			}
     		}
@@ -173,8 +174,8 @@ class Scheduler extends CI_Controller
     	- Total Lewat Bayar = ".$totalLewatBayar."
     	- Total Segera Bayar = ".$totalSegeraBayar;
 
-    	$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> $msg];
-		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+    	$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> $msg];
+		$this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
     }
 
     public function clearPaymentExpiredAfterGenerated()
@@ -182,8 +183,8 @@ class Scheduler extends CI_Controller
 		$intervalClearPaymentExpired = (int)$this->M->getParameter('@intervalClearPaymentExpired');
 
 		$this->M->clearPaymentExpiredAfterGenerated($intervalClearPaymentExpired);
-		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler clearPaymentExpiredAfterGenerated'];
-		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> 'Jalankan Scheduler clearPaymentExpiredAfterGenerated'];
+		$this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
 		echo "clearPaymentExpiredAfterGenerated</br>";
 	}
 
@@ -192,8 +193,8 @@ class Scheduler extends CI_Controller
 		$intervalclearWhatsappTemp = (int)$this->M->getParameter('@intervalClearWhatsappTemp');
 
 		$this->M->clearWhatsappTemp($intervalclearWhatsappTemp);
-		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'handphone' => trim('08151654015'),'msg'=> 'Jalankan Scheduler clearWhatsappTemp'];
-		$this->service->send_whatsapp($data_send_notif, 'start_scheduler');
+		$data_send_notif= ['start' => date('Y-m-d H:i:s'), 'email' => trim('peradinusantarabydsa@gmail.com'),'msg'=> 'Jalankan Scheduler clearWhatsappTemp'];
+		$this->service->sendEmailWithText($data_send_notif, 'start_scheduler');
 		echo "clearWhatsappTemp</br>";
 	}
 }
