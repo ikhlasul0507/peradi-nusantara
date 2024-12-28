@@ -511,6 +511,39 @@ Start : '.$start.'
 	    }
 	}
 
+	public function sendEmailWithText($params, $type, $subject) {
+		// Email configurations
+		$config['protocol'] = 'smtp';
+		$config['smtp_host'] = 'mail.peradinusantara.org';
+		$config['smtp_port'] = 587;
+		$config['smtp_user'] = 'noreply@peradinusantara.org';
+		$config['smtp_pass'] = 'OYtiet{.1$s0';
+		$config['mailtype'] = 'html'; // Set email type to HTML (can be 'text' for plain text)
+		$config['charset'] = 'utf-8';
+		$config['wordwrap'] = TRUE;
+		$config['newline'] = "\r\n"; // For compatibility
+	
+		// Initialize email library with config
+		$this->CI->email->initialize($config);
+	
+		$textMessage = "Selamat Datang, hai\n\nSilahkan Login\nLakukan pembelian paket belajar\nAkses link berikut : hjttpadiohsaild\n\nTerima Kasih\n\n-Peradi Nusantara-";
+		$textMessage = nl2br($textMessage);
+		// Set email content using variables
+		$this->CI->email->from('noreply@peradinusantara.org', 'Peradi Nusantara');
+		$this->CI->email->to($params['email']);  // Use the provided recipient email address
+		$this->CI->email->subject($subject); // Use the provided subject
+		$this->CI->email->message(nl2br($this->template_meesage($type, $params))); // Use the provided message
+	
+		// Send email and check status
+		if ($this->CI->email->send()) {
+			echo 'Email sent successfully.';
+		} else {
+			echo "Failed to send email. Error details:";
+			echo $this->CI->email->print_debugger(['headers']);
+		}
+	}
+	
+
 	public function sendDataAPIPOST($url,$data)
 	{
 		// Convert the data to JSON

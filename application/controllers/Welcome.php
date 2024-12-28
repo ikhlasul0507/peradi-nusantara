@@ -29,7 +29,17 @@ class Welcome extends CI_Controller {
         //duplicate database
         $this->load->model('Database_model');
 		$this->load->library('notification_service');
+		$this->load->library('service');
     }
+
+	public function showTemplate()
+	{
+		echo nl2br($this->service->template_meesage('login',['namalengkap'=>'Amal']));
+	}
+	public function sendEmailWithText()
+	{
+		$this->service->sendEmailWithText('ikhlasul0507@gmail.com', 'Forget Password', 'HALOOOO');
+	}
 
 	// Example method to send bulk notifications
     public function send_bulk_notifications() {

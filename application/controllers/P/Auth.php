@@ -221,11 +221,12 @@ class Auth extends CI_Controller {
 					$data_send_notif = [
 						'namalengkap' => trim($user['nama_lengkap']), 
 						'handphone' => trim($user['handphone']),
+						'email' => trim($user['email']),
 						'url_forget' => trim(base_url('P/Auth/forget_password/'.$uuid))
 					];
-					$this->service->send_whatsapp($data_send_notif, 'forget_password');
+					$this->service->sendEmailWithText($data_send_notif, 'forget_password','Lupa Password');
 				}
-				$data = $this->session->set_flashdata('pesan', 'Silahkan cek notifikasi whatsapp !');
+				$data = $this->session->set_flashdata('pesan', 'Silahkan cek notifikasi email !');
 				redirect('P/Auth/lupa_password',$data);
 			}
 		}else{
