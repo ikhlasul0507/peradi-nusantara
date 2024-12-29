@@ -24,6 +24,7 @@ class Admin extends CI_Controller {
 		$this->load->model('Mbg','M');
 		$this->load->model('Crud_model');
 		$this->load->library('service');
+		$this->load->library('notification_service');
 		$this->load->library('Pdf');
 		$this->load->library('ciqrcode');
 		$this->load->library('pagination'); 
@@ -68,6 +69,7 @@ class Admin extends CI_Controller {
 			$data['list_data'] = $this->M->getListHistoryCall(null,null,$this->session->userdata('id_user'));
 			$data['list_marketing'] = $this->M->getAllMarketing($this->session->userdata('id_user'));
 		}
+		$this->get_whatsapp_list_contact();
 		$this->load->view('p/callcenter/call_center', $data);
 	}
 	public function wa_official()
@@ -2184,6 +2186,46 @@ class Admin extends CI_Controller {
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/list_master_materi', $data);
 		$this->load->view('p/temp/footer');
+	}
+
+	public function get_whatsapp_list_contact()
+	{
+		$date = new DateTime("now", new DateTimeZone("Asia/Jakarta"));
+		$formattedDate = $date->format('Y-m-d H:i:s');
+		$json = $this->notification_service->get_whatsapp_list_contact();
+		$response = json_decode($json, true);
+		// Check the status and count the elements in the "data" array
+		$totalData = 0;
+		if ($response['status'] === 'success') {
+			// Count the number of items in the "data" array
+			$dataCount = count($response['data']);
+			$dataArr = $response['data'];
+			foreach ($dataArr as $key => $value) {
+				$checkData = $this->M->getWhere('history_call_center',['customer_phone'=>trim($value['account_uniq_id'])]);
+				if($checkData){
+					continue;
+				}else{
+					$checkIDUser = $this->M->getWhere('token_wa',['token'=>trim($value['agent_ids'][0])]);
+					if($checkIDUser){
+						$send_db = [
+							'id_user' => $checkIDUser['id_user'],
+							'customer_name' => $value['name'],
+							'customer_phone' => $value['account_uniq_id'],
+							'notes_call' => "",
+							'last_call' => $formattedDate,
+							'status_call_center' => "N"
+						];
+						$this->M->add_to_db('history_call_center', $send_db);
+						$totalData++;
+					}
+				}
+			}
+			// echo "Status: success\n";
+			// echo "Number of items in data input history call: " . $totalData;  // Output: 0 (since the array is empty)
+		} else {
+			// echo "Status: failure\n";
+		}
+		// echo $channel_integrations;die;
 	}
 
 }

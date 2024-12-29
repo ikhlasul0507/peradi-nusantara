@@ -3,9 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Notification_service {
 
-    private $access_token = 'lIQtzhDvZsTDl-1dOoyVZBO39ggV1u67Swv7L8Y13ag';
-    private $refresh_token = '';
-    private $token_expiration_time = 0; // Timestamp for token expiration
+    private $access_token = 'lIQtzhDvZsTDl-1dOoyVZBO39ggV1u67Swv7L8Y13ag';  // Use existing token
+    private $refresh_token = 'gBOTUh99E8DIJ_b8ZM-LHdp2kOoqMtGDJfjsYwuxN5M';  // This can be removed if not needed
     private $client_id = 'RRrn6uIxalR_QaHFlcKOqbjHMG63elEdPTair9B9YdY';
     private $client_secret = 'Sa8IGIh_HpVK1ZLAF0iFf7jU760osaUNV659pBIZR00';
     private $username = 'peradinusantarabydsa@gmail.com';
@@ -17,51 +16,14 @@ class Notification_service {
         $this->CI->load->helper('url');
     }
 
-    // Function to get the access token
+    // Use existing access token directly
     public function get_token() {
-        // Check if the token is expired or not set
-        if ($this->is_token_expired()) {
-            $this->refresh_access_token();
-        }
-        $this->access_token = 'lIQtzhDvZsTDl-1dOoyVZBO39ggV1u67Swv7L8Y13ag';
+        // Simply return the existing access token
         return $this->access_token;
     }
 
-    // Function to check if the token is expired
-    private function is_token_expired() {
-        return time() > $this->token_expiration_time;
-    }
-
-    // Function to refresh the access token
-    private function refresh_access_token() {
-        $url = "https://service-chat.qontak.com/oauth/token";
-
-        $data = [
-            'username' => $this->username,
-            'password' => $this->password,
-            'grant_type' => 'password',
-            'client_id' => $this->client_id,
-            'client_secret' => $this->client_secret,
-            'refresh_token' => $this->refresh_token // Use the refresh token
-        ];
-
-        $response = $this->curl_post_request($url, $data);
-
-        // Parse the response
-        $json_response = json_decode($response);
-
-        if (isset($json_response->access_token)) {
-            $this->access_token = $json_response->access_token;
-            $this->refresh_token = $json_response->refresh_token;
-            $this->token_expiration_time = time() + $json_response->expires_in;
-        } else {
-            // Handle error
-            log_message('error', 'Failed to refresh token: ' . $response);
-        }
-    }
-
     public function get_whatsapp_broadcast_log($broadcast_id) {
-        // Get the access token (it will refresh if expired)
+        // Get the existing access token
         $access_token = $this->get_token();
 
         $url = "https://service-chat.qontak.com/api/open/v1/broadcasts/{$broadcast_id}/whatsapp/log";
@@ -75,9 +37,39 @@ class Notification_service {
         }
     }
 
+    public function get_whatsapp_list_contact() {
+        // Get the existing access token
+        $access_token = $this->get_token();
+
+        $url = "https://service-chat.qontak.com/api/open/v1/rooms";
+
+        $response = $this->curl_get_request($url, $access_token);
+
+        if ($response) {
+            return $response;
+        } else {
+            return "Error retrieving broadcast log.";
+        }
+    }
+
+    public function get_whatsapp_list_contact_agent() {
+        // Get the existing access token
+        $access_token = $this->get_token();
+
+        $url = "https://chat-service.qontak.com/api/core/v1/c6abeed6-b4da-4a3d-b684-e96d2ee4077c/users?offset=1&limit=10&is_counted=true";
+
+        $response = $this->curl_get_request($url, $access_token);
+
+        if ($response) {
+            return $response;
+        } else {
+            return "Error retrieving broadcast log.";
+        }
+    }
+
     // Function to send the notification message
     public function send_notification($to_number, $to_name, $message_template_id, $channel_integration_id) {
-        // Get the access token (it will refresh if expired)
+        // Get the existing access token
         $access_token = $this->get_token();
 
         $url = "https://service-chat.qontak.com/api/open/v1/broadcasts/whatsapp/direct";
@@ -92,6 +84,7 @@ class Notification_service {
             ,
             'parameters' => [
                 'body' => [
+                    // Example body if needed
                     // [
                     //     'key' => '1',
                     //     'value' => 'full_name',
@@ -119,7 +112,7 @@ class Notification_service {
             return "No valid phone numbers found.";
         }
 
-        // Get the access token (it will refresh if expired)
+        // Get the existing access token
         $access_token = $this->get_token();
 
         $url = "https://service-chat.qontak.com/api/open/v1/broadcasts/contacts";

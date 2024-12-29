@@ -68,6 +68,33 @@ class Welcome extends CI_Controller {
 		echo $channel_integrations;die;
 	}
 
+	public function get_whatsapp_list_contact()
+	{
+		$json = $this->notification_service->get_whatsapp_list_contact();
+		$response = json_decode($json, true);
+
+		// Check the status and count the elements in the "data" array
+		if ($response['status'] === 'success') {
+			// Count the number of items in the "data" array
+			$dataCount = count($response['data']);
+			$dataArr = $response['data'];
+			foreach ($dataArr as $key => $value) {
+				# code...
+			}
+			echo "Status: success\n";
+			echo "Number of items in data: " . $dataCount;  // Output: 0 (since the array is empty)
+		} else {
+			echo "Status: failure\n";
+		}
+		// echo $channel_integrations;die;
+	}
+
+	public function get_whatsapp_list_contact_agent()
+	{
+		$channel_integrations = $this->notification_service->get_whatsapp_list_contact_agent();
+		echo $channel_integrations;die;
+	}
+
 	public function sendWaMekari() {
         $to_number = '628151654015';
         $to_name = 'Burhanudin Hakim';
