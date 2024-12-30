@@ -2194,30 +2194,41 @@ class Admin extends CI_Controller {
 		$formattedDate = $date->format('Y-m-d H:i:s');
 		$json = $this->notification_service->get_whatsapp_list_contact();
 		$response = json_decode($json, true);
+		
 		// Check the status and count the elements in the "data" array
 		$totalData = 0;
+		
 		if ($response['status'] === 'success') {
 			// Count the number of items in the "data" array
 			$dataCount = count($response['data']);
 			$dataArr = $response['data'];
+			
 			foreach ($dataArr as $key => $value) {
-				$checkData = $this->M->getWhere('history_call_center',['customer_phone'=>trim($value['account_uniq_id'])]);
-				if($checkData){
-					continue;
-				}else{
-					$checkIDUser = $this->M->getWhere('token_wa',['token'=>trim($value['agent_ids'][0])]);
-					if($checkIDUser){
-						$send_db = [
-							'id_user' => $checkIDUser['id_user'],
-							'customer_name' => $value['name'],
-							'customer_phone' => $value['account_uniq_id'],
-							'notes_call' => "",
-							'last_call' => $formattedDate,
-							'status_call_center' => "N"
-						];
-						$this->M->add_to_db('history_call_center', $send_db);
-						$totalData++;
+				// Check if 'agent_ids' exists and is not empty before accessing the first element
+				if (isset($value['agent_ids']) && !empty($value['agent_ids']) && isset($value['agent_ids'][0])) {
+					$checkData = $this->M->getWhere('history_call_center', ['customer_phone' => trim($value['account_uniq_id'])]);
+					if ($checkData) {
+						continue;
+					} else {
+						// Check if 'agent_ids[0]' is valid by checking the database
+						$checkIDUser = $this->M->getWhere('token_wa', ['token' => trim($value['agent_ids'][0])]);
+						if ($checkIDUser) {
+							$send_db = [
+								'id_user' => $checkIDUser['id_user'],
+								'customer_name' => $value['name'],
+								'customer_phone' => $value['account_uniq_id'],
+								'notes_call' => "",
+								'last_call' => $formattedDate,
+								'status_call_center' => "N"
+							];
+							$this->M->add_to_db('history_call_center', $send_db);
+							$totalData++;
+						}
 					}
+				} else {
+					// Log or handle the case when agent_ids is empty or invalid
+					// Example: logging a warning message
+					// log_message('warning', 'Invalid or empty agent_ids for account_uniq_id: ' . $value['account_uniq_id']);
 				}
 			}
 			// echo "Status: success\n";

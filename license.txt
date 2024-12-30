@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 git status
 git add -- . ':!application/config/database.php'
-git commit -m "Update New cross api"
+git commit -m "Update Notif to email"
 git push origin master
 
 Contoh
