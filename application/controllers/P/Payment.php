@@ -822,9 +822,9 @@ class Payment extends CI_Controller {
 		        // $pdf->Output('F', $outputDir.$fileName);
 		    }
 	        //forcedownload
-	        // $pdf->Output('D', $titleName.".pdf");
+	        $pdf->Output('D', $titleName.".pdf");
 	        $pdf->SetTitle($titleName);
-	        $pdf->Output();
+	        // $pdf->Output();
 	        echo "PDF has been saved to " . $outputDir . $fileName;
     	}
 	}
