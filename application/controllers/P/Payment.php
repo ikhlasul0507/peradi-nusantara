@@ -632,7 +632,7 @@ class Payment extends CI_Controller {
 					$valueQR = explode(',', $value['margin_qr_code']);
 		    		$pdf->Image($imgQRCode,(float)$valueQR[0],(float)$valueQR[1],(float)$valueQR[2],(float)$valueQR[3]); // margin left - margin top - size lebar, size tinggi
 		    		// $pdf->Image($ttdCap,125,158,70,40);
-		    		$titleName = $titleName."_PKPA";
+		    		$titleName = $titleName."_".$value['prefix_certificate'];
 				}
 
 
