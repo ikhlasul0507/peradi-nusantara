@@ -89,7 +89,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                        <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
+                        <!-- <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
                             <label>PKPA</label>
                             <input type="text" class="form-control" required id="jadwal_pkpa"
                                 placeholder="Jadwal PKPA">
@@ -108,12 +108,15 @@
                             <label>BREVET A & B</label>
                             <input type="text" class="form-control" required id="jadwal_brevet"
                                 placeholder="Jadwal BREVET A & B">
-                        </div>
-                        <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
-                            <label>CPT</label>
-                            <input type="text" class="form-control" required id="jadwal_cpt"
-                                placeholder="Jadwal CPT">
-                        </div>
+                        </div> -->
+                        <?php foreach ($list_data_kelas as $value) { 
+                            ?>
+                            <div class="col-sm-12 mb-3 mt-2 mb-sm-0">
+                                <label><?= $value['nama_kelas'];?></label>
+                                <input type="text" class="form-control" required id="<?= $value['id_master_kelas'];?>"
+                                    placeholder="Jadwal <?= $value['nama_kelas'];?>">
+                            </div>
+                        <?php } ?>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
@@ -158,34 +161,42 @@
 
     // Function to get all selected checkboxes
     function getSelectedItems() {
-        var jadwal_pkpa = document.getElementById('jadwal_pkpa').value;
-        var jadwal_paralegal = document.getElementById('jadwal_paralegal').value;
-        var jadwal_upa = document.getElementById('jadwal_upa').value;
-        var jadwal_brevet = document.getElementById('jadwal_brevet').value;
-        var jadwal_cpt = document.getElementById('jadwal_cpt').value;
-        console.log(jadwal_pkpa)
-        if(jadwal_pkpa !== "" && jadwal_paralegal !== "" && jadwal_upa !== "" &&
-            jadwal_brevet !== "" && jadwal_cpt !== ""){
+        // var jadwal_pkpa = document.getElementById('jadwal_pkpa').value;
+        // var jadwal_paralegal = document.getElementById('jadwal_paralegal').value;
+        // var jadwal_upa = document.getElementById('jadwal_upa').value;
+        // var jadwal_brevet = document.getElementById('jadwal_brevet').value;
+        // var jadwal_cpt = document.getElementById('jadwal_cpt').value;
+        var list_data_kelas = <?php echo json_encode($list_data_kelas); ?>;
+        console.log(list_data_kelas)
+        var condition = true;
+        for (var i = 0; i < list_data_kelas.length; i++) {
+            var valueData = document.getElementById(list_data_kelas[i].id_master_kelas).value;
+            if(valueData == ""){
+                condition = false;
+            }
+        }
+        if(condition){
             var selected = [];
             var checkboxes = document.querySelectorAll('.item:checked');
             for (var i = 0; i < checkboxes.length; i++) {
                 selected.push(checkboxes[i].value);
             }
-            var dataJadwal = {
-                data : {
-                    jadwal_pkpa,
-                    jadwal_paralegal,
-                    jadwal_upa,
-                    jadwal_brevet,
-                    jadwal_cpt
-                }
+
+            var dataSendData = [];
+            for (var i = 0; i < list_data_kelas.length; i++) {
+                var valueData = document.getElementById(list_data_kelas[i].id_master_kelas).value;
+                dataSendData.push({
+                    id_master_kelas : list_data_kelas[i].id_master_kelas,
+                    value : valueData
+                });
             }
-            console.log(dataJadwal);
+            console.log(dataSendData);
+            
             if(selected.length > 0){
                 //approve data
                 $("#loading").show();
                 $(".loader").show();
-                requestToDB(selected.join(', '), dataJadwal);
+                requestToDB(selected.join(', '), dataSendData);
 
                 console.log(selected.join(', '));
                 console.log(selected.length);
@@ -210,7 +221,7 @@
     {
         $.ajax({
           type: "GET", 
-          url: "<?php echo base_url('P/Admin/approve_certificate')?>",
+          url: "<?php echo base_url('P/Admin/approve_certificateNew')?>",
           cache: false,
           data:  {
             list_id_order : id_order,

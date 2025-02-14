@@ -299,7 +299,15 @@ class Mbg extends CI_Model {
 					  us.nama_lengkap,
 					  mk.nama_kelas,
   					  mk.foto_sertifikat,
-  					  mk.prefix_certificate
+  					  mk.prefix_certificate,
+					  mk.is_cetak_sertifikat,
+					  	mk.margin_number,
+						mk.margin_name,
+						mk.margin_schedule,
+						mk.margin_date,
+						mk.margin_qr_code,
+						mk.font_size_name,
+						mk.prefix_number_certificate 
 					FROM
 					  (SELECT
 					    *

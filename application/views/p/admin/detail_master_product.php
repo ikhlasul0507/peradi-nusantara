@@ -33,10 +33,17 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="col-sm-3 mb-3 mb-sm-0">
                         <div class="form-floating">
                           <textarea class="form-control" placeholder="Deskripsi Kelas" disabled name="deskripsi_kelas" style="height: 200px"><?= $list_data['deskripsi_kelas'];?></textarea>
                         </div>
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-sm-0">
+                        <select class="form-control" name="is_cetak_sertifikat" required disabled value="<?= $list_data['is_cetak_sertifikat'];?>">
+                            <option value="" disabled selected class="placeholder">--Pilih Sertifikat Di Cetak--</option>
+                            <option value="Y" <?php echo ($list_data['is_cetak_sertifikat'] == 'Y') ? 'selected' : ''; ?>>Ya</option>
+                            <option value="N" <?php echo ($list_data['is_cetak_sertifikat'] == 'N') ? 'selected' : ''; ?>>Tidak</option>
+                        </select>
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-0">
                          <input type="text" class="form-control"  required name="prefix_certificate"
@@ -54,6 +61,44 @@
                         <img class="img-fluid px-3 px-sm-4 mt-1 mb-2" id="imagePreview" style="width: 25rem;"
                             src="<?= base_url('assets/p/img/'.$list_data['foto_sertifikat']);?>" alt="...">
                     </div>
+                </div>
+                <div class="form-group row">
+                    <!-- New Fields -->
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" required name="margin_number"
+                            placeholder="Margin Number" disabled value="<?= $list_data['margin_number']; ?>">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" required name="margin_name"
+                            placeholder="Margin Name" disabled value="<?= $list_data['margin_name']; ?>">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" required name="margin_schedule"
+                            placeholder="Margin Schedule" disabled value="<?= $list_data['margin_schedule']; ?>">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" required name="margin_date"
+                            placeholder="Margin Date" disabled value="<?= $list_data['margin_date']; ?>">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" required name="margin_qr_code"
+                            placeholder="Margin QR Code" disabled value="<?= $list_data['margin_qr_code']; ?>">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" required name="font_size_name"
+                            placeholder="Font Size Name" disabled value="<?= $list_data['font_size_name']; ?>">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" required name="prefix_number_certificate"
+                            placeholder="Prefix Number Certificate" disabled value="<?= $list_data['prefix_number_certificate']; ?>">
+                    </div>
+
                 </div>
             </form>
         </div>

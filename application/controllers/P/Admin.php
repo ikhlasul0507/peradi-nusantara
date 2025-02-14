@@ -609,6 +609,7 @@ class Admin extends CI_Controller {
 		$data['list_cart'] = $this->M->show_cart($this->session->userdata('id_user'));
 		$data['previous_url'] = $this->input->server('HTTP_REFERER');
 		$data['allowButtonApprove'] = $this->M->getParameter('@allowButtonApprove');
+		$data['list_data_kelas'] = $this->M->getWhereList('master_kelas',['is_active'=>'Y','is_cetak_sertifikat' => 'Y']);
 		$this->load->view('p/temp/header',$data);
 		$this->load->view('p/admin/sertifikat',$data);
 		$this->load->view('p/temp/footer');
@@ -756,7 +757,18 @@ class Admin extends CI_Controller {
 				'link_group_wa' => trim($this->input->post('link_group_wa')),
 				'is_sumpah' => trim($this->input->post('is_sumpah')),
 				'prefix_certificate' => trim($this->input->post('prefix_certificate')),
+				'is_cetak_sertifikat' => trim($this->input->post('is_cetak_sertifikat')),
+			
+				// New fields
+				'margin_number' => trim($this->input->post('margin_number')),
+				'margin_name' => trim($this->input->post('margin_name')),
+				'margin_schedule' => trim($this->input->post('margin_schedule')),
+				'margin_date' => trim($this->input->post('margin_date')),
+				'margin_qr_code' => trim($this->input->post('margin_qr_code')),
+				'font_size_name' => trim($this->input->post('font_size_name')),
+				'prefix_number_certificate' => trim($this->input->post('prefix_number_certificate')),
 			];
+			
 			$add_db = $this->M->add_to_db('master_kelas', $data_db);
 			if($add_db){
 				$this->M->add_log_history($this->session->userdata('nama_lengkap'),"process_add_master_product");
@@ -799,7 +811,18 @@ class Admin extends CI_Controller {
 			'link_group_wa' => trim($this->input->post('link_group_wa')),
 			'is_sumpah' => trim($this->input->post('is_sumpah')),
 			'prefix_certificate' => trim($this->input->post('prefix_certificate')),
+			'is_cetak_sertifikat' => trim($this->input->post('is_cetak_sertifikat')),
+
+			// New fields
+			'margin_number' => trim($this->input->post('margin_number')),
+			'margin_name' => trim($this->input->post('margin_name')),
+			'margin_schedule' => trim($this->input->post('margin_schedule')),
+			'margin_date' => trim($this->input->post('margin_date')),
+			'margin_qr_code' => trim($this->input->post('margin_qr_code')),
+			'font_size_name' => trim($this->input->post('font_size_name')),
+			'prefix_number_certificate' => trim($this->input->post('prefix_number_certificate')),
 		];
+		
 		$add_db = $this->M->update_to_db('master_kelas', $data_db, 'id_master_kelas', trim($this->input->post('id_master_kelas')));
 		if($add_db){
 			$this->M->add_log_history($this->session->userdata('nama_lengkap'),"process_edit_master_product");
@@ -1274,10 +1297,12 @@ class Admin extends CI_Controller {
 	public function approve_certificate()
 	{
 		$list_id_order = explode(",", $this->input->get('list_id_order'));
-		$dataJadwal = $this->input->get('dataJadwal')['data'];
+		$dataJadwal = $this->input->get('dataJadwal');
 		$totalCustomer = 0;
 		$totalSertifikat = 0;
 		$check = false;
+		echo json_encode(['data' => $dataJadwal]);
+		die;
 		foreach ($list_id_order as $val) {
 			$update = $this->M->update_to_db('order_booking',['status_certificate'=>'A'],'id_order_booking',$val);
 			$orderB = $this->M->getWhere('order_booking',['id_order_booking'=>trim($val)]);
@@ -1314,6 +1339,177 @@ class Admin extends CI_Controller {
 						$stringJadwal = $dataJadwal['jadwal_cpt'];
 						$startNumber = (int) $this->M->getParameter('@startNumberCertificateCPT'); //from parameter
 					}
+
+
+					//number certificate
+					$createNumber = "";
+					$getCer = $this->db->query("SELECT number_certificate FROM approve_cetificate WHERE id_master_kelas = '$valIDKelas' ORDER BY CAST(number_certificate AS UNSIGNED) DESC LIMIT 1")->row_array();
+					if($getCer){
+						$createNumber = (int) $getCer['number_certificate'] + 1;
+					}else{
+						$createNumber = $startNumber;
+					}
+
+
+					if (strpos($getMK['nama_kelas'], 'UPA') !== false) {
+						$incPKPAUPA = $createNumber;
+						$isUPA = true;
+						$idPKPA = (int) $this->M->getParameter('@idMasterPKPAForLogicApprove'); //from parameter
+					}
+					if (strpos($getMK['nama_kelas'], 'PKPA') !== false) {
+						$incPKPAUPA = $createNumber;
+						$isPKPA = true;
+						$idUPA = (int) $this->M->getParameter('@idMasterUPAForLogicApprove'); //from parameter
+					}
+
+					if($this->M->getParameter('@manualNumberCertificate') == 'Y'){
+						if (strpos($getMK['nama_kelas'], 'PKPA') !== false) {
+							$createNumber = (int) $this->M->getParameter('@startNumberCertificatePKPA'); //from parameter
+						}else if (strpos($getMK['nama_kelas'], 'UPA') !== false) {
+							$createNumber = (int) $this->M->getParameter('@startNumberCertificateUPA'); //from parameter
+						}
+					}
+					
+					$send_db = [
+						'id_user' => $orderB['id_user'],
+						'id_order_booking' => $val,
+						'id_master_kelas' => $valIDKelas,
+						'number_certificate' => $createNumber,
+						'count_print' => 0,
+						'qr_code_name' => $qrCodeName.'.png',
+						'jadwal_pelatihan'=> $stringJadwal
+					];
+					$add_db = $this->M->add_to_db('approve_cetificate', $send_db);
+				}
+			}
+			if($isUPA && !$isPKPA){
+				$send_db = [
+					'id_user' => $orderB['id_user'],
+					'id_order_booking' => $val,
+					'id_master_kelas' => $idPKPA,
+					'number_certificate' => $incPKPAUPA,
+					'count_print' => 0,
+					'qr_code_name' => $qrCodeName.'.png',
+					'jadwal_pelatihan'=> $stringJadwal
+				];
+				$add_db = $this->M->add_to_db('approve_cetificate', $send_db);
+			}else if(!$isUPA && $isPKPA){
+				$send_db = [
+					'id_user' => $orderB['id_user'],
+					'id_order_booking' => $val,
+					'id_master_kelas' => $idUPA,
+					'number_certificate' => $incPKPAUPA,
+					'count_print' => 0,
+					'qr_code_name' => $qrCodeName.'.png',
+					'jadwal_pelatihan'=> $stringJadwal
+				];
+				$add_db = $this->M->add_to_db('approve_cetificate', $send_db);
+			}
+			// $send_db = [
+			// 	'id_user' => $orderB['id_user'],
+			// 	'id_order_booking' => $val,
+			// 	'number_certificate' => 123,
+			// 	'count_print' => 0
+			// ];
+			// $add_db = $this->M->add_to_db('approve_cetificate', $send_db);
+			// if($add_db){
+			$check = true;
+			if($this->M->getParameter('@sendNotifApproveCertificate') == 'Y' && 
+				$orderB['list_kelas'] != '5~'){
+				$array = explode("~", $orderB['list_kelas']);
+                $array = array_filter($array, function($value) {
+                    return $value !== '';
+                });
+                $inClause = implode(",", $array);
+                $query = "SELECT GROUP_CONCAT(nama_kelas)AS nama_kelas , foto_kelas, GROUP_CONCAT(link_group_wa) AS link_group_wa  FROM master_kelas WHERE id_master_kelas IN ($inClause)";
+                $getListKelas = $this->db->query($query)->row_array();
+			// 		$master_kelas = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($orderB['id_master_kelas'])]);
+
+				$user = $this->M->getWhere('user',['id_user'=>trim($orderB['id_user'])]);
+                $add_history = $this->M->add_log_history($this->session->userdata('nama_lengkap'),"Approve Kelas ".$getListKelas['nama_kelas']. "Atas Nama ".$user['nama_lengkap']);
+
+				$data_send_notif = [
+					'handphone' => trim($user['handphone']),
+					'email' => trim($user['email']),
+					'namalengkap' => trim($user['nama_lengkap']),
+					'namaKelas' => trim($getListKelas['nama_kelas']),
+					'url_certificate' => trim(base_url('P/Payment/generateCertificate/'.$orderB['id_user'].'/'.trim($val)))
+				];
+				$sendWa = $this->service->sendEmailWithText($data_send_notif, 'approve_certificate','Sertifikat Pelatihan');
+				if($sendWa){
+					$check = true;
+				}
+
+			}
+			// }
+
+		}
+		if($check){
+			echo json_encode([
+				'status_code' => 200, 
+				'totalSertifikat' => $totalSertifikat,
+				'totalCustomer' => $totalCustomer
+			]);
+		}else{
+			echo json_encode(['status_code' => 400]);
+		}
+	}
+
+	public function approve_certificateNew()
+	{
+		$list_id_order = explode(",", $this->input->get('list_id_order'));
+		$dataJadwal = $this->input->get('dataJadwal');
+		$totalCustomer = 0;
+		$totalSertifikat = 0;
+		$check = false;
+		foreach ($list_id_order as $val) {
+			$update = $this->M->update_to_db('order_booking',['status_certificate'=>'A'],'id_order_booking',$val);
+			$orderB = $this->M->getWhere('order_booking',['id_order_booking'=>trim($val)]);
+			$totalCustomer++;
+			$incPKPAUPA = 0;
+			$isPKPA = false;
+			$isUPA= false;
+			$idPKPA = 0;
+			$idUPA = 0;
+			$startNumber = 1;
+			$list_kelas = explode("~", $orderB['list_kelas']);
+			foreach ($list_kelas as $valIDKelas) {
+				if($valIDKelas != ""){
+					$qrCodeName = $this->service->generateSecureRandomString(40);
+					$this->generateQRCODE($orderB['id_user'], $val, $valIDKelas, $qrCodeName);
+
+					$getMK = $this->M->getWhere('master_kelas',['id_master_kelas'=>trim($valIDKelas)]);
+					$stringJadwal = "";
+					$checkStatusCetakSertifikat = $getMK['is_cetak_sertifikat'];
+
+					if($checkStatusCetakSertifikat == 'N'){
+						continue;
+					}
+					
+					$totalSertifikat++;
+
+					foreach ($dataJadwal as $key => $value) {
+						if($value['id_master_kelas'] == $valIDKelas){
+							$stringJadwal = $value['value'];
+						}
+					}
+
+					// if (strpos($getMK['nama_kelas'], 'PKPA') !== false) {
+					// 	$stringJadwal = $dataJadwal['jadwal_pkpa'];
+					// 	$startNumber = (int) $this->M->getParameter('@startNumberCertificatePKPA'); //from parameter
+					// }else if (strpos($getMK['nama_kelas'], 'PARALEGAL') !== false) {
+					// 	$stringJadwal = $dataJadwal['jadwal_paralegal'];
+					// 	$startNumber = (int) $this->M->getParameter('@startNumberCertificateParalegal'); //from parameter
+					// }else if (strpos($getMK['nama_kelas'], 'UPA') !== false) {
+					// 	$stringJadwal = $dataJadwal['jadwal_upa'];
+					// 	$startNumber = (int) $this->M->getParameter('@startNumberCertificateUPA'); //from parameter
+					// }else if (strpos($getMK['nama_kelas'], 'BREVET') !== false) {
+					// 	$stringJadwal = $dataJadwal['jadwal_brevet'];
+					// 	$startNumber = (int) $this->M->getParameter('@startNumberCertificateBREVET'); //from parameter
+					// }else if (strpos($getMK['nama_kelas'], 'CPT') !== false) {
+					// 	$stringJadwal = $dataJadwal['jadwal_cpt'];
+					// 	$startNumber = (int) $this->M->getParameter('@startNumberCertificateCPT'); //from parameter
+					// }
 
 
 					//number certificate

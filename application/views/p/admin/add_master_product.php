@@ -33,10 +33,17 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="col-sm-3 mb-3 mb-sm-0">
                         <div class="form-floating">
                           <textarea class="form-control" placeholder="Deskripsi Kelas" required name="deskripsi_kelas" style="height: 200px"></textarea>
                         </div>
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-sm-0">
+                        <select class="form-control" name="is_cetak_sertifikat" required>
+                            <option value="" disabled selected class="placeholder">--Pilih Sertifikat Di Cetak--</option>
+                            <option value="Y">Ya</option>
+                            <option value="N">Tidak</option>
+                        </select>
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-0">
                          <input type="text" class="form-control"  required name="prefix_certificate"
@@ -65,7 +72,37 @@
                             src="<?= base_url('assets/p/sistem/');?>img/undraw_posting_photo.svg" alt="...">
                     </div>
                 </div>
-                
+                <div class="form-group row">
+
+                    <div class="col-sm-3 mb-3">
+                        <small></small>
+                        <input type="text" class="form-control" name="margin_number" placeholder="Margin Number">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" name="margin_name" placeholder="Margin Name">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" name="margin_schedule" placeholder="Margin Schedule">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" name="margin_date" placeholder="Margin Date">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" name="margin_qr_code" placeholder="Margin QR Code">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" name="font_size_name" placeholder="Font Size Name">
+                    </div>
+
+                    <div class="col-sm-3 mb-3">
+                        <input type="text" class="form-control" name="prefix_number_certificate" placeholder="Prefix Number Certificate">
+                    </div>
+                 </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>

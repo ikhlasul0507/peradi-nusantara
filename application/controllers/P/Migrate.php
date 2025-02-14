@@ -1126,6 +1126,55 @@ class Migrate extends CI_Controller
 			echo "||............[Migrate successfully " . $title . "]</br>";
 		}
 
+		//=================================================================================================
+		$column = "is_cetak_sertifikat"; //hot, warm, could, closing
+		$table_name = "master_kelas";
+		$title = "Add Column " . $column . " to table " . $table_name;
+		$query = "SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' AND column_name = '" . $column . "'";
+		$check = $this->db->query($query)->first_row('array');
+		if ($check['count'] == '0') {
+			$queryAlter = "ALTER TABLE $table_name
+			ADD $column char(1) DEFAULT 'N'";
+			if ($this->db->query($queryAlter)) {
+				echo "||............[Migrate successfully " . $title . "]</br>";
+			} else {
+				echo "||............[Migrate failed " . $title . "]</br>";
+			}
+		} else {
+			echo "||............[Migrate successfully " . $title . "]</br>";
+		}
+		//=================================================================================================
+		$table_name = "master_kelas";
+		$fields = [
+			"margin_number",
+			"margin_name",
+			"margin_schedule",
+			"margin_date",
+			"margin_qr_code",
+			"font_size_name",
+			"prefix_number_certificate"
+		];
+
+		foreach ($fields as $column) {
+			$title = "Add Column " . $column . " to table " . $table_name;
+			$query = "SELECT COUNT(*) as count FROM information_schema.columns 
+					WHERE table_schema=DATABASE() AND table_name= '" . $table_name . "' 
+					AND column_name = '" . $column . "'";
+			$check = $this->db->query($query)->first_row('array');
+
+			if ($check['count'] == '0') {
+				$queryAlter = "ALTER TABLE $table_name 
+							ADD $column VARCHAR(100) DEFAULT NULL";
+				if ($this->db->query($queryAlter)) {
+					echo "||............[Migrate successfully " . $title . "]</br>";
+				} else {
+					echo "||............[Migrate failed " . $title . "]</br>";
+				}
+			} else {
+				echo "||............[Column already exists " . $title . "]</br>";
+			}
+		}
+
 	}
 
 }

@@ -583,8 +583,8 @@ class Payment extends CI_Controller {
 		if($data){
 			$titleName = $data[0]['nama_lengkap'];
 			foreach ($data as $key => $value) {
-				
-				if($value['prefix_certificate'] == "PKPA"){
+				// var_dump($value);die;
+				if($value['is_cetak_sertifikat'] == "Y"){
 					error_reporting(0); 
 			        // Load the Pdf library
 			        $image1 = "./assets/p/img/".$value['foto_sertifikat'];
@@ -598,163 +598,215 @@ class Payment extends CI_Controller {
 					$romanMonth = $this->getRomanMonth($currentMonth);
 
 					//jadwal
-					$pdf->SetXY(139,124.5); 
+					$valueJadwal = explode(',', $value['margin_schedule']);
+					$pdf->SetXY((float)$valueJadwal[0], (float)$valueJadwal[1]); 
 			        $pdf->SetFont('Arial', 'B', 12);
 		    		$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
 
 		    		//number
-			        $numberCer = $value['number_certificate'].'/'.$value['prefix_certificate'].'/PERADI-NUSANTARA/'.$romanMonth.'/'.date('Y');
-			        $pdf->SetXY(173,36.4); 
+					if($value['prefix_certificate'] == "BREVET"){
+						$joinPrefix = 'BR-'.$value['prefix_number_certificate'].$romanMonth.'/'.date('Y');
+					}else{
+						$joinPrefix = $value['prefix_number_certificate'].$romanMonth.'/'.date('Y');
+					}
+					
+			        $numberCer = $value['number_certificate'].'/'.$joinPrefix;
+					$valueNumber = explode(',', $value['margin_number']);
+					$pdf->SetXY((float)$valueNumber[0], (float)$valueNumber[1]); 
 			        $pdf->SetFont('Arial', 'B', 12);
 		    		$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
 
 			        // Nama
-			        $pdf->SetXY(10,15); 
-			        $pdf->SetFont('Arial', 'B', 36);
+					$fontName = $value['font_size_name'];
+			        $valueName = explode(',', $value['margin_name']);
+					$pdf->SetXY((float)$valueName[0], (float)$valueName[1]); 
+			        $pdf->SetFont('Arial', 'B', (float)$fontName);
 			        $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
 			      
 			        // set tanggal cetak
-			        $pdf->SetXY(138,143); 
+					$valueDate = explode(',', $value['margin_date']);
+					$pdf->SetXY((float)$valueDate[0], (float)$valueDate[1]); 
 			        $pdf->SetFont('Arial', 'B', 14);
 		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
-		    		$pdf->Image($imgQRCode,65,150,30,30); // margin left - margin top - size lebar, size tinggi
+					// set tanggal cetak
+					$valueQR = explode(',', $value['margin_qr_code']);
+		    		$pdf->Image($imgQRCode,(float)$valueQR[0],(float)$valueQR[1],(float)$valueQR[2],(float)$valueQR[3]); // margin left - margin top - size lebar, size tinggi
 		    		// $pdf->Image($ttdCap,125,158,70,40);
 		    		$titleName = $titleName."_PKPA";
-	    		}else if($value['prefix_certificate'] == "PARALEGAL"){
-	    			error_reporting(0); 
-			        // Load the Pdf library
-			        $image1 = "./assets/p/img/".$value['foto_sertifikat'];
-			        $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
-			        // Create a new PDF instance
-			        $pdf->AddPage();
-			        $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
+				}
 
-			        //FOR number
-			        $currentMonth = date('n'); // Get the current month as a number (1-12)
-					$romanMonth = $this->getRomanMonth($currentMonth);
-	    			//jadwal
-					$pdf->SetXY(145,129); 
-			        $pdf->SetFont('Arial', 'B', 13);
-		    		$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
 
-		    		//number
-			        $numberCer = $value['number_certificate'].'/'.$value['prefix_certificate'].'/PERADI-NUSANTARA/'.$romanMonth.'/'.date('Y');
-			        $pdf->SetXY(173,35); 
-			        $pdf->SetFont('Arial', 'B', 12);
-		    		$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
-			        // Set font
-			        $pdf->SetXY(10,15); 
-			        $pdf->SetFont('Arial', 'B', 36);
-			        $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
+				// if($value['prefix_certificate'] == "PKPA"){
+				// 	error_reporting(0); 
+			    //     // Load the Pdf library
+			    //     $image1 = "./assets/p/img/".$value['foto_sertifikat'];
+			    //     $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
+			    //     // Create a new PDF instance
+			    //     $pdf->AddPage();
+			    //     $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
+
+			    //     //FOR number
+			    //     $currentMonth = date('n'); // Get the current month as a number (1-12)
+				// 	$romanMonth = $this->getRomanMonth($currentMonth);
+
+				// 	//jadwal
+				// 	$pdf->SetXY(139,124.5); 
+			    //     $pdf->SetFont('Arial', 'B', 12);
+		    	// 	$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
+
+		    	// 	//number
+			    //     $numberCer = $value['number_certificate'].'/'.$value['prefix_certificate'].'/PERADI-NUSANTARA/'.$romanMonth.'/'.date('Y');
+			    //     $pdf->SetXY(173,36.4); 
+			    //     $pdf->SetFont('Arial', 'B', 12);
+		    	// 	$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
+
+			    //     // Nama
+			    //     $pdf->SetXY(10,15); 
+			    //     $pdf->SetFont('Arial', 'B', 36);
+			    //     $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
+			      
+			    //     // set tanggal cetak
+			    //     $pdf->SetXY(138,143); 
+			    //     $pdf->SetFont('Arial', 'B', 14);
+		    	// 	$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
+		    	// 	$pdf->Image($imgQRCode,65,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    	// 	// $pdf->Image($ttdCap,125,158,70,40);
+		    	// 	$titleName = $titleName."_PKPA";
+	    		// }else if($value['prefix_certificate'] == "PARALEGAL"){
+	    		// 	error_reporting(0); 
+			    //     // Load the Pdf library
+			    //     $image1 = "./assets/p/img/".$value['foto_sertifikat'];
+			    //     $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
+			    //     // Create a new PDF instance
+			    //     $pdf->AddPage();
+			    //     $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
+
+			    //     //FOR number
+			    //     $currentMonth = date('n'); // Get the current month as a number (1-12)
+				// 	$romanMonth = $this->getRomanMonth($currentMonth);
+	    		// 	//jadwal
+				// 	$pdf->SetXY(145,129); 
+			    //     $pdf->SetFont('Arial', 'B', 13);
+		    	// 	$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
+
+		    	// 	//number
+			    //     $numberCer = $value['number_certificate'].'/'.$value['prefix_certificate'].'/PERADI-NUSANTARA/'.$romanMonth.'/'.date('Y');
+			    //     $pdf->SetXY(173,35); 
+			    //     $pdf->SetFont('Arial', 'B', 12);
+		    	// 	$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
+			    //     // Set font
+			    //     $pdf->SetXY(10,15); 
+			    //     $pdf->SetFont('Arial', 'B', 36);
+			    //     $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
 
 			      
-			        // set tanggal cetak
-			        $pdf->SetXY(144,142); 
-			        $pdf->SetFont('Arial', 'B', 15);
-		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
-		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
-		    		$pdf->Image($ttdCap,125,155,50,20);
-		    		$titleName = $titleName."_PARALEGAL";
-	    		}else if($value['prefix_certificate'] == "SUPA"){
-	    			error_reporting(0); 
-			        // Load the Pdf library
-			        $image1 = "./assets/p/img/".$value['foto_sertifikat'];
-			        $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
-			        // Create a new PDF instance
-			        $pdf->AddPage();
-			        $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
+			    //     // set tanggal cetak
+			    //     $pdf->SetXY(144,142); 
+			    //     $pdf->SetFont('Arial', 'B', 15);
+		    	// 	$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
+		    	// 	$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    	// 	$pdf->Image($ttdCap,125,155,50,20);
+		    	// 	$titleName = $titleName."_PARALEGAL";
+	    		// }else if($value['prefix_certificate'] == "SUPA"){
+	    		// 	error_reporting(0); 
+			    //     // Load the Pdf library
+			    //     $image1 = "./assets/p/img/".$value['foto_sertifikat'];
+			    //     $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
+			    //     // Create a new PDF instance
+			    //     $pdf->AddPage();
+			    //     $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
 
-			        //FOR number
-			        $currentMonth = date('n'); // Get the current month as a number (1-12)
-					$romanMonth = $this->getRomanMonth($currentMonth);
-	    			//jadwal
-					$pdf->SetXY(172,112.5); 
-			        $pdf->SetFont('Arial', 'B', 15);
-		    		$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
+			    //     //FOR number
+			    //     $currentMonth = date('n'); // Get the current month as a number (1-12)
+				// 	$romanMonth = $this->getRomanMonth($currentMonth);
+	    		// 	//jadwal
+				// 	$pdf->SetXY(172,112.5); 
+			    //     $pdf->SetFont('Arial', 'B', 15);
+		    	// 	$pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
 
-		    		//number
+		    	// 	//number
 
-			        $numberCer = $value['number_certificate'].'/'.$value['prefix_certificate'].'/PERADI-NUSANTARA/'.$romanMonth.'/'.date('Y');
-			        $pdf->SetXY(175,35); 
-			        $pdf->SetFont('Arial', 'B', 12);
-		    		$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
-			        // Set font
-			        $pdf->SetXY(10,15); 
-			        $pdf->SetFont('Arial', 'B', 36);
-			        $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
-
-			      
-			        // set tanggal cetak
-			        $pdf->SetXY(138,153); 
-			        $pdf->SetFont('Arial', 'B', 15);
-		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
-		    		$pdf->Image($imgQRCode,65,155,30,30); // margin left - margin top - size lebar, size tinggi
-		    		// $pdf->Image($ttdCap,125,170,50,25);
-		    		$titleName = $titleName."_UPA";
-	    		}else if($value['prefix_certificate'] == "BREVET"){
-	    			error_reporting(0); 
-			        // Load the Pdf library
-			        $image1 = "./assets/p/img/".$value['foto_sertifikat'];
-			        $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
-			        // Create a new PDF instance
-			        $pdf->AddPage();
-			        $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
-
-			        //FOR number
-			        $currentMonth = date('n'); // Get the current month as a number (1-12)
-					$romanMonth = $this->getRomanMonth($currentMonth);
-					//jadwal
-					$pdf->SetXY(152,159.5); 
-			        $pdf->SetFont('Arial', 'B', 15);
-		    		// $pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
-		    		$prefix = 'BR-';
-			        $numberCer = $prefix.$value['number_certificate'].'/SERTIFIKAT/PERADIPAJAKNUSANTARA/'.$romanMonth.'/'.date('Y');
-			        $pdf->SetXY(96,61); 
-			        $pdf->SetFont('Arial', 'B', 14);
-		    		$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
-			        // Set font
-			        $pdf->SetXY(10,13); 
-			        $pdf->SetFont('Arial', 'B', 36);
-			        $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
+			    //     $numberCer = $value['number_certificate'].'/'.$value['prefix_certificate'].'/PERADI-NUSANTARA/'.$romanMonth.'/'.date('Y');
+			    //     $pdf->SetXY(175,35); 
+			    //     $pdf->SetFont('Arial', 'B', 12);
+		    	// 	$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
+			    //     // Set font
+			    //     $pdf->SetXY(10,15); 
+			    //     $pdf->SetFont('Arial', 'B', 36);
+			    //     $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
 
 			      
-			        // set tanggal cetak
-			        $pdf->SetXY(138,161); 
-			        $pdf->SetFont('Arial', 'B', 15);
-		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
-		    		$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
-		    		// $pdf->Image($ttdCap,135,170,50,25);
-		    		$titleName = $titleName."_BREVET";
-	    		}else if($value['prefix_certificate'] == "CPT"){
-	    			error_reporting(0); 
-			        // Load the Pdf library
-			        $image1 = "./assets/p/img/".$value['foto_sertifikat'];
-			        $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
-			        // Create a new PDF instance
-			        $pdf->AddPage();
-			        $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
+			    //     // set tanggal cetak
+			    //     $pdf->SetXY(138,153); 
+			    //     $pdf->SetFont('Arial', 'B', 15);
+		    	// 	$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
+		    	// 	$pdf->Image($imgQRCode,65,155,30,30); // margin left - margin top - size lebar, size tinggi
+		    	// 	// $pdf->Image($ttdCap,125,170,50,25);
+		    	// 	$titleName = $titleName."_UPA";
+	    		// }else if($value['prefix_certificate'] == "BREVET"){
+	    		// 	error_reporting(0); 
+			    //     // Load the Pdf library
+			    //     $image1 = "./assets/p/img/".$value['foto_sertifikat'];
+			    //     $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
+			    //     // Create a new PDF instance
+			    //     $pdf->AddPage();
+			    //     $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
 
-			        //FOR number
-			        $currentMonth = date('n'); // Get the current month as a number (1-12)
-					$romanMonth = $this->getRomanMonth($currentMonth);
-			        $numberCer = $prefix.$value['number_certificate'].'/sertifikat-KHP/peradipajaknusantara/'.$romanMonth.'/'.date('Y');
-			        $pdf->SetXY(87,63.5); 
-			        $pdf->SetFont('Arial', 'B', 15);
-		    		$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
-			        // Set font
-			        $pdf->SetXY(10,24); 
-			        $pdf->SetFont('Arial', 'B', 36);
-			        $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
+			    //     //FOR number
+			    //     $currentMonth = date('n'); // Get the current month as a number (1-12)
+				// 	$romanMonth = $this->getRomanMonth($currentMonth);
+				// 	//jadwal
+				// 	$pdf->SetXY(152,159.5); 
+			    //     $pdf->SetFont('Arial', 'B', 15);
+		    	// 	// $pdf->Cell(100, 0, $value['jadwal_pelatihan'], 0, 0, 'L');
+		    	// 	$prefix = 'BR-';
+			    //     $numberCer = $prefix.$value['number_certificate'].'/SERTIFIKAT/PERADIPAJAKNUSANTARA/'.$romanMonth.'/'.date('Y');
+			    //     $pdf->SetXY(96,61); 
+			    //     $pdf->SetFont('Arial', 'B', 14);
+		    	// 	$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
+			    //     // Set font
+			    //     $pdf->SetXY(10,13); 
+			    //     $pdf->SetFont('Arial', 'B', 36);
+			    //     $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
 
 			      
-			        // set tanggal cetak
-			        $pdf->SetXY(137,141.5); 
-			        $pdf->SetFont('Arial', 'B', 15);
-		    		$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
-		    		$pdf->Image($imgQRCode,60,140,30,30); // margin left - margin top - size lebar, size tinggi
-		    		// $pdf->Image($ttdCap,135,150,50,25);
-		    		$titleName = $titleName."_CPT";
-	    		}
+			    //     // set tanggal cetak
+			    //     $pdf->SetXY(138,161); 
+			    //     $pdf->SetFont('Arial', 'B', 15);
+		    	// 	$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
+		    	// 	$pdf->Image($imgQRCode,40,150,30,30); // margin left - margin top - size lebar, size tinggi
+		    	// 	// $pdf->Image($ttdCap,135,170,50,25);
+		    	// 	$titleName = $titleName."_BREVET";
+	    		// }else if($value['prefix_certificate'] == "CPT"){
+	    		// 	error_reporting(0); 
+			    //     // Load the Pdf library
+			    //     $image1 = "./assets/p/img/".$value['foto_sertifikat'];
+			    //     $imgQRCode = "./assets/p/qrcode/".$value['qr_code_name'];
+			    //     // Create a new PDF instance
+			    //     $pdf->AddPage();
+			    //     $pdf->Image($image1,0,0,310,210);//margin left - margin top - size lebar, size tinggi
+
+			    //     //FOR number
+			    //     $currentMonth = date('n'); // Get the current month as a number (1-12)
+				// 	$romanMonth = $this->getRomanMonth($currentMonth);
+			    //     $numberCer = $prefix.$value['number_certificate'].'/sertifikat-KHP/peradipajaknusantara/'.$romanMonth.'/'.date('Y');
+			    //     $pdf->SetXY(87,63.5); 
+			    //     $pdf->SetFont('Arial', 'B', 15);
+		    	// 	$pdf->Cell(100, 0, $numberCer, 0, 0, 'L');
+			    //     // Set font
+			    //     $pdf->SetXY(10,24); 
+			    //     $pdf->SetFont('Arial', 'B', 36);
+			    //     $pdf->Cell(290, 150, $value['nama_lengkap'], 0, 1, 'C'); //margin left
+
+			      
+			    //     // set tanggal cetak
+			    //     $pdf->SetXY(137,141.5); 
+			    //     $pdf->SetFont('Arial', 'B', 15);
+		    	// 	$pdf->Cell(100, 0, $this->getDateTTD($value['time_history']), 0, 0, 'L');
+		    	// 	$pdf->Image($imgQRCode,60,140,30,30); // margin left - margin top - size lebar, size tinggi
+		    	// 	// $pdf->Image($ttdCap,135,150,50,25);
+		    	// 	$titleName = $titleName."_CPT";
+	    		// }
 	    		// else{
 	    		// 	$pdf->AddPage();
 	    		// 	// Set font
@@ -770,9 +822,9 @@ class Payment extends CI_Controller {
 		        // $pdf->Output('F', $outputDir.$fileName);
 		    }
 	        //forcedownload
-	        $pdf->Output('D', $titleName.".pdf");
+	        // $pdf->Output('D', $titleName.".pdf");
 	        $pdf->SetTitle($titleName);
-	        // $pdf->Output();
+	        $pdf->Output();
 	        echo "PDF has been saved to " . $outputDir . $fileName;
     	}
 	}
