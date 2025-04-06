@@ -456,7 +456,7 @@ class Mbg extends CI_Model {
 		}
 		$query = $query . " ORDER BY temp.id_user ASC, temp.id_order_booking ASC";
 
-		echo $query;die;
+		// echo $query;die;
 		return $this->db->query($query)->result_array();
 	}
 
