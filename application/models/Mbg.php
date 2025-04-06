@@ -434,7 +434,7 @@ class Mbg extends CI_Model {
 		}
 
 		if($angkatan != ""){
-			$query = $query . " AND us.angkatan LIKE '%$angkatan%'";
+			$query = $query . " AND (us.angkatan LIKE '%$angkatan%' OR  ob.angkatan_kelas LIKE '%$angkatan%') ";
 		}
 
 		if($time_history != ""){
