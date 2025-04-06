@@ -30,7 +30,7 @@
                         <select class="form-control" required name="angkatan">
                                 <option value="<?= $angkatan; ?>" disabled selected>--Pilih Angkatan--</option>
                                 <?php for ($i= $startAngkatan; $i <= $endAngkatan; $i++) {?>
-                                    <option value="Angkatan Ke - <?=$i;?>">Angkatan Ke - <?=$i;?></option>
+                                    <option value="<?= 'angkatan-'.$i;?>"><?= 'Angkatan-'.$i;?></option>
                                 <?php } ?>
                         </select>
                     </div>
@@ -165,6 +165,8 @@
                         $totalPeserta = 0;
                         $totalNominalPayment = 0;
                         foreach ($list_report as $lr) { 
+                            $lr['angkatan'] = isset($lr['angkatan']) && $lr['angkatan'] !== null ? $lr['angkatan'] : $lr['angkatan_kelas'];
+
                             $totalNominalPayment = $totalNominalPayment + $lr['nominal_payment'];
                             if(in_array($lr['id_user'].$lr['reference'], $arrayReferensi)){
                                 $tempReferensi = "-";

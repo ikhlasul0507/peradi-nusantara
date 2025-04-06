@@ -434,7 +434,7 @@ class Mbg extends CI_Model {
 		}
 
 		if($angkatan != ""){
-			$query = $query . " AND us.angkatan LIKE '%$angkatan%' OR  temp.angkatan_kelas LIKE '%$angkatan%' ";
+			$query = $query . " AND (us.angkatan LIKE '%$angkatan%' OR  temp.angkatan_kelas LIKE '%$angkatan%') ";
 		}
 
 		if($time_history != ""){
@@ -456,6 +456,7 @@ class Mbg extends CI_Model {
 		}
 		$query = $query . " ORDER BY temp.id_user ASC, temp.id_order_booking ASC";
 
+		echo $query;die;
 		return $this->db->query($query)->result_array();
 	}
 
