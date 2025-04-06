@@ -373,7 +373,7 @@ class Mbg extends CI_Model {
 							    ob.status_order,
 							    ob.status_certificate,
 							    ob.list_kelas,
-							    
+								ob.angkatan_kelas,
 							    IFNULL(GROUP_CONCAT(
 							      DISTINCT ac.number_certificate
 							      ORDER BY mk.nama_kelas SEPARATOR ', '
